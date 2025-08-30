@@ -1,4 +1,4 @@
-package com.example.ordertracking_flutter
+package com.skillswap.app
 
 import io.flutter.embedding.android.FlutterActivity
 
