@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:skill_swap/screens/Welcome/welcome_screen.dart';
 import 'package:skill_swap/localization/app_localization.dart';
+import 'package:skill_swap/screens/Welcome/OnBoarding/language_select.dart';
 import 'package:skill_swap/utils/helpers/app_globals.dart';
 import 'package:skill_swap/utils/helpers/localization_manager.dart';
 import 'package:skill_swap/utils/providers/localization_provider.dart';
@@ -61,7 +61,7 @@ class _AppState extends State<App> {
           darkTheme: AppTheme.darkTheme,
           themeMode: themeProvider.themeMode,
           title: 'Skill Swap',
-          home: const WelcomeScreen(),
+          home: const LanguageSelector(),
         );
       },
     );

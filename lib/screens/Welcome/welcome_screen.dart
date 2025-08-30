@@ -54,10 +54,13 @@ class WelcomeScreen extends StatelessWidget {
                       left: 50,
                       child: Transform.rotate(
                         angle: 0.0,
-                        child: Image.asset(
-                          AppImages.onboarding1,
-                          width: 150,
-                          height: 150,
+                        child: Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: Image.asset(
+                            AppImages.main,
+                            width: 200,
+                            height: 200,
+                          ),
                         ),
                       ),
                     ),

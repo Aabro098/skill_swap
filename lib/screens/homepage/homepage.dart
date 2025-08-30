@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skill_swap/common/widgets/custom_drawer.dart';
-import 'package:skill_swap/common/widgets/language_selector.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 import 'package:skill_swap/utils/helpers/helper_functions.dart';
@@ -25,7 +24,6 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(context.tr('title')),
         actions: [
-          const LanguageSelector(),
           IconButton(
             icon: const Icon(Icons.color_lens),
             onPressed: () {

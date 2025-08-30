@@ -7,4 +7,11 @@ class AppImages {
   // Onboarding Images
   static const String onboarding1 = 'assets/images/skill_1.png';
   static const String onboarding2 = 'assets/images/skill_2.png';
+
+  // Country flags
+  static const String nepal = "assets/icons/nepal.svg";
+  static const String india = "assets/icons/india.svg";
+  static const String japan = "assets/icons/japan.svg";
+  static const String germany = "assets/icons/germany.svg";
+  static const String english = "assets/icons/uk.svg";
 }
