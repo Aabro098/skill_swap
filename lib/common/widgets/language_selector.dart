@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_mts/utils/constants/colors.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/localization_manager.dart';
-import 'package:flutter_boilerplate_mts/utils/providers/localization_provider.dart';
+import 'package:skill_swap/utils/constants/colors.dart';
+import 'package:skill_swap/utils/helpers/localization_manager.dart';
+import 'package:skill_swap/utils/providers/localization_provider.dart';
 import 'package:provider/provider.dart';
 
 /// A widget that displays a dropdown menu for selecting the app's language.
