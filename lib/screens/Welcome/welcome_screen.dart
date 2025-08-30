@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
+import 'package:skill_swap/screens/Welcome/OnBoarding/liquid_swipe.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
@@ -83,7 +84,14 @@ class WelcomeScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black87,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const OnBoardingScreen(),
+                    ),
+                  );
+                },
                 child: const AutoSizeText(
                   "Join Now",
                 ),
