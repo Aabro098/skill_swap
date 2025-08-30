@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_mts/localization/app_localization.dart';
+import 'package:skill_swap/localization/app_localization.dart';
 
 /// Extension on [BuildContext] providing a shorthand method for localized string translation.
 ///

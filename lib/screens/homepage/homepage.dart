@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_mts/common/widgets/custom_drawer.dart';
-import 'package:flutter_boilerplate_mts/common/widgets/language_selector.dart';
-import 'package:flutter_boilerplate_mts/extensions/context_extensions.dart';
-import 'package:flutter_boilerplate_mts/utils/constants/sizes.dart';
-import 'package:flutter_boilerplate_mts/utils/device/device_utility.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/helper_functions.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/notification_service.dart';
-import 'package:flutter_boilerplate_mts/utils/providers/theme.provider.dart';
+import 'package:skill_swap/common/widgets/custom_drawer.dart';
+import 'package:skill_swap/common/widgets/language_selector.dart';
+import 'package:skill_swap/extensions/context_extensions.dart';
+import 'package:skill_swap/utils/constants/sizes.dart';
+import 'package:skill_swap/utils/helpers/helper_functions.dart';
+import 'package:skill_swap/utils/helpers/notification_service.dart';
+import 'package:skill_swap/utils/providers/theme.provider.dart';
 import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {

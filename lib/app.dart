@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_mts/localization/app_localization.dart';
-import 'package:flutter_boilerplate_mts/screens/homepage/homepage.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/app_globals.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/localization_manager.dart';
-import 'package:flutter_boilerplate_mts/utils/providers/localization_provider.dart';
-import 'package:flutter_boilerplate_mts/utils/providers/theme.provider.dart';
-import 'package:flutter_boilerplate_mts/utils/theme/theme.dart';
+import 'package:skill_swap/localization/app_localization.dart';
+import 'package:skill_swap/screens/homepage/homepage.dart';
+import 'package:skill_swap/utils/helpers/app_globals.dart';
+import 'package:skill_swap/utils/helpers/localization_manager.dart';
+import 'package:skill_swap/utils/providers/localization_provider.dart';
+import 'package:skill_swap/utils/providers/theme.provider.dart';
+import 'package:skill_swap/utils/theme/theme.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 

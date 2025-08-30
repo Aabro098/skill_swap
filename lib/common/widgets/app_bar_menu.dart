@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_mts/utils/providers/localization_provider.dart';
-import 'package:flutter_boilerplate_mts/utils/providers/theme.provider.dart';
+import 'package:skill_swap/utils/providers/localization_provider.dart';
+import 'package:skill_swap/utils/providers/theme.provider.dart';
 import 'package:provider/provider.dart';
 
 class AppBarMenu extends StatelessWidget {

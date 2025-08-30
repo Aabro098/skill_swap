@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_mts/utils/constants/colors.dart';
-import 'package:flutter_boilerplate_mts/utils/constants/sizes.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/app_globals.dart';
+import 'package:skill_swap/utils/constants/colors.dart';
+import 'package:skill_swap/utils/constants/sizes.dart';
+import 'package:skill_swap/utils/helpers/app_globals.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Displays an error [SnackBar] with the given [message].

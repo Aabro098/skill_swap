@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_mts/utils/theme/custom/dropdown_theme.dart';
-import 'package:flutter_boilerplate_mts/utils/theme/custom/elevated_button_theme.dart';
-import 'package:flutter_boilerplate_mts/utils/theme/custom/input_decoration_theme.dart';
-import 'package:flutter_boilerplate_mts/utils/theme/custom/page_transitions_theme.dart';
-import 'package:flutter_boilerplate_mts/utils/theme/custom/snacker_bar_theme.dart';
-import 'package:flutter_boilerplate_mts/utils/theme/custom/text_theme.dart';
+import 'package:skill_swap/utils/theme/custom/dropdown_theme.dart';
+import 'package:skill_swap/utils/theme/custom/elevated_button_theme.dart';
+import 'package:skill_swap/utils/theme/custom/input_decoration_theme.dart';
+import 'package:skill_swap/utils/theme/custom/page_transitions_theme.dart';
+import 'package:skill_swap/utils/theme/custom/snacker_bar_theme.dart';
+import 'package:skill_swap/utils/theme/custom/text_theme.dart';
 
 class AppTheme {
   AppTheme._();

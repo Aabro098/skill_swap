@@ -1,7 +1,7 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/helper_functions.dart';
+import 'package:skill_swap/utils/helpers/helper_functions.dart';
 import 'package:location/location.dart';
 import 'package:permission_handler/permission_handler.dart';
 

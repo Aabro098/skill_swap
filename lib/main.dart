@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate_mts/app.dart';
-import 'package:flutter_boilerplate_mts/utils/helpers/notification_service.dart';
-import 'package:flutter_boilerplate_mts/utils/providers/localization_provider.dart';
-import 'package:flutter_boilerplate_mts/utils/providers/theme.provider.dart';
+import 'package:skill_swap/app.dart';
+import 'package:skill_swap/utils/helpers/notification_service.dart';
+import 'package:skill_swap/utils/providers/localization_provider.dart';
+import 'package:skill_swap/utils/providers/theme.provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
