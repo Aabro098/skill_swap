@@ -9,7 +9,6 @@ import 'package:skill_swap/utils/helpers/notification_service.dart';
 import 'package:skill_swap/utils/providers/theme.provider.dart';
 
 class MyHomePage extends StatefulWidget {
-  ///
   const MyHomePage({super.key});
 
   @override

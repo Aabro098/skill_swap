@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:skill_swap/utils/theme/custom/dropdown_theme.dart';
+import 'package:skill_swap/utils/constants/colors.dart';
+import 'package:skill_swap/utils/theme/color_scheme.dart';
 import 'package:skill_swap/utils/theme/custom/elevated_button_theme.dart';
 import 'package:skill_swap/utils/theme/custom/input_decoration_theme.dart';
 import 'package:skill_swap/utils/theme/custom/page_transitions_theme.dart';
@@ -11,33 +12,28 @@ class AppTheme {
 
   // *ThemeData created for both Light Theme and Dark Theme
 
-  /*
-  TODO: Add more Theme Classes
-  TODO: Add more attributes to theme data
-  */
-
   static ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.light,
-    primaryColor: Colors.blue,
+    colorScheme: AppColorSchemes.lightColorScheme,
+    primaryColor: AppColors.lightPrimary,
     textTheme: AppTypography.lightTextTheme,
     pageTransitionsTheme: AppPageTransitionsTheme.pageTransitionsTheme,
     inputDecorationTheme: AppInputDecoration.lightTheme,
-    elevatedButtonTheme: AppButtonTheme.lightTheme,
-    dropdownMenuTheme: AppDropdownMenuTheme.dropdownMenuTheme,
-    snackBarTheme: AppSnackerBarTheme.snackerBarTheme,
+    elevatedButtonTheme: AppElevatedButtonTheme.lightTheme,
+    snackBarTheme: AppSnackbarTheme.theme,
   );
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Poppins',
     brightness: Brightness.dark,
-    primaryColor: Colors.blue,
+    colorScheme: AppColorSchemes.darkColorScheme,
+    primaryColor: AppColors.darkPrimary,
     textTheme: AppTypography.darkTextTheme,
     pageTransitionsTheme: AppPageTransitionsTheme.pageTransitionsTheme,
     inputDecorationTheme: AppInputDecoration.darkTheme,
-    elevatedButtonTheme: AppButtonTheme.darkTheme,
-    dropdownMenuTheme: AppDropdownMenuTheme.dropdownMenuTheme,
-    snackBarTheme: AppSnackerBarTheme.snackerBarTheme,
+    elevatedButtonTheme: AppElevatedButtonTheme.darkTheme,
+    snackBarTheme: AppSnackbarTheme.theme,
   );
 }

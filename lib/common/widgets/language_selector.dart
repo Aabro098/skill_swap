@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_swap/utils/constants/colors.dart';
 import 'package:skill_swap/utils/helpers/localization_manager.dart';
 import 'package:skill_swap/utils/providers/localization_provider.dart';
 import 'package:provider/provider.dart';
@@ -31,13 +30,13 @@ class _LanguageSelectorState extends State<LanguageSelector> {
         fillColor: Color(0xff2B9486),
         isDense: true,
         filled: true,
-        iconColor: AppColors.background,
-        suffixIconColor: AppColors.background,
+        // iconColor: AppColors.background,
+        // suffixIconColor: AppColors.background,
         constraints: BoxConstraints.tightFor(height: 40),
       ),
       width: 90,
       textStyle: const TextStyle(
-        color: AppColors.background,
+        // color: AppColors.background,
         fontSize: 12,
       ),
       initialSelection: selectedLocale,

@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:skill_swap/utils/constants/sizes.dart';
 
-/// Class for Page Transtition Theme with static variable `snackerBarTheme`
-class AppSnackerBarTheme {
-  AppSnackerBarTheme._();
-
-  /// Static variable for Snacker Bar Theme
-  static SnackBarThemeData snackerBarTheme = SnackBarThemeData(
-      //TODO:  Customize Snack Bar Theme
-      );
+class AppSnackbarTheme {
+  static SnackBarThemeData theme = SnackBarThemeData(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppSizes.md),
+    ),
+    behavior: SnackBarBehavior.floating,
+    contentTextStyle: const TextStyle(
+      fontSize: 17,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+    ),
+    elevation: 5,
+  );
 }
