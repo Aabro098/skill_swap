@@ -14,4 +14,10 @@ class AppImages {
   static const String japan = "assets/icons/japan.svg";
   static const String germany = "assets/icons/germany.svg";
   static const String english = "assets/icons/uk.svg";
+
+  // Google Logo
+  static const String google = "assets/icons/google.svg";
+
+  // Welcome Image
+  static const String welcome = "assets/images/welcome.png";
 }

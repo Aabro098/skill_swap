@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/onboarding_model.dart';
+import 'package:skill_swap/screens/Auth/login_screen.dart';
 import 'package:skill_swap/screens/Welcome/OnBoarding/onboarding_component.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
@@ -62,8 +63,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     if (nextPage < pages.length) {
       controller.jumpToPage(page: nextPage);
     } else {
-      // Navigate to main app or login screen
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LoginScreen(),
+        ),
+      );
     }
   }
 

@@ -74,7 +74,7 @@ class _LanguageSelectorState extends State<LanguageSelector> {
                   CountryButton(
                     flag: AppImages.germany,
                     label: "Deutsch",
-                    color: Colors.yellow,
+                    color: Colors.deepOrange,
                     selected: selectedLang == "de",
                     onTap: () => setState(() => selectedLang = "de"),
                   ),
