@@ -1,8 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:skill_swap/controller/user_controller.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
-import 'package:skill_swap/screens/homepage/homepage.dart';
+import 'package:skill_swap/screens/Basic/basic_complete.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
@@ -75,12 +76,26 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const MyHomePage(),
-                            ),
-                          );
+                          LoginController.signInGoogle().then((value) {
+                            if (value == true) {
+                              if (context.mounted) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const BasicComplete(),
+                                  ),
+                                );
+                              }
+                            } else {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Login Failed!"),
+                                  ),
+                                );
+                              }
+                            }
+                          });
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

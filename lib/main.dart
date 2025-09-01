@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:skill_swap/app.dart';
 import 'package:skill_swap/utils/helpers/notification_service.dart';
@@ -10,6 +11,8 @@ void main() async {
 
   // Notification Service initialization
   NotificationService().initiNotification();
+  // Enable full-screen mode
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   runApp(
     // *Using MutliProvider for further addition of providers

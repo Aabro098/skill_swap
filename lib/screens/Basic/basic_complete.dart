@@ -1,53 +1,25 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
-import 'package:skill_swap/extensions/context_extensions.dart';
-import 'package:skill_swap/model/onboarding_model.dart';
-import 'package:skill_swap/screens/Auth/login_screen.dart';
-import 'package:skill_swap/screens/Welcome/OnBoarding/onboarding_component.dart';
-import 'package:skill_swap/utils/constants/image_strings.dart';
+import 'package:skill_swap/screens/Basic/gender_select.dart';
+import 'package:skill_swap/screens/Basic/skill_select.dart';
+import 'package:skill_swap/screens/homepage/homepage.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class OnBoardingScreen extends StatefulWidget {
-  const OnBoardingScreen({super.key});
+class BasicComplete extends StatefulWidget {
+  const BasicComplete({super.key});
 
   @override
-  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
+  State<BasicComplete> createState() => _BasicCompleteState();
 }
 
-class _OnBoardingScreenState extends State<OnBoardingScreen> {
+class _BasicCompleteState extends State<BasicComplete> {
   final controller = LiquidController();
   int currentPageIndex = 0;
 
   final pages = [
-    OnboardingComponent(
-      model: OnboardingModel(
-        image: AppImages.onboarding1,
-        title: "Learning & Growth",
-        description:
-            "“Learn new skills at your own pace, share what you know with others, and watch your potential grow every day. Together, we make learning a journey, not just a destination.”",
-        bgColor: Colors.deepOrange.shade100,
-      ),
-    ),
-    OnboardingComponent(
-      model: OnboardingModel(
-        image: AppImages.onboarding2,
-        title: "Community & Collaboration",
-        description:
-            "“Share your expertise, discover new skills, and build meaningful connections. Our community thrives when everyone contributes and learns together.”",
-        bgColor: Colors.green.shade100,
-      ),
-    ),
-    OnboardingComponent(
-      model: OnboardingModel(
-        image: AppImages.main,
-        title: "Fun & Creative",
-        description:
-            "“Swap your skills, spark new ideas, and create opportunities you never imagined. Learning has never been this social, inspiring, or fun.”",
-        bgColor: Colors.indigo.shade100,
-      ),
-    ),
+    const SelectGender(),
+    const SkillsInput(),
   ];
 
   void _handlePageChange(int index) {
@@ -66,14 +38,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
+          builder: (context) => const MyHomePage(),
         ),
       );
     }
-  }
-
-  void _skipToEnd() {
-    controller.jumpToPage(page: pages.length - 1);
   }
 
   @override
@@ -95,30 +63,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
             enableSideReveal: true,
             onPageChangeCallback: _handlePageChange,
-          ),
-
-          // Skip button - positioned safely
-          Positioned(
-            top: MediaQuery.of(context).padding.top + 10,
-            right: 20,
-            child: TextButton(
-              onPressed: _skipToEnd,
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.white12,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              ),
-              child: AutoSizeText(
-                "Skip",
-                style: context.textTheme.titleSmall?.copyWith(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
           ),
 
           // Bottom navigation area

@@ -42,7 +42,8 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
                 textAlign: TextAlign.center,
               ),
               Padding(
-                padding: const EdgeInsets.all(AppSizes.padding),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: AppSizes.padding),
                 child: AutoSizeText(
                   widget.model.description,
                   style: context.textTheme.titleSmall
