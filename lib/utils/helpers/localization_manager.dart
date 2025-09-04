@@ -21,18 +21,16 @@ import 'package:flutter/material.dart';
 ///   supportedLocales: LocalizationManager.supportedLocaleList,
 /// )
 /// ```
+
 class LocalizationManager {
   /// List of supported locales.
-  ///
-  /// Includes : en, ne, ca, de, es, fr, it
+  /// Includes: en, ne, de, ja, hi
   static const List<Map<String, dynamic>> supportedLocales = [
     {'locale': Locale('en', 'US'), 'full_name': 'English'},
     {'locale': Locale('ne', 'NP'), 'full_name': 'Nepali'},
-    {'locale': Locale('ca', 'ES'), 'full_name': 'Català'},
-    {'locale': Locale('de', 'DE'), 'full_name': 'Deutsch'},
-    {'locale': Locale('es', 'ES'), 'full_name': 'Español'},
-    {'locale': Locale('fr', 'FR'), 'full_name': 'Français'},
-    {'locale': Locale('it', 'IT'), 'full_name': 'Italiano'}
+    {'locale': Locale('de', 'DE'), 'full_name': 'Deutsch'}, // German
+    {'locale': Locale('ja', 'JP'), 'full_name': '日本語'}, // Japanese
+    {'locale': Locale('hi', 'IN'), 'full_name': 'हिन्दी'}, // Hindi
   ];
 
   /// Helper to retrieve only the supported locales for MaterialApp

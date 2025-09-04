@@ -5,7 +5,14 @@ import 'package:skill_swap/model/gender_model.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
 class SelectGender extends StatefulWidget {
-  const SelectGender({super.key});
+  const SelectGender({
+    super.key,
+    this.selectedGender,
+    this.onGenderSelected,
+  });
+
+  final String? selectedGender;
+  final Function(String)? onGenderSelected;
 
   @override
   State<SelectGender> createState() => _SelectGenderState();
@@ -43,12 +50,19 @@ class _SelectGenderState extends State<SelectGender> {
     ),
   ];
 
-  String? selectedGender;
+  late String? selectedGender;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedGender = widget.selectedGender;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
+    return Container(
+      color: Colors.lightGreen.shade50,
+      child: Padding(
         padding: const EdgeInsets.all(AppSizes.padding),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -70,6 +84,7 @@ class _SelectGenderState extends State<SelectGender> {
                     setState(() {
                       selectedGender = option.gender;
                     });
+                    widget.onGenderSelected?.call(option.gender);
                   }
                 },
               );
@@ -81,7 +96,6 @@ class _SelectGenderState extends State<SelectGender> {
   }
 }
 
-// Corrected GenderOption class
 class GenderOption extends StatelessWidget {
   final GenderOptionModel option;
   final bool isSelected;
@@ -101,7 +115,7 @@ class GenderOption extends StatelessWidget {
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.all(AppSizes.padding),
-        margin: const EdgeInsets.only(bottom: AppSizes.sm),
+        margin: const EdgeInsets.fromLTRB(36.0, 0.0, 36.0, AppSizes.sm),
         decoration: BoxDecoration(
           color: isSelected ? option.shadeColor : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
@@ -144,7 +158,10 @@ class GenderOption extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSizes.md),
-            AutoSizeText(option.gender),
+            AutoSizeText(
+              option.gender,
+              style: context.textTheme.titleSmall,
+            ),
           ],
         ),
       ),

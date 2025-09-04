@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
+import 'package:skill_swap/screens/Basic/age_enter.dart';
 import 'package:skill_swap/screens/Basic/gender_select.dart';
 import 'package:skill_swap/screens/Basic/skill_select.dart';
 import 'package:skill_swap/screens/homepage/homepage.dart';
@@ -17,10 +18,42 @@ class _BasicCompleteState extends State<BasicComplete> {
   final controller = LiquidController();
   int currentPageIndex = 0;
 
-  final pages = [
-    const SelectGender(),
-    const SkillsInput(),
-  ];
+  String? selectedGender;
+  int selectedAge = 18;
+  List<String> skills = [];
+
+  List<Widget> get pages => [
+        SelectGender(
+          selectedGender: selectedGender,
+          onGenderSelected: (gender) {
+            if (mounted) {
+              setState(() {
+                selectedGender = gender;
+              });
+            }
+          },
+        ),
+        AgeSelector(
+          selectedAge: selectedAge,
+          onAgeChanged: (age) {
+            if (mounted) {
+              setState(() {
+                selectedAge = age;
+              });
+            }
+          },
+        ),
+        SkillsInput(
+          skills: skills,
+          onSkillsChanged: (updatedSkills) {
+            if (mounted) {
+              setState(() {
+                skills = List.from(updatedSkills);
+              });
+            }
+          },
+        ),
+      ];
 
   void _handlePageChange(int index) {
     if (mounted) {
@@ -49,7 +82,6 @@ class _BasicCompleteState extends State<BasicComplete> {
     return Scaffold(
       body: Stack(
         children: [
-          // Main LiquidSwipe content
           LiquidSwipe(
             pages: pages,
             liquidController: controller,

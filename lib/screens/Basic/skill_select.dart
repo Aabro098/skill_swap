@@ -1,10 +1,19 @@
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
 class SkillsInput extends StatefulWidget {
-  const SkillsInput({super.key});
+  const SkillsInput({
+    super.key,
+    required this.skills,
+    required this.onSkillsChanged,
+  });
+
+  final List<String> skills;
+  final Function(List<String>) onSkillsChanged;
 
   @override
   SkillsInputState createState() => SkillsInputState();
@@ -12,13 +21,32 @@ class SkillsInput extends StatefulWidget {
 
 class SkillsInputState extends State<SkillsInput> {
   final TextEditingController _controller = TextEditingController();
-  final List<String> _skills = [];
+  late List<String> localSkills;
+
+  @override
+  void initState() {
+    super.initState();
+    localSkills = List.from(widget.skills);
+  }
+
+  final List<Color> colors = [
+    Colors.red,
+    Colors.indigo,
+    Colors.green,
+    Colors.orange,
+    Colors.purple,
+    Colors.amber,
+  ];
+
+  final Random random = Random();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(AppSizes.padding),
+    return Container(
+      color: Colors.red.shade50,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: 36, vertical: AppSizes.padding),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,32 +68,35 @@ class SkillsInputState extends State<SkillsInput> {
               style: context.textTheme.titleSmall,
             ),
             const SizedBox(
-              height: AppSizes.lg,
+              height: AppSizes.md,
             ),
-            if (_skills.isNotEmpty)
+            if (localSkills.isNotEmpty)
               Wrap(
                 spacing: 8,
                 runSpacing: 4,
-                children: _skills
+                children: widget.skills
                     .map((skill) => Chip(
                           label: Text(
                             skill,
                             style: context.textTheme.titleSmall,
                           ),
                           side: BorderSide(
-                            color: Colors.blue.shade100,
+                            color: colors[random.nextInt(colors.length)],
                           ),
                           deleteIconColor: Colors.red,
                           deleteIcon: const Icon(Icons.close),
                           onDeleted: () {
-                            setState(() {
-                              _skills.remove(skill);
-                            });
+                            if (mounted) {
+                              setState(() {
+                                localSkills.remove(skill);
+                              });
+                            }
+                            widget.onSkillsChanged(localSkills);
                           },
                         ))
                     .toList(),
               ),
-            const SizedBox(height: AppSizes.lg),
+            const SizedBox(height: AppSizes.md),
             TextField(
               controller: _controller,
               decoration: const InputDecoration(
@@ -74,11 +105,14 @@ class SkillsInputState extends State<SkillsInput> {
               ),
               onSubmitted: (value) {
                 if (value.trim().isNotEmpty &&
-                    !_skills.contains(value.trim())) {
-                  setState(() {
-                    _skills.add(value.trim());
-                    _controller.clear();
-                  });
+                    !widget.skills.contains(value.trim())) {
+                  if (mounted) {
+                    setState(() {
+                      localSkills.add(value.trim());
+                      _controller.clear();
+                    });
+                    widget.onSkillsChanged(localSkills);
+                  }
                 }
               },
             ),
