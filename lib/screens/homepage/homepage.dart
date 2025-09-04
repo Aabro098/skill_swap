@@ -1,10 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:skill_swap/common/widgets/custom_drawer.dart';
-import 'package:skill_swap/extensions/context_extensions.dart';
-import 'package:skill_swap/utils/constants/sizes.dart';
-import 'package:skill_swap/utils/helpers/helper_functions.dart';
-import 'package:skill_swap/utils/helpers/notification_service.dart';
+import 'package:skill_swap/common/widgets/bottom_nav_bar.dart';
+import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/utils/providers/theme.provider.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -15,56 +13,63 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-    return Scaffold(
-      drawer: const CustomDrawer(),
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(context.tr('title')),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.color_lens),
-            onPressed: () {
-              themeProvider.toggleTheme();
-            },
-          ),
-        ],
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSizes.lg),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(context.tr('welcomeMessage')),
-              const SizedBox(height: AppSizes.md),
-              Wrap(
-                alignment: WrapAlignment.center,
-                runSpacing: 12,
-                spacing: 12,
-                children: [
-                  ElevatedButton(
-                    onPressed: () =>
-                        showInfoSnackbar('Info Message', context: context),
-                    child: const Text('Info SnackBar'),
-                  ),
+  int _selectedIndex = 0;
+
+  List<Widget> get _screens => [
+        Scaffold(
+          appBar: null,
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.purple.shade300,
+                  Colors.purple,
+                  Colors.black,
                 ],
+                stops: const [0.0, 0.2, 1.0],
               ),
-              const SizedBox(height: AppSizes.md),
-              ElevatedButton(
-                onPressed: () {
-                  NotificationService().showNotification(
-                    title: 'example_notification',
-                    body: 'notification_body',
-                  );
-                },
-                child: const Text('Show Notifications'),
-              ),
-            ],
+            ),
+            child: const Center(
+              child: Text("Messages"),
+            ),
           ),
         ),
+        Scaffold(
+            appBar: AppBar(
+              title: const AutoSizeText("Skill Swap"),
+              leading: const MenuWidget(),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.color_lens),
+                  onPressed: () {
+                    context.read<ThemeProvider>().toggleTheme();
+                  },
+                ),
+              ],
+            ),
+            body: const Center(child: Text("Search"))),
+        const Scaffold(body: Center(child: Text("Contacts"))),
+      ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBody: true,
+      extendBodyBehindAppBar: true,
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: BottomNavBar(
+        selectedIndex: _selectedIndex,
+        onItemTapped: (value) {
+          _onItemTapped(value);
+        },
       ),
     );
   }

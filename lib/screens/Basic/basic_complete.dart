@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
+import 'package:skill_swap/common/widgets/drawer_page.dart';
 import 'package:skill_swap/screens/Basic/age_enter.dart';
 import 'package:skill_swap/screens/Basic/gender_select.dart';
 import 'package:skill_swap/screens/Basic/skill_select.dart';
-import 'package:skill_swap/screens/homepage/homepage.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 import 'package:skill_swap/utils/helpers/helper_functions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -103,7 +103,7 @@ class _BasicCompleteState extends State<BasicComplete> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const MyHomePage(),
+          builder: (context) => const DrawerPage(),
         ),
       );
     }
