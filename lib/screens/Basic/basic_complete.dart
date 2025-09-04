@@ -5,6 +5,7 @@ import 'package:skill_swap/screens/Basic/gender_select.dart';
 import 'package:skill_swap/screens/Basic/skill_select.dart';
 import 'package:skill_swap/screens/homepage/homepage.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
+import 'package:skill_swap/utils/helpers/helper_functions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BasicComplete extends StatefulWidget {
@@ -21,6 +22,7 @@ class _BasicCompleteState extends State<BasicComplete> {
   String? selectedGender;
   int selectedAge = 18;
   List<String> skills = [];
+  List<String> learnSkills = [];
 
   List<Widget> get pages => [
         SelectGender(
@@ -44,6 +46,7 @@ class _BasicCompleteState extends State<BasicComplete> {
           },
         ),
         SkillsInput(
+          key: const ValueKey('haveSkills'),
           skills: skills,
           onSkillsChanged: (updatedSkills) {
             if (mounted) {
@@ -52,6 +55,25 @@ class _BasicCompleteState extends State<BasicComplete> {
               });
             }
           },
+          title: "Enter Skills You Have!",
+          description:
+              "Hi there! To help us get to know your expertise better, please take a moment to add the skills you have.",
+          learn: false,
+        ),
+        SkillsInput(
+          key: const ValueKey('learnSkills'),
+          skills: learnSkills,
+          onSkillsChanged: (updatedSkills) {
+            if (mounted) {
+              setState(() {
+                learnSkills = List.from(updatedSkills);
+              });
+            }
+          },
+          title: "Enter Skills You Want To Learn!",
+          description:
+              "Could you tell me which skill you’re most interested in learning or improving right now?",
+          learn: true,
         ),
       ];
 
@@ -68,6 +90,16 @@ class _BasicCompleteState extends State<BasicComplete> {
     if (nextPage < pages.length) {
       controller.jumpToPage(page: nextPage);
     } else {
+      if (selectedGender == null) {
+        showErrorSnackbar("Select your gender!", context: context);
+        if (mounted) {
+          setState(() {
+            currentPageIndex = 0;
+          });
+        }
+        controller.jumpToPage(page: currentPageIndex);
+        return;
+      }
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

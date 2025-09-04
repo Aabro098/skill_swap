@@ -42,13 +42,13 @@ class _AgeSelectorState extends State<AgeSelector> {
             AutoSizeText(
               "Enter Age",
               style: context.textTheme.headlineLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+                  fontWeight: FontWeight.w600, color: Colors.grey.shade800),
             ),
             const SizedBox(height: AppSizes.md),
             AutoSizeText(
               "Hi there! To personalize your experience, please take a moment to enter your age.",
-              style: context.textTheme.titleSmall,
+              style: context.textTheme.titleSmall
+                  ?.copyWith(color: Colors.grey.shade700),
             ),
             const SizedBox(height: AppSizes.lg),
             Column(

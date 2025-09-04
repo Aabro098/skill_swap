@@ -71,8 +71,7 @@ class _SelectGenderState extends State<SelectGender> {
             AutoSizeText(
               "What's your gender?",
               style: context.textTheme.headlineLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+                  fontWeight: FontWeight.w600, color: Colors.grey.shade800),
             ),
             const SizedBox(height: AppSizes.xl),
             ...genderOptions.map((option) {
@@ -120,7 +119,7 @@ class GenderOption extends StatelessWidget {
           color: isSelected ? option.shadeColor : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? option.secondaryColor : Colors.grey.shade300,
+            color: isSelected ? option.secondaryColor : Colors.grey.shade500,
             width: isSelected ? 1.5 : 1,
           ),
         ),
@@ -160,7 +159,9 @@ class GenderOption extends StatelessWidget {
             const SizedBox(height: AppSizes.md),
             AutoSizeText(
               option.gender,
-              style: context.textTheme.titleSmall,
+              style: context.textTheme.titleSmall?.copyWith(
+                color: Colors.grey.shade800,
+              ),
             ),
           ],
         ),

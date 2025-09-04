@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
@@ -10,10 +9,16 @@ class SkillsInput extends StatefulWidget {
     super.key,
     required this.skills,
     required this.onSkillsChanged,
+    required this.title,
+    required this.description,
+    required this.learn,
   });
 
   final List<String> skills;
   final Function(List<String>) onSkillsChanged;
+  final String title;
+  final String description;
+  final bool learn;
 
   @override
   SkillsInputState createState() => SkillsInputState();
@@ -43,7 +48,7 @@ class SkillsInputState extends State<SkillsInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red.shade50,
+      color: widget.learn ? Colors.green.shade50 : Colors.purple.shade50,
       child: Padding(
         padding: const EdgeInsets.symmetric(
             horizontal: 36, vertical: AppSizes.padding),
@@ -55,17 +60,17 @@ class SkillsInputState extends State<SkillsInput> {
               height: 92,
             ),
             AutoSizeText(
-              "Enter Skills",
+              widget.title,
               style: context.textTheme.headlineLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+                  fontWeight: FontWeight.w600, color: Colors.grey.shade800),
             ),
             const SizedBox(
               height: AppSizes.md,
             ),
             AutoSizeText(
-              "Hi there! To help us get to know your expertise better, please take a moment to add the skills you have.",
-              style: context.textTheme.titleSmall,
+              widget.description,
+              style: context.textTheme.titleSmall
+                  ?.copyWith(color: Colors.grey.shade700),
             ),
             const SizedBox(
               height: AppSizes.md,
@@ -76,9 +81,11 @@ class SkillsInputState extends State<SkillsInput> {
                 runSpacing: 4,
                 children: widget.skills
                     .map((skill) => Chip(
+                          color: WidgetStatePropertyAll(Colors.grey.shade100),
                           label: Text(
                             skill,
-                            style: context.textTheme.titleSmall,
+                            style: context.textTheme.titleSmall
+                                ?.copyWith(color: Colors.grey.shade800),
                           ),
                           side: BorderSide(
                             color: colors[random.nextInt(colors.length)],
@@ -99,9 +106,18 @@ class SkillsInputState extends State<SkillsInput> {
             const SizedBox(height: AppSizes.md),
             TextField(
               controller: _controller,
-              decoration: const InputDecoration(
+              style: context.textTheme.titleSmall
+                  ?.copyWith(color: Colors.grey.shade800),
+              decoration: InputDecoration(
                 labelText: "Enter a skill",
-                border: OutlineInputBorder(),
+                hintStyle: context.textTheme.titleSmall
+                    ?.copyWith(color: Colors.grey.shade800),
+                labelStyle: context.textTheme.titleSmall
+                    ?.copyWith(color: Colors.grey.shade800),
+                border: const OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey.shade700),
+                ),
               ),
               onSubmitted: (value) {
                 if (value.trim().isNotEmpty &&
