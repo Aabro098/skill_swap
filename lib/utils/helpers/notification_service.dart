@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
-// TODO: Add Support for maxOS and Linux Systems.
-// TODO: Create Various other functions for different type of notifications.
   // _showNotificationWithActions()
   // _showNotificationWithTextAction()
   // _showNotificationWithIconAction()

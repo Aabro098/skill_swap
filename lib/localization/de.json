@@ -1,4 +1,9 @@
 {
-    "title": "Titel",
-    "welcomeMessage":"Welcome to the app!"
-}
+    "home": "Startseite",
+    "skill_bot": "Skill Bot",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+
+    "done": "Fertig"
+  }
+  

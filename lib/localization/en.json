@@ -1,4 +1,8 @@
 {
-    "title": "Title",
-    "welcomeMessage":"Welcome to the app!"
+    "home": "Home",
+    "skill_bot" : "Skill Bot",
+    "profile": "Profile",
+    "settings": "Settings",
+
+    "done" : "Done"
 }
