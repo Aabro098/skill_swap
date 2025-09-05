@@ -1,11 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:skill_swap/common/reusables/search_text.dart';
+import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/message_screen_model.dart';
 import 'package:skill_swap/screens/Main/Messenger/message.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
-import 'package:skill_swap/utils/device/device_utility.dart';
 
 class MessengerScreen extends StatefulWidget {
   const MessengerScreen({super.key});
@@ -62,21 +63,11 @@ class _MessengerScreenState extends State<MessengerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = DeviceUtility.isDarkMode(context);
     return Scaffold(
       appBar: null,
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.deepPurple.shade200,
-              Colors.deepPurple.shade300,
-              isDarkMode ? Colors.black : Colors.white,
-            ],
-            stops: const [0.0, 0.2, 0.6],
-          ),
+          gradient: context.gradient,
         ),
         child: Padding(
           padding: const EdgeInsets.all(AppSizes.padding),
@@ -84,7 +75,18 @@ class _MessengerScreenState extends State<MessengerScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const RoundedTextField(),
+                const Row(
+                  children: [
+                    MenuWidget(),
+                    SizedBox(
+                      width: AppSizes.sm,
+                    ),
+                    Expanded(
+                        child: RoundedTextField(
+                      prefixIcon: Iconsax.search_favorite,
+                    )),
+                  ],
+                ),
                 const SizedBox(height: AppSizes.md),
                 AutoSizeText(
                   "Recent Interactions",

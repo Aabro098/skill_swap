@@ -20,4 +20,8 @@ class AppImages {
 
   // Welcome Image
   static const String welcome = "assets/images/welcome.png";
+
+  // Robot Animation
+  static const String robot = "assets/animations/robot.json";
+  static const String robotHello = "assets/animations/robot_hello.json";
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
@@ -7,12 +6,14 @@ class RoundedTextField extends StatelessWidget {
   final String hintText;
   final Color? fillColor;
   final Color? textColor;
+  final IconData? prefixIcon;
 
   const RoundedTextField({
     super.key,
     this.hintText = "Search",
     this.fillColor,
     this.textColor,
+    this.prefixIcon,
   });
 
   @override
@@ -33,9 +34,11 @@ class RoundedTextField extends StatelessWidget {
           horizontal: AppSizes.md,
           vertical: AppSizes.sm,
         ),
-        prefixIcon: const Icon(
-          Iconsax.search_favorite,
-        ),
+        prefixIcon: prefixIcon != null
+            ? Icon(
+                prefixIcon,
+              )
+            : null,
         filled: true,
         fillColor: fillColor ?? Colors.white.withAlpha(24),
         border: border,

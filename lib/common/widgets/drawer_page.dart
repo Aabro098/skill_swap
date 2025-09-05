@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:skill_swap/common/widgets/side_menu.dart';
 import 'package:skill_swap/model/side_bar_model.dart';
+import 'package:skill_swap/screens/ChatBot/chatbot.dart';
 import 'package:skill_swap/screens/Main/main_screen.dart';
 import 'package:skill_swap/utils/device/device_utility.dart';
 
@@ -13,7 +14,8 @@ class DrawerPage extends StatefulWidget {
 }
 
 class _DrawerPageState extends State<DrawerPage> {
-  MenuItem currentItem = MenuItem.home;
+  // TODO: change to home later
+  MenuItem currentItem = MenuItem.chatbot;
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +60,7 @@ class _DrawerPageState extends State<DrawerPage> {
       case MenuItem.home:
         return const MainScreen();
       case MenuItem.chatbot:
-        return const Scaffold(
-          backgroundColor: Colors.white,
-          body: Center(child: Text('Chatbot')),
-        );
+        return const Chatbot();
       case MenuItem.profile:
         return const Scaffold(
           backgroundColor: Colors.white,
