@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skill_swap/utils/constants/colors.dart';
 import 'package:skill_swap/utils/theme/color_scheme.dart';
+import 'package:skill_swap/utils/theme/custom/appbar_theme.dart';
 import 'package:skill_swap/utils/theme/custom/elevated_button_theme.dart';
 import 'package:skill_swap/utils/theme/custom/input_decoration_theme.dart';
 import 'package:skill_swap/utils/theme/custom/outlined_button_theme.dart';
@@ -25,6 +26,7 @@ class AppTheme {
     elevatedButtonTheme: AppElevatedButtonTheme.lightTheme,
     outlinedButtonTheme: AppOutlinedButtonTheme.lightTheme,
     snackBarTheme: AppSnackbarTheme.theme,
+    appBarTheme: AppAppBarTheme.lightTheme,
   );
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
@@ -38,5 +40,6 @@ class AppTheme {
     elevatedButtonTheme: AppElevatedButtonTheme.darkTheme,
     outlinedButtonTheme: AppOutlinedButtonTheme.darkTheme,
     snackBarTheme: AppSnackbarTheme.theme,
+    appBarTheme: AppAppBarTheme.darkTheme,
   );
 }

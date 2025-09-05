@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skill_swap/common/widgets/bottom_nav_bar.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
-import 'package:skill_swap/screens/Main/messenger.dart';
+import 'package:skill_swap/screens/Main/Messenger/messenger.dart';
 import 'package:skill_swap/utils/providers/theme.provider.dart';
 
 class MainScreen extends StatefulWidget {

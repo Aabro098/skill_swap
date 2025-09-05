@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:skill_swap/common/reusables/search_text.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/message_screen_model.dart';
+import 'package:skill_swap/screens/Main/Messenger/message.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 import 'package:skill_swap/utils/device/device_utility.dart';
 
@@ -121,53 +122,77 @@ class _MessengerScreenState extends State<MessengerScreen> {
                     padding: const EdgeInsets.all(0),
                     itemBuilder: (BuildContext context, int index) {
                       final message = demoMessages[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: AppSizes.sm),
-                        child: Row(
-                          children: [
-                            MessengerProfile(
-                              radius: 28,
-                              photoUrl: message.photoUrl,
-                            ),
-                            const SizedBox(width: AppSizes.md),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  AutoSizeText(
-                                    message.name,
-                                    style: context.textTheme.titleMedium
-                                        ?.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 14),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                  const SizedBox(height: AppSizes.xs),
-                                  AutoSizeText(
-                                    message.lastMessage,
-                                    style: context.textTheme.bodySmall,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(width: AppSizes.md),
-                            Text(
-                              "2:30 AM",
-                              style: context.textTheme.bodySmall
-                                  ?.copyWith(fontSize: 10),
-                            ),
-                          ],
-                        ),
-                      );
+                      return MessengerTile(message: message);
                     },
                   ),
                 ),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class MessengerTile extends StatelessWidget {
+  const MessengerTile({
+    super.key,
+    required this.message,
+  });
+
+  final MessageScreenModel message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSizes.sm),
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MessageScreen(
+                name: message.name,
+                photoUrl: message.photoUrl,
+              ),
+            ),
+          );
+        },
+        child: Row(
+          children: [
+            MessengerProfile(
+              radius: 28,
+              photoUrl: message.photoUrl,
+            ),
+            const SizedBox(width: AppSizes.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AutoSizeText(
+                    message.name,
+                    style: context.textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w600, fontSize: 14),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: AppSizes.xs),
+                  AutoSizeText(
+                    message.lastMessage,
+                    style: context.textTheme.bodySmall,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: AppSizes.md),
+            Text(
+              "2:30 AM",
+              style: context.textTheme.bodySmall?.copyWith(fontSize: 10),
+            ),
+          ],
         ),
       ),
     );

@@ -5,10 +5,14 @@ import 'package:skill_swap/utils/constants/sizes.dart';
 
 class RoundedTextField extends StatelessWidget {
   final String hintText;
+  final Color? fillColor;
+  final Color? textColor;
 
   const RoundedTextField({
     super.key,
     this.hintText = "Search",
+    this.fillColor,
+    this.textColor,
   });
 
   @override
@@ -20,11 +24,11 @@ class RoundedTextField extends StatelessWidget {
 
     return TextField(
       style: context.textTheme.titleSmall
-          ?.copyWith(color: Colors.white, fontSize: 14),
+          ?.copyWith(color: textColor ?? Colors.white, fontSize: 14),
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: context.textTheme.titleSmall
-            ?.copyWith(color: Colors.white, fontSize: 14),
+            ?.copyWith(color: textColor ?? Colors.white, fontSize: 14),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSizes.md,
           vertical: AppSizes.sm,
@@ -33,7 +37,7 @@ class RoundedTextField extends StatelessWidget {
           Iconsax.search_favorite,
         ),
         filled: true,
-        fillColor: Colors.white.withAlpha(24),
+        fillColor: fillColor ?? Colors.white.withAlpha(24),
         border: border,
         enabledBorder: border,
         focusedBorder: border,
