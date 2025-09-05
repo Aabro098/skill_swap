@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/onboarding_model.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
-import 'package:skill_swap/utils/device/device_utility.dart';
 
 class OnboardingComponent extends StatefulWidget {
   const OnboardingComponent({
@@ -19,8 +18,6 @@ class OnboardingComponent extends StatefulWidget {
 class _OnboardingComponentState extends State<OnboardingComponent> {
   @override
   Widget build(BuildContext context) {
-    final height = DeviceUtility.getScreenHeight(context);
-    final width = DeviceUtility.getScreenWidth(context);
     return Container(
       color: widget.model.bgColor,
       child: Column(
@@ -28,8 +25,8 @@ class _OnboardingComponentState extends State<OnboardingComponent> {
         children: [
           Image.asset(
             widget.model.image,
-            height: height * 0.3,
-            width: width * 0.8,
+            height: context.screenHeight * 0.3,
+            width: context.screenWidth * 0.8,
           ),
           Column(
             children: [

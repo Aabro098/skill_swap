@@ -44,4 +44,6 @@ extension AppContextExtension on BuildContext {
 
   /// Returns the screen height
   double get screenHeight => MediaQuery.of(this).size.height;
+
+  bool get isDarkMode => DeviceUtility.isDarkMode(this);
 }

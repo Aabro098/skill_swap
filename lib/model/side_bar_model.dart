@@ -16,7 +16,7 @@ class MenuItem {
   );
   static const chatbot = MenuItem(
     icon: Iconsax.message_24,
-    title: "Chatbot",
+    title: "Skill Bot",
   );
   static const profile = MenuItem(
     icon: Iconsax.user,

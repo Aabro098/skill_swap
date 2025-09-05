@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
-import 'package:skill_swap/utils/device/device_utility.dart';
 
 class MessageCard extends StatelessWidget {
   final String message;
@@ -15,14 +15,13 @@ class MessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = DeviceUtility.getScreenWidth(context);
     return Align(
       alignment: isSentByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         padding: const EdgeInsets.symmetric(
             horizontal: AppSizes.md, vertical: AppSizes.sm),
         margin: const EdgeInsets.symmetric(vertical: 5),
-        constraints: BoxConstraints(maxWidth: width * 0.65),
+        constraints: BoxConstraints(maxWidth: context.screenWidth * 0.65),
         decoration: BoxDecoration(
           color: isSentByMe ? Colors.deepPurple.shade300 : Colors.grey.shade300,
           borderRadius: BorderRadius.only(

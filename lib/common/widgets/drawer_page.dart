@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:skill_swap/common/widgets/side_menu.dart';
+import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/side_bar_model.dart';
 import 'package:skill_swap/screens/ChatBot/chatbot.dart';
 import 'package:skill_swap/screens/Main/main_screen.dart';
-import 'package:skill_swap/utils/device/device_utility.dart';
+import 'package:skill_swap/screens/Settings/app_settings.dart';
 
 class DrawerPage extends StatefulWidget {
   const DrawerPage({super.key});
@@ -15,11 +16,10 @@ class DrawerPage extends StatefulWidget {
 
 class _DrawerPageState extends State<DrawerPage> {
   // TODO: change to home later
-  MenuItem currentItem = MenuItem.chatbot;
+  MenuItem currentItem = MenuItem.settings;
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = DeviceUtility.isDarkMode(context);
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -27,7 +27,7 @@ class _DrawerPageState extends State<DrawerPage> {
           end: Alignment.bottomRight,
           colors: [
             Colors.deepPurple,
-            isDarkMode ? Colors.black : Colors.white,
+            context.isDarkMode ? Colors.black : Colors.white,
           ],
           stops: const [0.0, 0.8],
         ),
@@ -67,10 +67,7 @@ class _DrawerPageState extends State<DrawerPage> {
           body: Center(child: Text('Profile')),
         );
       case MenuItem.settings:
-        return const Scaffold(
-          backgroundColor: Colors.white,
-          body: Center(child: Text('Settings')),
-        );
+        return const AppSettings();
       default:
         return const MainScreen();
     }

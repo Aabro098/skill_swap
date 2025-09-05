@@ -105,7 +105,7 @@ class LockedChatbot extends StatelessWidget {
               child: SizedBox(
                 width: 196,
                 child: ElevatedButton(
-                    onPressed: onUnlock, child: const Text("Unlock Chatbot")),
+                    onPressed: onUnlock, child: const Text("Unlock Skill Bot")),
               ),
             ),
           ),
