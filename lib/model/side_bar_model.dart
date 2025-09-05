@@ -12,20 +12,20 @@ class MenuItem {
 
   static const home = MenuItem(
     icon: Iconsax.home_14,
-    title: "Home",
+    title: "home",
   );
   static const chatbot = MenuItem(
     icon: Iconsax.message_24,
-    title: "Skill Bot",
+    title: "skill_bot",
   );
   static const profile = MenuItem(
     icon: Iconsax.user,
-    title: "Profile",
+    title: "profile",
   );
 
   static const settings = MenuItem(
     icon: Iconsax.setting_24,
-    title: "Settings",
+    title: "settings",
   );
 
   static const all = <MenuItem>[

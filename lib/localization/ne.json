@@ -1,4 +1,9 @@
 {
-    "title": "शीर्षक",
-    "welcomeMessage":"Welcome to the app!"
-}
+    "home": "गृहपृष्ठ",
+    "skill_bot": "स्किल बट",
+    "profile": "प्रोफाइल",
+    "settings": "सेटिङहरू",
+
+    "done": "सम्पन्न"
+  }
+  

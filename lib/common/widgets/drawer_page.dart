@@ -15,8 +15,7 @@ class DrawerPage extends StatefulWidget {
 }
 
 class _DrawerPageState extends State<DrawerPage> {
-  // TODO: change to home later
-  MenuItem currentItem = MenuItem.settings;
+  MenuItem currentItem = MenuItem.home;
 
   @override
   Widget build(BuildContext context) {

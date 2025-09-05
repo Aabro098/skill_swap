@@ -6,8 +6,10 @@ import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/settings_model.dart';
 import 'package:skill_swap/screens/Welcome/OnBoarding/language_select.dart';
+import 'package:skill_swap/screens/Welcome/welcome_screen.dart';
 import 'package:skill_swap/utils/constants/enums.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
+import 'package:skill_swap/utils/helpers/helper_functions.dart';
 import 'package:skill_swap/utils/notifiers/theme_notifier.dart';
 
 class AppSettings extends ConsumerStatefulWidget {
@@ -73,7 +75,16 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
           title: "Logout",
           icon: Iconsax.logout,
           type: SettingsTileType.customTile,
-          onTap: () {},
+          onTap: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const WelcomeScreen(),
+              ),
+              (Route<dynamic> route) => false,
+            );
+            showSuccessSnackbar("Logout Successful !", context: context);
+          },
           color: Colors.red,
         ),
       ];
