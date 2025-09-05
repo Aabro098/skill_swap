@@ -20,6 +20,7 @@ class WelcomeScreen extends StatelessWidget {
               context.colorScheme.primary,
               context.colorScheme.secondary,
             ],
+            stops: const [0.0, 0.4],
           ),
         ),
         child: Padding(

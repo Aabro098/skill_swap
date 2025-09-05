@@ -4,9 +4,9 @@ class AppColors {
   // ----------------------
   // Light Theme Colors
   // ----------------------
-  static const Color lightPrimary = Color(0xFFFF7B00);
-  static const Color lightSecondary = Color(0xFFFFAA00);
-  static const Color lightAccent = Color(0xFFFFD000);
+  static const Color lightPrimary = Color(0xFF9C27B0); // Purple
+  static const Color lightSecondary = Color(0xFFBA68C8); // Lighter purple
+  static const Color lightAccent = Color(0xFFE1BEE7); // Very light purple
 
   static const Color lightBackground = Color(0xFFFFFFFF);
   static const Color lightSurface = Color(0xFFF5F5F5);
@@ -17,9 +17,9 @@ class AppColors {
   // ----------------------
   // Dark Theme Colors
   // ----------------------
-  static const Color darkPrimary = Color(0xFFFFB347);
-  static const Color darkSecondary = Color(0xFFFF8C42);
-  static const Color darkAccent = Color(0xFFFFC857);
+  static const Color darkPrimary = Color(0xFFAB47BC); // Purple 400
+  static const Color darkSecondary = Color(0xFF8E24AA); // Deeper purple
+  static const Color darkAccent = Color(0xFFCE93D8); // Soft lavender
 
   static const Color darkBackground = Color(0xFF121212);
   static const Color darkSurface = Color(0xFF1E1E1E);

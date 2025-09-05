@@ -3,39 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skill_swap/common/widgets/bottom_nav_bar.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
+import 'package:skill_swap/screens/Main/messenger.dart';
 import 'package:skill_swap/utils/providers/theme.provider.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   List<Widget> get _screens => [
-        Scaffold(
-          appBar: null,
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.purple.shade300,
-                  Colors.purple,
-                  Colors.black,
-                ],
-                stops: const [0.0, 0.2, 1.0],
-              ),
-            ),
-            child: const Center(
-              child: Text("Messages"),
-            ),
-          ),
-        ),
+        const MessengerScreen(),
         Scaffold(
             appBar: AppBar(
               title: const AutoSizeText("Skill Swap"),

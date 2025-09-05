@@ -24,17 +24,17 @@ class AppTypography {
       color: AppColors.lightTextPrimary,
     ),
     titleLarge: TextStyle(
-      fontSize: 22,
-      fontWeight: FontWeight.w500,
-      color: AppColors.lightTextPrimary,
-    ),
-    titleMedium: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.w500,
       color: AppColors.lightTextPrimary,
     ),
-    titleSmall: TextStyle(
+    titleMedium: TextStyle(
       fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: AppColors.lightTextPrimary,
+    ),
+    titleSmall: TextStyle(
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: AppColors.lightTextSecondary,
     ),
@@ -75,17 +75,17 @@ class AppTypography {
       color: AppColors.darkTextPrimary,
     ),
     titleLarge: TextStyle(
-      fontSize: 22,
-      fontWeight: FontWeight.w500,
-      color: AppColors.darkTextPrimary,
-    ),
-    titleMedium: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.w500,
       color: AppColors.darkTextPrimary,
     ),
-    titleSmall: TextStyle(
+    titleMedium: TextStyle(
       fontSize: 16,
+      fontWeight: FontWeight.w500,
+      color: AppColors.darkTextPrimary,
+    ),
+    titleSmall: TextStyle(
+      fontSize: 14,
       fontWeight: FontWeight.w500,
       color: AppColors.darkTextSecondary,
     ),

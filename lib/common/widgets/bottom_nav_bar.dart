@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -34,7 +35,7 @@ class BottomNavBar extends StatelessWidget {
         gap: 8,
         backgroundColor: Colors.transparent,
         color: Colors.grey.shade300, // icon color when unselected
-        activeColor: Colors.purple, // selected icon & text color
+        activeColor: context.colorScheme.primary, // selected icon & text color
         tabBackgroundColor: Colors.purple.shade50, // highlight for selected tab
         padding: const EdgeInsets.symmetric(
             horizontal: AppSizes.md, vertical: AppSizes.sm),

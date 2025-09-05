@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:skill_swap/common/widgets/side_menu.dart';
 import 'package:skill_swap/model/side_bar_model.dart';
-import 'package:skill_swap/screens/homepage/homepage.dart';
+import 'package:skill_swap/screens/Main/main_screen.dart';
+import 'package:skill_swap/utils/device/device_utility.dart';
 
 class DrawerPage extends StatefulWidget {
   const DrawerPage({super.key});
@@ -16,17 +17,17 @@ class _DrawerPageState extends State<DrawerPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = DeviceUtility.isDarkMode(context);
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Colors.purple.shade300,
-            Colors.purple.shade500,
-            Colors.purple,
-            Colors.black,
+            Colors.deepPurple,
+            isDarkMode ? Colors.black : Colors.white,
           ],
+          stops: const [0.0, 0.8],
         ),
       ),
       child: ZoomDrawer(
@@ -36,7 +37,7 @@ class _DrawerPageState extends State<DrawerPage> {
         slideHeight: MediaQuery.of(context).size.height * 0.2,
         slideWidth: 272,
         showShadow: true,
-        shadowLayer2Color: Colors.orange.shade200,
+        shadowLayer2Color: Colors.lime.shade300,
         menuBackgroundColor: Colors.transparent,
         menuScreen: Builder(
           builder: (context) => SideMenu(
@@ -55,7 +56,7 @@ class _DrawerPageState extends State<DrawerPage> {
   Widget getScreen() {
     switch (currentItem) {
       case MenuItem.home:
-        return const MyHomePage();
+        return const MainScreen();
       case MenuItem.chatbot:
         return const Scaffold(
           backgroundColor: Colors.white,
@@ -72,7 +73,7 @@ class _DrawerPageState extends State<DrawerPage> {
           body: Center(child: Text('Settings')),
         );
       default:
-        return const MyHomePage();
+        return const MainScreen();
     }
   }
 }

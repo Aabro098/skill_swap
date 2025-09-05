@@ -42,13 +42,13 @@ class _SideMenuState extends State<SideMenu> {
       selected: selected,
       leading: Icon(
         item.icon,
-        color: selected ? Colors.yellow.shade800 : Colors.white,
+        color: selected ? context.colorScheme.primary : Colors.white,
       ),
       title: AutoSizeText(
         context.tr(item.title),
         maxLines: 1,
         style: context.textTheme.titleMedium?.copyWith(
-          color: selected ? Colors.yellow.shade800 : Colors.white,
+          color: selected ? context.colorScheme.primary : Colors.white,
         ),
       ),
       onTap: () => widget.onSelectedItem(item),

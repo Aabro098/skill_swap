@@ -24,7 +24,6 @@ class _AppState extends State<App> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final contextToUse = scaffoldMessengerKey.currentContext ?? context;
-
       await Provider.of<ThemeProvider>(contextToUse, listen: false).loadTheme();
       await Provider.of<LocalizationProvider>(
         contextToUse,
