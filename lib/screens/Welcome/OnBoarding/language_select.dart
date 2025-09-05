@@ -2,13 +2,16 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:skill_swap/common/reusables/flag_button.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
-import 'package:skill_swap/screens/Welcome/welcome_screen.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 import 'package:skill_swap/utils/helpers/helper_functions.dart';
 
 class LanguageSelector extends StatefulWidget {
-  const LanguageSelector({super.key});
+  const LanguageSelector({
+    super.key,
+    required this.onDone,
+  });
+  final void Function(BuildContext context) onDone;
 
   @override
   State<LanguageSelector> createState() => _LanguageSelectorState();
@@ -87,14 +90,9 @@ class _LanguageSelectorState extends State<LanguageSelector> {
                     showErrorSnackbar("Select a Language", context: context);
                     return;
                   }
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const WelcomeScreen(),
-                    ),
-                  );
+                  widget.onDone(context);
                 },
-                child: const Text("Next"),
+                child: const Text("Done"),
               ),
               const SizedBox(
                 height: AppSizes.lg,

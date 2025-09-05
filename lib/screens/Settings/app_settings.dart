@@ -1,21 +1,24 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/settings_model.dart';
+import 'package:skill_swap/screens/Welcome/OnBoarding/language_select.dart';
 import 'package:skill_swap/utils/constants/enums.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
+import 'package:skill_swap/utils/notifiers/theme_notifier.dart';
 
-class AppSettings extends StatefulWidget {
+class AppSettings extends ConsumerStatefulWidget {
   const AppSettings({super.key});
 
   @override
-  State<AppSettings> createState() => _AppSettingsState();
+  ConsumerState<AppSettings> createState() => _AppSettingsState();
 }
 
-class _AppSettingsState extends State<AppSettings> {
-  bool _isOn = false;
+class _AppSettingsState extends ConsumerState<AppSettings> {
+  late bool _isOn;
 
   List<SettingsItemModel> get settingsItems => [
         SettingsItemModel(
@@ -26,6 +29,7 @@ class _AppSettingsState extends State<AppSettings> {
           onChanged: (val) {
             if (mounted) {
               setState(() => _isOn = val);
+              ref.read(themeProvider.notifier).toggleTheme();
             }
           },
         ),
@@ -33,7 +37,18 @@ class _AppSettingsState extends State<AppSettings> {
           title: "Language",
           icon: Iconsax.language_circle,
           type: SettingsTileType.navigationTile,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LanguageSelector(
+                  onDone: (ctx) {
+                    Navigator.pop(ctx);
+                  },
+                ),
+              ),
+            );
+          },
         ),
         SettingsItemModel(
           title: "Help & Support",
@@ -65,6 +80,7 @@ class _AppSettingsState extends State<AppSettings> {
 
   @override
   Widget build(BuildContext context) {
+    _isOn = ref.watch(themeProvider) == ThemeMode.dark;
     return Scaffold(
       appBar: AppBar(
         leading: const MenuWidget(),
@@ -87,6 +103,14 @@ class _AppSettingsState extends State<AppSettings> {
           padding: const EdgeInsets.all(AppSizes.padding),
           decoration: BoxDecoration(
             color: context.isDarkMode ? Colors.black87 : Colors.grey.shade100,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(36),
+                offset: const Offset(0, -4),
+                blurRadius: 8,
+                spreadRadius: 1,
+              ),
+            ],
             borderRadius:
                 const BorderRadius.vertical(top: Radius.circular(AppSizes.xl)),
           ),

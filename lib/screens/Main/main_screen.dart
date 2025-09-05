@@ -1,19 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skill_swap/common/widgets/bottom_nav_bar.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/screens/Main/Messenger/messenger.dart';
-import 'package:skill_swap/utils/providers/theme.provider.dart';
+import 'package:skill_swap/utils/notifiers/theme_notifier.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  ConsumerState<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _MainScreenState extends ConsumerState<MainScreen> {
   int _selectedIndex = 0;
 
   List<Widget> get _screens => [
@@ -26,7 +26,7 @@ class _MainScreenState extends State<MainScreen> {
                 IconButton(
                   icon: const Icon(Icons.color_lens),
                   onPressed: () {
-                    context.read<ThemeProvider>().toggleTheme();
+                    ref.read(themeProvider.notifier).toggleTheme();
                   },
                 ),
               ],

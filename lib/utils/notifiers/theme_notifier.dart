@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../local_storage/theme_storage.dart';
 
-// *Using Provider for State management
-class ThemeProvider extends ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.light;
-
-  ThemeMode get themeMode => _themeMode;
+class ThemeNotifier extends StateNotifier<ThemeMode> {
+  ThemeNotifier() : super(ThemeMode.light);
 
   Future<void> loadTheme() async {
-    String? theme = await ThemeStorage.getTheme();
+    final theme = await ThemeStorage.getTheme();
     debugPrint('theme $theme');
     if (theme == 'light') {
-      _themeMode = ThemeMode.light;
+      state = ThemeMode.light;
     } else {
-      _themeMode = ThemeMode.dark;
+      state = ThemeMode.dark;
     }
-    notifyListeners();
   }
 
   Future<void> setTheme(ThemeMode mode) async {
     debugPrint('Set Theme called');
-    _themeMode = mode;
+    state = mode;
     await ThemeStorage.setTheme(mode);
-    notifyListeners();
   }
 
   void toggleTheme() {
     debugPrint('Toggle Theme called');
-    if (_themeMode == ThemeMode.light) {
+    if (state == ThemeMode.light) {
       setTheme(ThemeMode.dark);
     } else {
       setTheme(ThemeMode.light);
     }
   }
 }
+
+// Riverpod provider
+final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>(
+  (ref) => ThemeNotifier(),
+);
