@@ -21,7 +21,7 @@ class _ProfileState extends State<Profile> {
         padding: EdgeInsets.all(AppSizes.padding),
         child: Column(
           children: [
-            SettingsHeader(),
+            Center(child: SettingsHeader()),
           ],
         ),
       ),
