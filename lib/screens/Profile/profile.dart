@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
+import 'package:skill_swap/screens/Settings/app_settings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
 class Profile extends StatefulWidget {
@@ -16,10 +17,12 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         leading: const MenuWidget(),
       ),
-      body: Padding(
+      body: const Padding(
         padding: EdgeInsets.all(AppSizes.padding),
         child: Column(
-          children: [],
+          children: [
+            SettingsHeader(),
+          ],
         ),
       ),
     );
