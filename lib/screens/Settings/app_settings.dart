@@ -166,7 +166,7 @@ class SettingsTile extends StatelessWidget {
           scale: 0.75,
           child: Switch(
             trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
-            activeColor: Colors.green,
+            activeThumbColor: Colors.green,
             activeTrackColor: Colors.green.shade100,
             inactiveTrackColor: Colors.red.shade100,
             inactiveThumbColor: Colors.red,

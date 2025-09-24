@@ -5,6 +5,7 @@ import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/side_bar_model.dart';
 import 'package:skill_swap/screens/ChatBot/chatbot.dart';
 import 'package:skill_swap/screens/Main/main_screen.dart';
+import 'package:skill_swap/screens/Profile/profile.dart';
 import 'package:skill_swap/screens/Settings/app_settings.dart';
 
 class DrawerPage extends StatefulWidget {
@@ -61,10 +62,7 @@ class _DrawerPageState extends State<DrawerPage> {
       case MenuItem.chatbot:
         return const Chatbot();
       case MenuItem.profile:
-        return const Scaffold(
-          backgroundColor: Colors.white,
-          body: Center(child: Text('Profile')),
-        );
+        return const Profile();
       case MenuItem.settings:
         return const AppSettings();
       default:

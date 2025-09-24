@@ -13,10 +13,14 @@ void main() async {
   // Enable full-screen mode
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-  // Wrap your app in ProviderScope for Riverpod
-  runApp(
-    const ProviderScope(
-      child: App(),
-    ),
-  );
+  // Allow only portrait mode
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]).then((_) {
+    runApp(
+      const ProviderScope(
+        child: App(),
+      ),
+    );
+  });
 }
