@@ -96,14 +96,28 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
       appBar: AppBar(
         leading: const MenuWidget(),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(AppSizes.padding),
+      body: Padding(
+        padding: const EdgeInsets.all(AppSizes.padding),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Center(
+            const Center(
               child: SettingsHeader(),
+            ),
+            const SizedBox(height: AppSizes.md),
+            SizedBox(
+              width: 196,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppSizes.xl),
+                  ),
+                ),
+                onPressed: () {},
+                child: const Text("Upgrade Now - Go Pro"),
+              ),
             ),
           ],
         ),
@@ -232,20 +246,6 @@ class SettingsHeader extends StatelessWidget {
         AutoSizeText(
           "arbinstha71@gmail.com",
           style: context.textTheme.titleSmall,
-        ),
-        const SizedBox(height: AppSizes.md),
-        SizedBox(
-          width: 196,
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppSizes.xl),
-              ),
-            ),
-            onPressed: () {},
-            child: const Text("Upgrade Now - Go Pro"),
-          ),
         ),
       ],
     );
