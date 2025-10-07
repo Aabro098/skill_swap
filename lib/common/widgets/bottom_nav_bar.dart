@@ -17,9 +17,11 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppSizes.lg),
-        gradient: const LinearGradient(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(AppSizes.lg),
+            topRight: Radius.circular(AppSizes.lg)),
+        gradient: LinearGradient(
           colors: [
             Colors.black87,
             Colors.black,

@@ -8,7 +8,8 @@ import 'package:skill_swap/screens/Settings/app_settings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  final bool isView;
+  const Profile({super.key, this.isView = false});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -41,7 +42,14 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const MenuWidget(),
+        leading: !widget.isView
+            ? const MenuWidget()
+            : IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back_ios_new_rounded),
+              ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(AppSizes.padding),
@@ -52,22 +60,26 @@ class _ProfileState extends State<Profile> {
               const Center(
                 child: SettingsHeader(),
               ),
-              const SizedBox(height: AppSizes.sm),
-              Center(
-                child: SizedBox(
-                  width: 196,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppSizes.xl),
+              !widget.isView
+                  ? const SizedBox(height: AppSizes.sm)
+                  : const SizedBox.shrink(),
+              !widget.isView
+                  ? Center(
+                      child: SizedBox(
+                        width: 196,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppSizes.xl),
+                            ),
+                          ),
+                          onPressed: () {},
+                          child: const Text("Edit Profile"),
+                        ),
                       ),
-                    ),
-                    onPressed: () {},
-                    child: const Text("Edit Profile"),
-                  ),
-                ),
-              ),
+                    )
+                  : const SizedBox.shrink(),
               const SizedBox(height: AppSizes.sm),
               AutoSizeText(
                 "About Me",

@@ -59,77 +59,102 @@ class _MessengerScreenState extends State<MessengerScreen> {
       lastMessage: "Let's meet at the café around 4?",
       lastMessageTime: DateTime.now().subtract(const Duration(days: 3)),
     ),
+    MessageScreenModel(
+      name: "Jonty Rhodes",
+      photoUrl:
+          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=687&q=80",
+      lastMessage: "Let's meet at the café around 4?",
+      lastMessageTime: DateTime.now().subtract(const Duration(days: 3)),
+    ),
+    MessageScreenModel(
+      name: "Brock Lesner",
+      photoUrl:
+          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=687&q=80",
+      lastMessage: "Let's meet at the café around 4?",
+      lastMessageTime: DateTime.now().subtract(const Duration(days: 3)),
+    ),
+    MessageScreenModel(
+      name: "David Kim",
+      photoUrl:
+          "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=687&q=80",
+      lastMessage: "I’ll call you later tonight.",
+      lastMessageTime: DateTime.now().subtract(const Duration(days: 1)),
+    ),
+    MessageScreenModel(
+      name: "Emma Williams",
+      photoUrl:
+          "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=687&q=80",
+      lastMessage: "Loved the photos you sent!",
+      lastMessageTime: DateTime.now().subtract(const Duration(days: 2)),
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: null,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: context.gradient,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSizes.padding),
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Row(
-                  children: [
-                    MenuWidget(),
-                    SizedBox(
-                      width: AppSizes.sm,
-                    ),
-                    Expanded(
-                        child: RoundedTextField(
-                      prefixIcon: Iconsax.search_favorite,
-                    )),
-                  ],
-                ),
-                const SizedBox(height: AppSizes.md),
-                AutoSizeText(
-                  "Recent Interactions",
-                  style: context.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700, color: Colors.white),
-                ),
-                const SizedBox(height: AppSizes.md),
-                SizedBox(
-                  height: 68,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 10,
-                    itemBuilder: (BuildContext context, int index) {
-                      return const Padding(
-                        padding: EdgeInsets.only(right: 2.0),
-                        child: MessengerProfile(
-                          radius: 32,
-                          photoUrl:
-                              "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=687&q=80",
-                        ),
-                      );
-                    },
+    return Container(
+      decoration: BoxDecoration(
+        gradient: context.gradient,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSizes.padding),
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Row(
+                children: [
+                  MenuWidget(),
+                  SizedBox(
+                    width: AppSizes.sm,
                   ),
+                  Expanded(
+                      child: RoundedTextField(
+                    prefixIcon: Iconsax.search_favorite,
+                  )),
+                ],
+              ),
+              const SizedBox(height: AppSizes.md),
+              AutoSizeText(
+                "Recent Interactions",
+                style: context.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700, color: Colors.white),
+              ),
+              const SizedBox(height: AppSizes.md),
+              SizedBox(
+                height: 68,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 10,
+                  itemBuilder: (BuildContext context, int index) {
+                    return const Padding(
+                      padding: EdgeInsets.only(right: 2.0),
+                      child: MessengerProfile(
+                        radius: 32,
+                        photoUrl:
+                            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=687&q=80",
+                      ),
+                    );
+                  },
                 ),
-                const SizedBox(height: AppSizes.md),
-                AutoSizeText(
-                  "Messages",
-                  style: context.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700, color: Colors.white),
+              ),
+              const SizedBox(height: AppSizes.md),
+              AutoSizeText(
+                "Messages",
+                style: context.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w700, color: Colors.white),
+              ),
+              const SizedBox(height: AppSizes.md),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: demoMessages.length,
+                  padding: const EdgeInsets.all(0),
+                  itemBuilder: (BuildContext context, int index) {
+                    final message = demoMessages[index];
+                    return MessengerTile(message: message);
+                  },
                 ),
-                const SizedBox(height: AppSizes.md),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: demoMessages.length,
-                    padding: const EdgeInsets.all(0),
-                    itemBuilder: (BuildContext context, int index) {
-                      final message = demoMessages[index];
-                      return MessengerTile(message: message);
-                    },
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

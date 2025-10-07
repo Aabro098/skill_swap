@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skill_swap/common/widgets/bottom_nav_bar.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
+import 'package:skill_swap/screens/Main/Friends/friends_screen.dart';
 import 'package:skill_swap/screens/Main/Messenger/messenger.dart';
 import 'package:skill_swap/utils/notifiers/theme_notifier.dart';
 
@@ -32,13 +33,15 @@ class _MainScreenState extends ConsumerState<MainScreen> {
               ],
             ),
             body: const Center(child: Text("Search"))),
-        const Scaffold(body: Center(child: Text("Contacts"))),
+        const FriendsScreen(),
       ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (mounted) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
