@@ -59,16 +59,6 @@ class _AppState extends ConsumerState<App> {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
       title: 'Skill Swap',
-      // home: LanguageSelector(
-      //   onDone: (ctx) {
-      //     Navigator.push(
-      //       ctx,
-      //       MaterialPageRoute(
-      //         builder: (_) => const WelcomeScreen(),
-      //       ),
-      //     );
-      //   },
-      // ),
       home: const DrawerPage(),
     );
   }
