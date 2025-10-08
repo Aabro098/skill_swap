@@ -188,7 +188,8 @@ class FriendsTile extends StatelessWidget {
                   const SizedBox(height: AppSizes.xs),
                   AutoSizeText(
                     "Flutter developer and keen to meet you.",
-                    style: context.textTheme.bodySmall,
+                    style: context.textTheme.bodySmall
+                        ?.copyWith(color: context.colorScheme.onSurface),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),

@@ -207,7 +207,8 @@ class MessengerTile extends StatelessWidget {
                   const SizedBox(height: AppSizes.xs),
                   AutoSizeText(
                     message.lastMessage,
-                    style: context.textTheme.bodySmall,
+                    style: context.textTheme.bodySmall
+                        ?.copyWith(color: context.colorScheme.onSurface),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                   ),

@@ -98,11 +98,11 @@ class _ProfileState extends State<Profile> {
               ),
               const SizedBox(height: AppSizes.sm),
               Wrap(
-                spacing: 8,
-                runSpacing: 4,
+                spacing: AppSizes.sm,
+                runSpacing: AppSizes.xs,
                 children: skills
                     .map((skill) => Chip(
-                          color: WidgetStatePropertyAll(Colors.grey.shade100),
+                          color: WidgetStatePropertyAll(Colors.grey.shade50),
                           label: Text(
                             skill,
                             style: context.textTheme.titleSmall
