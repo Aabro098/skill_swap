@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/screens/Welcome/OnBoarding/liquid_swipe.dart';
+import 'package:skill_swap/utils/constants/colors.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
@@ -12,15 +13,15 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              context.colorScheme.primary,
-              context.colorScheme.secondary,
+              AppColors.lightPrimary,
+              AppColors.lightSecondary,
             ],
-            stops: const [0.0, 0.4],
+            stops: [0.0, 0.4],
           ),
         ),
         child: Padding(
