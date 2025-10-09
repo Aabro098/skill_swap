@@ -26,7 +26,7 @@ class _ChatbotState extends State<Chatbot> {
         centerTitle: true,
         title: _isUnlocked
             ? AutoSizeText(
-                "Skill Bot",
+                context.tr('skill_bot'),
                 style: context.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: context.colorScheme.primary,
@@ -71,11 +71,11 @@ class LockedChatbot extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: "Meet\n",
+                    text: "${context.tr('meet')}\n",
                     style: context.textTheme.headlineLarge,
                   ),
                   TextSpan(
-                    text: "Skill Bot !",
+                    text: context.tr('skill_bot!'),
                     style: context.textTheme.headlineLarge?.copyWith(
                       color: context.colorScheme.primary,
                       fontWeight: FontWeight.bold,
@@ -94,7 +94,7 @@ class LockedChatbot extends StatelessWidget {
             ),
           ),
           AutoSizeText(
-            "Looks like you haven't unlocked the chatbot feature yet. Unlock it to get instant help and support from our AI-powered chatbot.",
+            context.tr('locked_message'),
             style: context.textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
@@ -105,7 +105,8 @@ class LockedChatbot extends StatelessWidget {
               child: SizedBox(
                 width: 196,
                 child: ElevatedButton(
-                    onPressed: onUnlock, child: const Text("Unlock Skill Bot")),
+                    onPressed: onUnlock,
+                    child: Text(context.tr('unlock_message'))),
               ),
             ),
           ),
@@ -143,7 +144,7 @@ class _UnlockedChatbotState extends State<UnlockedChatbot> {
                       ),
                       Center(
                         child: AutoSizeText(
-                          "No messages yet. Start the conversation!",
+                          context.tr('no_messages'),
                           style: context.textTheme.bodyMedium,
                           textAlign: TextAlign.center,
                         ),
@@ -165,8 +166,8 @@ class _UnlockedChatbotState extends State<UnlockedChatbot> {
           const SizedBox(
             height: AppSizes.sm,
           ),
-          const MessageBox(
-            hint: "Ask a question...",
+          MessageBox(
+            hint: context.tr('ask_bot'),
           ),
         ],
       ),

@@ -115,7 +115,7 @@ class _MessengerScreenState extends State<MessengerScreen> {
               ),
               const SizedBox(height: AppSizes.md),
               AutoSizeText(
-                "Recent Interactions",
+                context.tr('recent_interactions'),
                 style: context.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w700, color: Colors.white),
               ),
@@ -139,7 +139,7 @@ class _MessengerScreenState extends State<MessengerScreen> {
               ),
               const SizedBox(height: AppSizes.md),
               AutoSizeText(
-                "Messages",
+                context.tr('messages'),
                 style: context.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w700, color: Colors.white),
               ),

@@ -44,18 +44,18 @@ class BottomNavBar extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         selectedIndex: selectedIndex,
         onTabChange: onItemTapped,
-        tabs: const [
+        tabs: [
           GButton(
             icon: Iconsax.message_favorite4,
-            text: "Message",
+            text: context.tr('messages'),
           ),
           GButton(
             icon: Iconsax.search_favorite,
-            text: "Match",
+            text: context.tr('discover'),
           ),
           GButton(
             icon: Iconsax.user_add,
-            text: "Contacts",
+            text: context.tr('contacts'),
           ),
         ],
       ),

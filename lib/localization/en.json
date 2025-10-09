@@ -4,5 +4,36 @@
     "profile": "Profile",
     "settings": "Settings",
 
-    "done" : "Done"
+    "done" : "Done",
+
+    "contacts" : "Contacts",
+    "requests" : "Requests",
+    "requested" : "Requested",
+
+    "discover" : "Discover",
+
+    "message..." : "Message...",
+    "messages" : "Messages",
+    "recent_interactions" : "Recent Interactions",
+
+    "about_me" : "About Me",
+    "edit_profile" : "Edit Profile",
+    "skills" : "Skills",
+
+    "upgrade_account" : "Upgrade Now - Go Pro",
+    "logout" : "Logout",
+    "delete_account" : "Delete Account",
+    "about_us" : "About Us",
+    "language"  : "Language",
+    "help_support" : "Help & Support",
+    "dark_theme" : "Dark Theme",
+
+    "meet" : "Meet",
+    "skill_bot!" : "Skill Bot !",
+    "locked_message" : "Looks like you haven't unlocked the chatbot feature yet. Unlock it to get instant help and support from our AI-powered chatbot.",
+    "unlock_message" : "Unlock Skill Bot",
+    "no_messages" : "No messages yet. Start the conversation!",
+    "ask_bot" : "Ask a question...",
+
+    "select_language" : "Select Language"
 }

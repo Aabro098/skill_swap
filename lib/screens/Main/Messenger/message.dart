@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skill_swap/common/reusables/message_card.dart';
 import 'package:skill_swap/common/widgets/message_box.dart';
 import 'package:skill_swap/common/widgets/messenger_appbar.dart';
+import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/screens/Main/Messenger/message_sample.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
@@ -42,8 +43,8 @@ class _MessageScreenState extends State<MessageScreen> {
             const SizedBox(
               height: AppSizes.sm,
             ),
-            const MessageBox(
-              hint: "Message...",
+            MessageBox(
+              hint: context.tr('message...'),
             ),
           ],
         ),

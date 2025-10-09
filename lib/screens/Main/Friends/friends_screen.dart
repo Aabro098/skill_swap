@@ -66,10 +66,10 @@ class _FriendsScreenState extends State<FriendsScreen>
                 dividerColor: Colors.transparent,
                 dividerHeight: 0,
                 labelStyle: context.textTheme.titleSmall,
-                tabs: const [
-                  Tab(text: "Contacts"),
-                  Tab(text: "Requests"),
-                  Tab(text: "Requested"),
+                tabs: [
+                  Tab(text: context.tr('contacts')),
+                  Tab(text: context.tr('requests')),
+                  Tab(text: context.tr('requested')),
                 ],
               ),
             ),

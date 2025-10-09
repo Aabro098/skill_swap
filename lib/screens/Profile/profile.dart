@@ -75,14 +75,14 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           onPressed: () {},
-                          child: const Text("Edit Profile"),
+                          child: Text(context.tr('edit_profile')),
                         ),
                       ),
                     )
                   : const SizedBox.shrink(),
               const SizedBox(height: AppSizes.sm),
               AutoSizeText(
-                "About Me",
+                context.tr('about_me'),
                 style: context.textTheme.titleMedium,
               ),
               const SizedBox(height: AppSizes.xs),
@@ -93,16 +93,18 @@ class _ProfileState extends State<Profile> {
               ),
               const SizedBox(height: AppSizes.sm),
               AutoSizeText(
-                "Interests",
+                context.tr('skills'),
                 style: context.textTheme.titleMedium,
               ),
               const SizedBox(height: AppSizes.sm),
               Wrap(
-                spacing: AppSizes.sm,
+                spacing: AppSizes.xs,
                 runSpacing: AppSizes.xs,
                 children: skills
                     .map((skill) => Chip(
                           color: WidgetStatePropertyAll(Colors.grey.shade50),
+                          padding: const EdgeInsets.all(AppSizes.xs),
+                          visualDensity: VisualDensity.comfortable,
                           label: Text(
                             skill,
                             style: context.textTheme.titleSmall

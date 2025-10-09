@@ -9,7 +9,6 @@ import 'package:skill_swap/screens/Welcome/OnBoarding/language_select.dart';
 import 'package:skill_swap/screens/Welcome/welcome_screen.dart';
 import 'package:skill_swap/utils/constants/enums.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
-import 'package:skill_swap/utils/helpers/helper_functions.dart';
 import 'package:skill_swap/utils/notifiers/theme_notifier.dart';
 
 class AppSettings extends ConsumerStatefulWidget {
@@ -24,7 +23,7 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
 
   List<SettingsItemModel> get settingsItems => [
         SettingsItemModel(
-          title: "Dark Theme",
+          title: 'dark_theme',
           icon: Iconsax.sun_14,
           type: SettingsTileType.switchTile,
           value: _isOn,
@@ -36,7 +35,7 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
           },
         ),
         SettingsItemModel(
-          title: "Language",
+          title: 'language',
           icon: Iconsax.language_circle,
           type: SettingsTileType.navigationTile,
           onTap: () {
@@ -53,26 +52,26 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
           },
         ),
         SettingsItemModel(
-          title: "Help & Support",
+          title: 'help_support',
           icon: Iconsax.message_question,
           type: SettingsTileType.navigationTile,
           onTap: () {},
         ),
         SettingsItemModel(
-          title: "About Us",
+          title: 'about_us',
           icon: Iconsax.info_circle,
           type: SettingsTileType.navigationTile,
           onTap: () {},
         ),
         SettingsItemModel(
-          title: "Delete Account",
+          title: 'delete_account',
           icon: Iconsax.trash,
           type: SettingsTileType.customTile,
           onTap: () {},
           color: Colors.red,
         ),
         SettingsItemModel(
-          title: "Logout",
+          title: 'logout',
           icon: Iconsax.logout,
           type: SettingsTileType.customTile,
           onTap: () {
@@ -83,7 +82,6 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
               ),
               (Route<dynamic> route) => false,
             );
-            showSuccessSnackbar("Logout Successful !", context: context);
           },
           color: Colors.red,
         ),
@@ -116,7 +114,7 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
                   ),
                 ),
                 onPressed: () {},
-                child: const Text("Upgrade Now - Go Pro"),
+                child: Text(context.tr('upgrade_account')),
               ),
             ),
           ],
@@ -147,7 +145,7 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 AutoSizeText(
-                  "Settings",
+                  context.tr('settings'),
                   style: context.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -211,10 +209,10 @@ class SettingsTile extends StatelessWidget {
         color: item.color,
       ),
       title: Text(
-        item.title,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: item.color,
-            ),
+        context.tr(item.title),
+        style: context.textTheme.titleMedium?.copyWith(
+          color: item.color,
+        ),
       ),
       trailing: trailingWidget,
     );

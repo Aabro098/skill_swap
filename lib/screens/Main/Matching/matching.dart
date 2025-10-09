@@ -38,60 +38,57 @@ class _FindMatchState extends State<FindMatch> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: context.gradient,
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(AppSizes.padding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const MenuWidget(),
-                const SizedBox(height: AppSizes.sm),
-                AutoSizeText(
-                  "Discover",
-                  style: context.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                    fontSize: 32,
-                  ),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: context.gradient,
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSizes.padding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const MenuWidget(),
+              const SizedBox(height: AppSizes.sm),
+              AutoSizeText(
+                context.tr('discover'),
+                style: context.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  fontSize: 32,
                 ),
-                const SizedBox(height: AppSizes.md),
-                Expanded(
-                  child: Center(
-                    child: TCard(
-                      cards: List.generate(
-                        5,
-                        (index) => MatchCard(
-                          name: "Arbin Shreshta",
-                          about:
-                              "I am someone who is constantly inspired by creativity, innovation, and the endless opportunities to learn and grow. Curiosity drives me forward, whether it is exploring new technologies, reading about ideas that challenge perspectives, or working on projects that allow me to express both logic and imagination.",
-                          imageUrl:
-                              "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=687&q=80",
-                          skills: skills,
-                          colors: colors,
-                          random: random,
-                        ),
+              ),
+              const SizedBox(height: AppSizes.md),
+              Expanded(
+                child: Center(
+                  child: TCard(
+                    cards: List.generate(
+                      5,
+                      (index) => MatchCard(
+                        name: "Arbin Shreshta",
+                        about:
+                            "I am someone who is constantly inspired by creativity, innovation, and the endless opportunities to learn and grow. Curiosity drives me forward, whether it is exploring new technologies, reading about ideas that challenge perspectives, or working on projects that allow me to express both logic and imagination.",
+                        imageUrl:
+                            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=687&q=80",
+                        skills: skills,
+                        colors: colors,
+                        random: random,
                       ),
-                      size: Size(
-                        MediaQuery.of(context).size.width,
-                        context.screenHeight * 0.75,
-                      ),
-                      onForward: (index, info) {
-                        debugPrint("Swiped to card $index");
-                      },
-                      onEnd: () {
-                        debugPrint("Reached end of cards");
-                      },
                     ),
+                    size: Size(
+                      MediaQuery.of(context).size.width,
+                      context.screenHeight * 0.75,
+                    ),
+                    onForward: (index, info) {
+                      debugPrint("Swiped to card $index");
+                    },
+                    onEnd: () {
+                      debugPrint("Reached end of cards");
+                    },
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

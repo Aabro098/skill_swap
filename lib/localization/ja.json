@@ -4,6 +4,36 @@
     "profile": "プロフィール",
     "settings": "設定",
 
-    "done": "完了"
-  }
-  
+    "done": "完了",
+
+    "contacts": "連絡先",
+    "requests": "リクエスト",
+    "requested": "リクエスト済み",
+
+    "discover": "発見",
+
+    "message...": "メッセージ...",
+    "messages": "メッセージ",
+    "recent_interactions": "最近のやり取り",
+
+    "about_me": "私について",
+    "edit_profile": "プロフィールを編集",
+    "skills": "スキル",
+
+    "upgrade_account": "今すぐアップグレード - プロへ",
+    "logout": "ログアウト",
+    "delete_account": "アカウントを削除",
+    "about_us": "私たちについて",
+    "language": "言語",
+    "help_support": "ヘルプとサポート",
+    "dark_theme": "ダークテーマ",
+
+    "meet": "会う",
+    "skill_bot!": "スキルボット！",
+    "locked_message": "チャットボット機能がまだロックされています。アンロックして、AI搭載のチャットボットからすぐにサポートを受けましょう。",
+    "unlock_message": "スキルボットをアンロック",
+    "no_messages": "まだメッセージがありません。会話を始めましょう！",
+    "ask_bot": "質問する...",
+
+    "select_language": "言語を選択"
+}

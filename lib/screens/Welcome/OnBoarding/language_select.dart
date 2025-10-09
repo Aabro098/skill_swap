@@ -56,7 +56,7 @@ class _LanguageSelectorState extends ConsumerState<LanguageSelector> {
                 height: AppSizes.lg,
               ),
               AutoSizeText(
-                "Select Language",
+                context.tr('select_language'),
                 style: context.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: context.colorScheme.primary),
@@ -110,7 +110,8 @@ class _LanguageSelectorState extends ConsumerState<LanguageSelector> {
               ElevatedButton(
                 onPressed: () {
                   if (selectedLang == null) {
-                    showErrorSnackbar("Select a Language", context: context);
+                    showErrorSnackbar(context.tr("select_language"),
+                        context: context);
                     return;
                   }
                   final locale = localeMap[selectedLang]!;

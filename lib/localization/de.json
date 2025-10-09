@@ -4,6 +4,36 @@
     "profile": "Profil",
     "settings": "Einstellungen",
 
-    "done": "Fertig"
-  }
-  
+    "done": "Fertig",
+
+    "contacts": "Kontakte",
+    "requests": "Anfragen",
+    "requested": "Angefordert",
+
+    "discover": "Entdecken",
+
+    "message...": "Nachricht...",
+    "messages": "Nachrichten",
+    "recent_interactions": "Letzte Interaktionen",
+
+    "about_me": "Über mich",
+    "edit_profile": "Profil bearbeiten",
+    "skills": "Fähigkeiten",
+
+    "upgrade_account": "Jetzt upgraden - Pro werden",
+    "logout": "Abmelden",
+    "delete_account": "Konto löschen",
+    "about_us": "Über uns",
+    "language": "Sprache",
+    "help_support": "Hilfe & Support",
+    "dark_theme": "Dunkles Design",
+
+    "meet": "Treffen",
+    "skill_bot!": "Skill Bot!",
+    "locked_message": "Sie haben die Chatbot-Funktion noch nicht freigeschaltet. Schalten Sie sie frei, um sofortige Hilfe und Unterstützung von unserem KI-gesteuerten Chatbot zu erhalten.",
+    "unlock_message": "Skill Bot freischalten",
+    "no_messages": "Noch keine Nachrichten. Starten Sie das Gespräch!",
+    "ask_bot": "Eine Frage stellen...",
+
+    "select_language": "Sprache auswählen"
+}
