@@ -33,64 +33,62 @@ class _FriendsScreenState extends State<FriendsScreen>
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: context.gradient,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(AppSizes.padding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
-                children: [
-                  MenuWidget(),
-                  SizedBox(
-                    width: AppSizes.sm,
-                  ),
-                  Expanded(
-                      child: RoundedTextField(
-                    prefixIcon: Iconsax.search_favorite,
-                  )),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: context.gradient,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSizes.padding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Row(
+              children: [
+                MenuWidget(),
+                SizedBox(
+                  width: AppSizes.sm,
+                ),
+                Expanded(
+                    child: RoundedTextField(
+                  prefixIcon: Iconsax.search_favorite,
+                )),
+              ],
+            ),
+            const SizedBox(height: AppSizes.sm),
+            // Tab Bar
+            Center(
+              child: TabBar(
+                controller: _tabController,
+                tabAlignment: TabAlignment.center,
+                labelColor: context.colorScheme.primary,
+                unselectedLabelColor: Colors.white,
+                indicatorColor: context.colorScheme.primary,
+                dividerColor: Colors.transparent,
+                dividerHeight: 0,
+                labelStyle: context.textTheme.titleSmall,
+                tabs: const [
+                  Tab(text: "Contacts"),
+                  Tab(text: "Requests"),
+                  Tab(text: "Requested"),
                 ],
               ),
-              const SizedBox(height: AppSizes.sm),
-              // Tab Bar
-              Center(
-                child: TabBar(
-                  controller: _tabController,
-                  tabAlignment: TabAlignment.center,
-                  labelColor: context.colorScheme.primary,
-                  unselectedLabelColor: Colors.white,
-                  indicatorColor: context.colorScheme.primary,
-                  dividerColor: Colors.transparent,
-                  dividerHeight: 0,
-                  labelStyle: context.textTheme.titleSmall,
-                  tabs: const [
-                    Tab(text: "Contacts"),
-                    Tab(text: "Requests"),
-                    Tab(text: "Requested"),
-                  ],
-                ),
+            ),
+            const SizedBox(height: AppSizes.md),
+            // Tab Bar View
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  // Contacts Tab
+                  _contactsWidget(),
+                  // Requests Tab
+                  _requestsWidget(),
+                  // Requested Tab
+                  _requestedWidget(),
+                ],
               ),
-              const SizedBox(height: AppSizes.md),
-              // Tab Bar View
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    // Contacts Tab
-                    _contactsWidget(),
-                    // Requests Tab
-                    _requestsWidget(),
-                    // Requested Tab
-                    _requestedWidget(),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -119,12 +117,20 @@ class _FriendsScreenState extends State<FriendsScreen>
           mainAxisSize: MainAxisSize.min,
           children: [
             GestureDetector(
-              child: const Icon(Iconsax.tick_circle, color: Colors.green),
+              child: const Icon(
+                Iconsax.tick_circle,
+                color: Colors.green,
+                size: 24,
+              ),
               onTap: () {},
             ),
             const SizedBox(width: AppSizes.sm),
             GestureDetector(
-              child: Icon(Iconsax.close_circle, color: Colors.red.shade900),
+              child: Icon(
+                Iconsax.close_circle,
+                color: Colors.red.shade900,
+                size: 24,
+              ),
               onTap: () {},
             ),
           ],
