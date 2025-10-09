@@ -42,6 +42,9 @@ class _FriendsScreenState extends State<FriendsScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(
+              height: AppSizes.md,
+            ),
             const Row(
               children: [
                 MenuWidget(),
@@ -97,6 +100,8 @@ class _FriendsScreenState extends State<FriendsScreen>
   Widget _requestedWidget() {
     return ListView.builder(
       itemCount: 8,
+      shrinkWrap: true,
+      padding: const EdgeInsets.all(AppSizes.xs),
       itemBuilder: (context, index) {
         return FriendsTile(
           trailing: Icon(
@@ -111,6 +116,8 @@ class _FriendsScreenState extends State<FriendsScreen>
   Widget _requestsWidget() {
     return ListView.builder(
       itemCount: 5,
+      shrinkWrap: true,
+      padding: const EdgeInsets.all(AppSizes.xs),
       itemBuilder: (context, index) {
         return FriendsTile(
             trailing: Row(
@@ -142,6 +149,7 @@ class _FriendsScreenState extends State<FriendsScreen>
   Widget _contactsWidget() {
     return ListView.builder(
       shrinkWrap: true,
+      padding: const EdgeInsets.all(AppSizes.xs),
       itemCount: 12,
       itemBuilder: (context, index) {
         return const FriendsTile(
