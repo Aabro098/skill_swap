@@ -10,8 +10,16 @@ void main() async {
   // Notification Service initialization
   await NotificationService().initiNotification();
 
-  // Enable full-screen mode
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  // Restore system UI and set status bar style
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+        statusBarColor: Color(0xFF9C27B0), // Primary purple color
+        statusBarIconBrightness:
+            Brightness.light, // White icons on dark background
+        statusBarBrightness: Brightness.dark, // For iOS
+        systemNavigationBarColor: Colors.black),
+  );
 
   // Allow only portrait mode
   SystemChrome.setPreferredOrientations([

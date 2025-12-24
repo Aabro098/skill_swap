@@ -16,48 +16,50 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(AppSizes.lg),
-            topRight: Radius.circular(AppSizes.lg)),
-        gradient: LinearGradient(
-          colors: [
-            Colors.black87,
-            Colors.black,
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+    return SafeArea(
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.black87,
+              Colors.black,
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
-      ),
-      padding: const EdgeInsets.all(
-        AppSizes.md,
-      ),
-      child: GNav(
-        gap: 8,
-        backgroundColor: Colors.transparent,
-        color: Colors.grey.shade300, // icon color when unselected
-        activeColor: context.colorScheme.primary, // selected icon & text color
-        tabBackgroundColor: Colors.purple.shade50, // highlight for selected tab
         padding: const EdgeInsets.symmetric(
-            horizontal: AppSizes.md, vertical: AppSizes.sm),
-        duration: const Duration(milliseconds: 300),
-        selectedIndex: selectedIndex,
-        onTabChange: onItemTapped,
-        tabs: [
-          GButton(
-            icon: Iconsax.message_favorite4,
-            text: context.tr('messages'),
-          ),
-          GButton(
-            icon: Iconsax.search_favorite,
-            text: context.tr('discover'),
-          ),
-          GButton(
-            icon: Iconsax.user_add,
-            text: context.tr('contacts'),
-          ),
-        ],
+          horizontal: AppSizes.md,
+          vertical: AppSizes.xs,
+        ),
+        child: GNav(
+          gap: 8,
+          backgroundColor: Colors.transparent,
+          color: Colors.grey.shade300, // icon color when unselected
+          activeColor:
+              context.colorScheme.primary, // selected icon & text color
+          tabBackgroundColor:
+              Colors.purple.shade50, // highlight for selected tab
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.md, vertical: AppSizes.sm),
+          duration: const Duration(milliseconds: 300),
+          selectedIndex: selectedIndex,
+          onTabChange: onItemTapped,
+          tabs: [
+            GButton(
+              icon: Iconsax.message_favorite4,
+              text: context.tr('messages'),
+            ),
+            GButton(
+              icon: Iconsax.search_favorite,
+              text: context.tr('discover'),
+            ),
+            GButton(
+              icon: Iconsax.user_add,
+              text: context.tr('contacts'),
+            ),
+          ],
+        ),
       ),
     );
   }

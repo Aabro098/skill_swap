@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:skill_swap/common/widgets/drawer_page.dart';
-import 'package:skill_swap/screens/Basic/age_enter.dart';
-import 'package:skill_swap/screens/Basic/gender_select.dart';
+import 'package:skill_swap/screens/Basic/enter_description.dart';
 import 'package:skill_swap/screens/Basic/skill_select.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
-import 'package:skill_swap/utils/helpers/helper_functions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BasicComplete extends StatefulWidget {
@@ -17,33 +15,14 @@ class BasicComplete extends StatefulWidget {
 
 class _BasicCompleteState extends State<BasicComplete> {
   final controller = LiquidController();
+  final TextEditingController descriptionController = TextEditingController();
   int currentPageIndex = 0;
 
-  String? selectedGender;
-  int selectedAge = 18;
   List<String> skills = [];
-  List<String> learnSkills = [];
 
   List<Widget> get pages => [
-        SelectGender(
-          selectedGender: selectedGender,
-          onGenderSelected: (gender) {
-            if (mounted) {
-              setState(() {
-                selectedGender = gender;
-              });
-            }
-          },
-        ),
-        AgeSelector(
-          selectedAge: selectedAge,
-          onAgeChanged: (age) {
-            if (mounted) {
-              setState(() {
-                selectedAge = age;
-              });
-            }
-          },
+        DescriptionScreen(
+          controller: descriptionController,
         ),
         SkillsInput(
           key: const ValueKey('haveSkills'),
@@ -60,21 +39,6 @@ class _BasicCompleteState extends State<BasicComplete> {
               "Hi there! To help us get to know your expertise better, please take a moment to add the skills you have.",
           learn: false,
         ),
-        SkillsInput(
-          key: const ValueKey('learnSkills'),
-          skills: learnSkills,
-          onSkillsChanged: (updatedSkills) {
-            if (mounted) {
-              setState(() {
-                learnSkills = List.from(updatedSkills);
-              });
-            }
-          },
-          title: "Enter Skills You Want To Learn!",
-          description:
-              "Could you tell me which skill you’re most interested in learning or improving right now?",
-          learn: true,
-        ),
       ];
 
   void _handlePageChange(int index) {
@@ -90,16 +54,6 @@ class _BasicCompleteState extends State<BasicComplete> {
     if (nextPage < pages.length) {
       controller.jumpToPage(page: nextPage);
     } else {
-      if (selectedGender == null) {
-        showErrorSnackbar("Select your gender!", context: context);
-        if (mounted) {
-          setState(() {
-            currentPageIndex = 0;
-          });
-        }
-        controller.jumpToPage(page: currentPageIndex);
-        return;
-      }
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -107,6 +61,12 @@ class _BasicCompleteState extends State<BasicComplete> {
         ),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    descriptionController.dispose();
+    super.dispose();
   }
 
   @override
@@ -121,17 +81,19 @@ class _BasicCompleteState extends State<BasicComplete> {
             enableLoop: false,
             waveType: WaveType.liquidReveal,
             positionSlideIcon: 0.5,
-            slideIconWidget: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            ),
+            slideIconWidget: currentPageIndex == 1
+                ? null
+                : const Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.black,
+                  ),
             enableSideReveal: true,
             onPageChangeCallback: _handlePageChange,
           ),
 
           // Bottom navigation area
           Positioned(
-            bottom: 20,
+            bottom: 50,
             left: 0,
             right: 0,
             child: Column(

@@ -18,39 +18,42 @@ class OnboardingComponent extends StatefulWidget {
 class _OnboardingComponentState extends State<OnboardingComponent> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: widget.model.bgColor,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Image.asset(
-            widget.model.image,
-            height: context.screenHeight * 0.3,
-            width: context.screenWidth * 0.8,
-          ),
-          Column(
-            children: [
-              AutoSizeText(
-                widget.model.title,
-                style: context.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSizes.padding),
-                child: AutoSizeText(
-                  widget.model.description,
-                  style: context.textTheme.titleSmall
-                      ?.copyWith(color: Colors.black54),
+    return SafeArea(
+      child: Container(
+        color: widget.model.bgColor,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Image.asset(
+              widget.model.image,
+              height: context.screenHeight * 0.3,
+              width: context.screenWidth * 0.8,
+            ),
+            Column(
+              children: [
+                AutoSizeText(
+                  widget.model.title,
+                  style: context.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                   textAlign: TextAlign.center,
                 ),
-              ),
-            ],
-          )
-        ],
+                const SizedBox(height: AppSizes.sm),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppSizes.padding),
+                  child: AutoSizeText(
+                    widget.model.description,
+                    style: context.textTheme.titleSmall
+                        ?.copyWith(color: Colors.black54),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

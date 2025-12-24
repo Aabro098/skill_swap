@@ -39,59 +39,58 @@ class _FriendsScreenState extends State<FriendsScreen>
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSizes.padding),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: AppSizes.md,
-            ),
-            const Row(
-              children: [
-                MenuWidget(),
-                SizedBox(
-                  width: AppSizes.sm,
-                ),
-                Expanded(
-                    child: RoundedTextField(
-                  prefixIcon: Iconsax.search_favorite,
-                )),
-              ],
-            ),
-            const SizedBox(height: AppSizes.sm),
-            // Tab Bar
-            Center(
-              child: TabBar(
-                controller: _tabController,
-                tabAlignment: TabAlignment.center,
-                labelColor: context.colorScheme.primary,
-                unselectedLabelColor: Colors.white,
-                indicatorColor: context.colorScheme.primary,
-                dividerColor: Colors.transparent,
-                dividerHeight: 0,
-                labelStyle: context.textTheme.titleSmall,
-                tabs: [
-                  Tab(text: context.tr('contacts')),
-                  Tab(text: context.tr('requests')),
-                  Tab(text: context.tr('requested')),
-                ],
-              ),
-            ),
-            const SizedBox(height: AppSizes.md),
-            // Tab Bar View
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Row(
                 children: [
-                  // Contacts Tab
-                  _contactsWidget(),
-                  // Requests Tab
-                  _requestsWidget(),
-                  // Requested Tab
-                  _requestedWidget(),
+                  MenuWidget(),
+                  SizedBox(
+                    width: AppSizes.sm,
+                  ),
+                  Expanded(
+                      child: RoundedTextField(
+                    prefixIcon: Iconsax.search_favorite,
+                  )),
                 ],
               ),
-            ),
-          ],
+              const SizedBox(height: AppSizes.sm),
+              // Tab Bar
+              Center(
+                child: TabBar(
+                  controller: _tabController,
+                  tabAlignment: TabAlignment.center,
+                  labelColor: context.colorScheme.primary,
+                  unselectedLabelColor: Colors.white,
+                  indicatorColor: context.colorScheme.primary,
+                  dividerColor: Colors.transparent,
+                  dividerHeight: 0,
+                  labelStyle: context.textTheme.titleSmall,
+                  tabs: [
+                    Tab(text: context.tr('contacts')),
+                    Tab(text: context.tr('requests')),
+                    Tab(text: context.tr('requested')),
+                  ],
+                ),
+              ),
+              const SizedBox(height: AppSizes.md),
+              // Tab Bar View
+              Expanded(
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    // Contacts Tab
+                    _contactsWidget(),
+                    // Requests Tab
+                    _requestsWidget(),
+                    // Requested Tab
+                    _requestedWidget(),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

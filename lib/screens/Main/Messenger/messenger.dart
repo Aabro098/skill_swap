@@ -104,9 +104,6 @@ class _MessengerScreenState extends State<MessengerScreen> {
               const Row(
                 children: [
                   MenuWidget(),
-                  SizedBox(
-                    width: AppSizes.sm,
-                  ),
                   Expanded(
                       child: RoundedTextField(
                     prefixIcon: Iconsax.search_favorite,

@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' hide Provider, Consumer;
-import 'package:skill_swap/common/widgets/drawer_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skill_swap/localization/app_localization.dart';
+import 'package:skill_swap/screens/Welcome/welcome_screen.dart';
 import 'package:skill_swap/utils/helpers/app_globals.dart';
 import 'package:skill_swap/utils/helpers/localization_manager.dart';
 import 'package:skill_swap/utils/notifiers/localization_notifier.dart';
@@ -59,7 +59,7 @@ class _AppState extends ConsumerState<App> {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
       title: 'Skill Swap',
-      home: const DrawerPage(),
+      home: const WelcomeScreen(),
     );
   }
 }

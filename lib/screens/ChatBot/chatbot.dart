@@ -126,50 +126,52 @@ class UnlockedChatbot extends StatefulWidget {
 class _UnlockedChatbotState extends State<UnlockedChatbot> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(AppSizes.padding),
-      child: Column(
-        children: [
-          Expanded(
-            child: messages.isEmpty
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Lottie.asset(
-                        AppImages.robotHello,
-                        height: context.screenHeight * 0.35,
-                        width: context.screenWidth * 0.5,
-                        fit: BoxFit.cover,
-                      ),
-                      Center(
-                        child: AutoSizeText(
-                          context.tr('no_messages'),
-                          style: context.textTheme.bodyMedium,
-                          textAlign: TextAlign.center,
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSizes.padding),
+        child: Column(
+          children: [
+            Expanded(
+              child: messages.isEmpty
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Lottie.asset(
+                          AppImages.robotHello,
+                          height: context.screenHeight * 0.35,
+                          width: context.screenWidth * 0.5,
+                          fit: BoxFit.cover,
                         ),
-                      ),
-                    ],
-                  )
-                : ListView.builder(
-                    reverse: true,
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final msg = messages[index];
-                      return MessageCard(
-                        message: msg.text,
-                        isSentByMe: msg.isMe,
-                      );
-                    },
-                  ),
-          ),
-          const SizedBox(
-            height: AppSizes.sm,
-          ),
-          MessageBox(
-            hint: context.tr('ask_bot'),
-          ),
-        ],
+                        Center(
+                          child: AutoSizeText(
+                            context.tr('no_messages'),
+                            style: context.textTheme.bodyMedium,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    )
+                  : ListView.builder(
+                      reverse: true,
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) {
+                        final msg = messages[index];
+                        return MessageCard(
+                          message: msg.text,
+                          isSentByMe: msg.isMe,
+                        );
+                      },
+                    ),
+            ),
+            const SizedBox(
+              height: AppSizes.sm,
+            ),
+            MessageBox(
+              hint: context.tr('ask_bot'),
+            ),
+          ],
+        ),
       ),
     );
   }

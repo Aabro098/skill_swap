@@ -23,30 +23,32 @@ class _MessageScreenState extends State<MessageScreen> {
         preferredSize: const Size(double.infinity, 62),
         child: MessengerAppbar(name: widget.name, photoUrl: widget.photoUrl),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSizes.padding),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                reverse: true,
-                itemCount: messages.length,
-                itemBuilder: (context, index) {
-                  final msg = messages[index];
-                  return MessageCard(
-                    message: msg.text,
-                    isSentByMe: msg.isMe,
-                  );
-                },
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSizes.padding),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  reverse: true,
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    final msg = messages[index];
+                    return MessageCard(
+                      message: msg.text,
+                      isSentByMe: msg.isMe,
+                    );
+                  },
+                ),
               ),
-            ),
-            const SizedBox(
-              height: AppSizes.sm,
-            ),
-            MessageBox(
-              hint: context.tr('message...'),
-            ),
-          ],
+              const SizedBox(
+                height: AppSizes.sm,
+              ),
+              MessageBox(
+                hint: context.tr('message...'),
+              ),
+            ],
+          ),
         ),
       ),
     );

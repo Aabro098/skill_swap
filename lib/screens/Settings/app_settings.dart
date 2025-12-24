@@ -123,6 +123,7 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
       bottomSheet: SafeArea(
         child: Container(
           width: double.infinity,
+          height: context.screenHeight * 0.4,
           padding: const EdgeInsets.all(AppSizes.padding),
           decoration: BoxDecoration(
             color: context.isDarkMode ? Colors.black87 : Colors.grey.shade100,
@@ -137,24 +138,35 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
             borderRadius:
                 const BorderRadius.vertical(top: Radius.circular(AppSizes.xl)),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(AppSizes.padding),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                AutoSizeText(
-                  context.tr('settings'),
-                  style: context.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(AppSizes.padding),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      AutoSizeText(
+                        context.tr('settings'),
+                        style: context.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(width: AppSizes.sm),
+                      Icon(Icons.arrow_drop_up, color: Colors.grey.shade400),
+                    ],
                   ),
-                ),
-                const SizedBox(
-                  height: AppSizes.sm,
-                ),
-                ...settingsItems.map((item) => SettingsTile(item: item)),
-              ],
+                  const SizedBox(
+                    height: AppSizes.sm,
+                  ),
+                  ...settingsItems.map((item) => SettingsTile(item: item)),
+                  const SizedBox(
+                    height: AppSizes.md,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -89,41 +89,45 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             enableLoop: false,
             waveType: WaveType.liquidReveal,
             positionSlideIcon: 0.5,
-            slideIconWidget: const Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black,
-            ),
+            slideIconWidget: currentPageIndex == 2
+                ? null
+                : const Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.black,
+                  ),
             enableSideReveal: true,
             onPageChangeCallback: _handlePageChange,
           ),
 
           // Skip button - positioned safely
-          Positioned(
-            top: MediaQuery.of(context).padding.top + 10,
-            right: 20,
-            child: TextButton(
-              onPressed: _skipToEnd,
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.white12,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+          currentPageIndex == 2
+              ? const SizedBox.shrink()
+              : Positioned(
+                  top: MediaQuery.of(context).padding.top + 10,
+                  right: 20,
+                  child: TextButton(
+                    onPressed: _skipToEnd,
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.white12,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                    ),
+                    child: AutoSizeText(
+                      "Skip",
+                      style: context.textTheme.titleSmall?.copyWith(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
                 ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              ),
-              child: AutoSizeText(
-                "Skip",
-                style: context.textTheme.titleSmall?.copyWith(
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
 
           // Bottom navigation area
           Positioned(
-            bottom: 20,
+            bottom: 50,
             left: 0,
             right: 0,
             child: Column(
@@ -162,6 +166,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     spacing: 8.0,
                   ),
                 ),
+                const SizedBox(height: AppSizes.md),
               ],
             ),
           ),

@@ -8,8 +8,9 @@ class AppInputDecoration {
   /// Static variable for Input Decoration (Light)
   static InputDecorationTheme lightTheme = InputDecorationTheme(
     hintStyle: AppTypography.lightTextTheme.titleSmall,
+    labelStyle: AppTypography.lightTextTheme.titleSmall,
     contentPadding: const EdgeInsets.symmetric(
-      vertical: AppSizes.xs,
+      vertical: AppSizes.sm,
       horizontal: AppSizes.md,
     ),
     prefixIconColor: AppColors.lightPrimary,
@@ -53,8 +54,9 @@ class AppInputDecoration {
 
   static InputDecorationTheme darkTheme = InputDecorationTheme(
     hintStyle: AppTypography.darkTextTheme.titleSmall,
+    labelStyle: AppTypography.darkTextTheme.titleSmall,
     contentPadding: const EdgeInsets.symmetric(
-      vertical: AppSizes.xs,
+      vertical: AppSizes.sm,
       horizontal: AppSizes.md,
     ),
     prefixIconColor: AppColors.darkPrimary,

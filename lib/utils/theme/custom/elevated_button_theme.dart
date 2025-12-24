@@ -8,6 +8,7 @@ class AppElevatedButtonTheme {
   static ElevatedButtonThemeData lightTheme = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColors.lightPrimary,
+      splashFactory: NoSplash.splashFactory,
       foregroundColor: Colors.white, // Text/Icon color
       minimumSize: const Size(double.infinity, 42),
       textStyle: AppTypography.lightTextTheme.titleSmall,
@@ -20,6 +21,7 @@ class AppElevatedButtonTheme {
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColors.darkPrimary,
       foregroundColor: Colors.white, // Dark surface for contrast
+      splashFactory: NoSplash.splashFactory,
       minimumSize: const Size(double.infinity, 42),
       textStyle: AppTypography.lightTextTheme.titleSmall,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
