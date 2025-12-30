@@ -6,6 +6,7 @@ import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/message_screen_model.dart';
 import 'package:skill_swap/screens/Main/Messenger/message.dart';
+import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
 class MessengerScreen extends StatefulWidget {
@@ -247,7 +248,9 @@ class MessengerProfile extends StatelessWidget {
       ),
       child: CircleAvatar(
         radius: radius,
-        backgroundImage: NetworkImage(photoUrl),
+        backgroundImage: const AssetImage(AppImages.fallback),
+        foregroundImage: NetworkImage(photoUrl),
+        onForegroundImageError: (_, __) {},
       ),
     );
   }

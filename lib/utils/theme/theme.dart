@@ -5,7 +5,6 @@ import 'package:skill_swap/utils/theme/custom/appbar_theme.dart';
 import 'package:skill_swap/utils/theme/custom/elevated_button_theme.dart';
 import 'package:skill_swap/utils/theme/custom/input_decoration_theme.dart';
 import 'package:skill_swap/utils/theme/custom/outlined_button_theme.dart';
-import 'package:skill_swap/utils/theme/custom/page_transitions_theme.dart';
 import 'package:skill_swap/utils/theme/custom/snacker_bar_theme.dart';
 import 'package:skill_swap/utils/theme/custom/text_theme.dart';
 
@@ -21,7 +20,7 @@ class AppTheme {
     colorScheme: AppColorSchemes.lightColorScheme,
     primaryColor: AppColors.lightPrimary,
     textTheme: AppTypography.lightTextTheme,
-    pageTransitionsTheme: AppPageTransitionsTheme.pageTransitionsTheme,
+    // pageTransitionsTheme: AppPageTransitionsTheme.pageTransitionsTheme,
     inputDecorationTheme: AppInputDecoration.lightTheme,
     elevatedButtonTheme: AppElevatedButtonTheme.lightTheme,
     outlinedButtonTheme: AppOutlinedButtonTheme.lightTheme,
@@ -35,7 +34,7 @@ class AppTheme {
     colorScheme: AppColorSchemes.darkColorScheme,
     primaryColor: AppColors.darkPrimary,
     textTheme: AppTypography.darkTextTheme,
-    pageTransitionsTheme: AppPageTransitionsTheme.pageTransitionsTheme,
+    // pageTransitionsTheme: AppPageTransitionsTheme.pageTransitionsTheme,
     inputDecorationTheme: AppInputDecoration.darkTheme,
     elevatedButtonTheme: AppElevatedButtonTheme.darkTheme,
     outlinedButtonTheme: AppOutlinedButtonTheme.darkTheme,

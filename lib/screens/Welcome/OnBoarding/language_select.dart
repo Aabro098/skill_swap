@@ -6,7 +6,7 @@ import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 import 'package:skill_swap/utils/helpers/helper_functions.dart';
-import 'package:skill_swap/utils/notifiers/localization_notifier.dart';
+import 'package:skill_swap/notifiers/localization_notifier.dart';
 
 class LanguageSelector extends ConsumerStatefulWidget {
   const LanguageSelector({

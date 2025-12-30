@@ -5,11 +5,13 @@ import 'package:iconsax/iconsax.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/settings_model.dart';
+import 'package:skill_swap/notifiers/auth_notifier.dart';
 import 'package:skill_swap/screens/Welcome/OnBoarding/language_select.dart';
 import 'package:skill_swap/screens/Welcome/welcome_screen.dart';
 import 'package:skill_swap/utils/constants/enums.dart';
+import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
-import 'package:skill_swap/utils/notifiers/theme_notifier.dart';
+import 'package:skill_swap/notifiers/theme_notifier.dart';
 
 class AppSettings extends ConsumerStatefulWidget {
   const AppSettings({super.key});
@@ -75,6 +77,7 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
           icon: Iconsax.logout,
           type: SettingsTileType.customTile,
           onTap: () {
+            ref.read(authNotifierProvider.notifier).logout();
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
@@ -231,30 +234,32 @@ class SettingsTile extends StatelessWidget {
   }
 }
 
-class SettingsHeader extends StatelessWidget {
+class SettingsHeader extends ConsumerWidget {
   const SettingsHeader({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authNotifierProvider);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const CircleAvatar(
+        CircleAvatar(
           radius: 64,
-          backgroundImage: NetworkImage(
-              "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&w=687&q=80"),
+          backgroundImage: const AssetImage(AppImages.fallback),
+          foregroundImage: NetworkImage(authState.user.profileUrl),
+          onForegroundImageError: (_, __) {},
         ),
         const SizedBox(height: AppSizes.lg),
         AutoSizeText(
-          "Arbin Shrestha",
+          authState.user.name,
           style: context.textTheme.titleLarge
               ?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: AppSizes.xs),
         AutoSizeText(
-          "arbinstha71@gmail.com",
+          authState.user.email,
           style: context.textTheme.titleSmall,
         ),
       ],

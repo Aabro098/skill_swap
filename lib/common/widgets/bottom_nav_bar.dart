@@ -30,7 +30,7 @@ class BottomNavBar extends StatelessWidget {
         ),
         padding: const EdgeInsets.symmetric(
           horizontal: AppSizes.md,
-          vertical: AppSizes.xs,
+          vertical: 12,
         ),
         child: GNav(
           gap: 8,

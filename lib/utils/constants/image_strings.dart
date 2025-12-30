@@ -24,4 +24,6 @@ class AppImages {
   // Robot Animation
   static const String robot = "assets/animations/robot.json";
   static const String robotHello = "assets/animations/robot_hello.json";
+
+  static const String fallback = "assets/images/fallback.jpg";
 }

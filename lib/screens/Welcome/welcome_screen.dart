@@ -1,11 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:skill_swap/common/widgets/drawer_page.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
+import 'package:skill_swap/screens/Auth/login_screen.dart';
 import 'package:skill_swap/screens/Welcome/OnBoarding/liquid_swipe.dart';
 import 'package:skill_swap/utils/constants/colors.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 import 'package:skill_swap/utils/helpers/app_globals.dart';
+import 'package:skill_swap/utils/local_storage/secure_storage.dart';
+import 'package:skill_swap/utils/local_storage/shared_prefs.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -18,13 +22,28 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      navigatorKey.currentState?.pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const OnBoardingScreen(),
-        ),
+    navigate();
+  }
+
+  Future<void> navigate() async {
+    final isFirstTime = await isFirstTimeOpen();
+    final token = await getTokenSecure();
+
+    if (isFirstTime) {
+      await navigatorKey.currentState?.pushReplacementNamed(
+        OnBoardingScreen.routeName,
       );
-    });
+    } else {
+      if (token != null) {
+        await navigatorKey.currentState?.pushReplacementNamed(
+          DrawerPage.routeName,
+        );
+      } else {
+        await navigatorKey.currentState?.pushReplacementNamed(
+          LoginScreen.routeName,
+        );
+      }
+    }
   }
 
   @override

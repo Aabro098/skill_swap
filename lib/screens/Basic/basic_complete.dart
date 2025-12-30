@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:skill_swap/common/widgets/drawer_page.dart';
+import 'package:skill_swap/model/auth_state.dart';
+import 'package:skill_swap/notifiers/auth_notifier.dart';
 import 'package:skill_swap/screens/Basic/enter_description.dart';
 import 'package:skill_swap/screens/Basic/skill_select.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
+import 'package:skill_swap/utils/helpers/app_globals.dart';
+import 'package:skill_swap/utils/helpers/helper_functions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BasicComplete extends StatefulWidget {
-  const BasicComplete({super.key});
+class BasicComplete extends ConsumerStatefulWidget {
+  final String id;
+  const BasicComplete({required this.id, super.key});
+
+  static const String routeName = '/basic_complete';
 
   @override
-  State<BasicComplete> createState() => _BasicCompleteState();
+  ConsumerState<BasicComplete> createState() => _BasicCompleteState();
 }
 
-class _BasicCompleteState extends State<BasicComplete> {
+class _BasicCompleteState extends ConsumerState<BasicComplete> {
   final controller = LiquidController();
   final TextEditingController descriptionController = TextEditingController();
   int currentPageIndex = 0;
@@ -51,16 +59,7 @@ class _BasicCompleteState extends State<BasicComplete> {
 
   void _navigateToNextPage() {
     int nextPage = currentPageIndex + 1;
-    if (nextPage < pages.length) {
-      controller.jumpToPage(page: nextPage);
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const DrawerPage(),
-        ),
-      );
-    }
+    controller.jumpToPage(page: nextPage);
   }
 
   @override
@@ -71,6 +70,22 @@ class _BasicCompleteState extends State<BasicComplete> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authNotifierProvider);
+
+    ref.listen<AuthState>(authNotifierProvider, (previous, next) async {
+      final error = next.error;
+
+      if (error != null && error.isNotEmpty) {
+        showErrorSnackbar(context: context, error);
+      }
+
+      if (next.success == true) {
+        await navigatorKey.currentState!.pushNamedAndRemoveUntil(
+          DrawerPage.routeName,
+          (_) => false,
+        );
+      }
+    });
     return Scaffold(
       body: Stack(
         children: [
@@ -110,14 +125,35 @@ class _BasicCompleteState extends State<BasicComplete> {
                       backgroundColor: Colors.black87,
                       side: const BorderSide(color: Colors.black87, width: 2),
                     ),
-                    onPressed: _navigateToNextPage,
-                    child: Icon(
-                      currentPageIndex == pages.length - 1
-                          ? Icons.check
-                          : Icons.arrow_forward_ios,
-                      color: Colors.white,
-                      size: 20,
-                    ),
+                    onPressed: currentPageIndex == pages.length - 1
+                        ? () {
+                            ref
+                                .read(authNotifierProvider.notifier)
+                                .completeProfile(
+                                  id: widget.id,
+                                  description:
+                                      descriptionController.text.trim(),
+                                  skills: skills,
+                                );
+                          }
+                        : _navigateToNextPage,
+                    child: authState.isLoading
+                        ? const Center(
+                            child: SizedBox(
+                            height: AppSizes.lg,
+                            width: AppSizes.lg,
+                            child: CircularProgressIndicator(
+                              color: Colors.green,
+                              strokeWidth: 2,
+                            ),
+                          ))
+                        : Icon(
+                            currentPageIndex == pages.length - 1
+                                ? Icons.check
+                                : Icons.arrow_forward_ios,
+                            color: Colors.white,
+                            size: 20,
+                          ),
                   ),
                 ),
                 const SizedBox(height: AppSizes.lg),

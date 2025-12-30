@@ -1,21 +1,36 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:skill_swap/common/widgets/side_menu.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/side_bar_model.dart';
+import 'package:skill_swap/notifiers/auth_notifier.dart';
 import 'package:skill_swap/screens/ChatBot/chatbot.dart';
 import 'package:skill_swap/screens/Main/main_screen.dart';
 import 'package:skill_swap/screens/Profile/profile.dart';
 import 'package:skill_swap/screens/Settings/app_settings.dart';
 
-class DrawerPage extends StatefulWidget {
+class DrawerPage extends ConsumerStatefulWidget {
   const DrawerPage({super.key});
 
+  static const String routeName = '/drawer_page';
+
   @override
-  State<DrawerPage> createState() => _DrawerPageState();
+  ConsumerState<DrawerPage> createState() => _DrawerPageState();
 }
 
-class _DrawerPageState extends State<DrawerPage> {
+class _DrawerPageState extends ConsumerState<DrawerPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      unawaited(ref.read(authNotifierProvider.notifier).getProfile());
+    });
+  }
+
   MenuItem currentItem = MenuItem.home;
 
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skill_swap/app.dart';
+import 'package:skill_swap/services/dio_client.dart';
 import 'package:skill_swap/utils/helpers/notification_service.dart';
 
 void main() async {
@@ -21,13 +22,17 @@ void main() async {
         systemNavigationBarColor: Colors.black),
   );
 
+  final container = ProviderContainer();
+  setProviderContainer(container);
+
   // Allow only portrait mode
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then((_) {
     runApp(
-      const ProviderScope(
-        child: App(),
+      UncontrolledProviderScope(
+        container: container,
+        child: const App(),
       ),
     );
   });

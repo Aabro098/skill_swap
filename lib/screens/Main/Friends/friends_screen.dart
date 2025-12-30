@@ -1,21 +1,29 @@
+import 'dart:async';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:skill_swap/common/reusables/search_text.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
+import 'package:skill_swap/model/user_model.dart';
+import 'package:skill_swap/notifiers/friend_req_notifiers.dart';
+import 'package:skill_swap/notifiers/friends_notifier.dart';
+import 'package:skill_swap/notifiers/sent_req_notifier.dart';
 import 'package:skill_swap/screens/Main/Messenger/messenger.dart';
-import 'package:skill_swap/screens/Profile/profile.dart';
+import 'package:skill_swap/screens/Profile/view_profile.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
-class FriendsScreen extends StatefulWidget {
+class FriendsScreen extends ConsumerStatefulWidget {
   const FriendsScreen({super.key});
 
   @override
-  State<FriendsScreen> createState() => _FriendsScreenState();
+  ConsumerState<FriendsScreen> createState() => _FriendsScreenState();
 }
 
-class _FriendsScreenState extends State<FriendsScreen>
+class _FriendsScreenState extends ConsumerState<FriendsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -23,6 +31,13 @@ class _FriendsScreenState extends State<FriendsScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    _loadRequestsSent();
+  }
+
+  Future<void> _loadRequestsSent() async {
+    unawaited(ref.read(sentRequestsProvider.notifier).fetch());
+    unawaited(ref.read(requestsProvider.notifier).fetch());
+    unawaited(ref.read(friendNotifier.notifier).fetch());
   }
 
   @override
@@ -97,73 +112,130 @@ class _FriendsScreenState extends State<FriendsScreen>
   }
 
   Widget _requestedWidget() {
-    return ListView.builder(
-      itemCount: 8,
-      shrinkWrap: true,
-      padding: const EdgeInsets.all(AppSizes.xs),
-      itemBuilder: (context, index) {
-        return FriendsTile(
-          trailing: Icon(
-            Iconsax.profile_delete,
-            color: Colors.red.shade900,
-          ),
-        );
-      },
+    final sentRequests = ref.watch(sentRequestsProvider);
+
+    return sentRequests.when(
+      loading: _loadingSkeleton,
+      error: (e, _) => _errorState(e),
+      data: (data) => _dataState(
+        data,
+        Icon(
+          Iconsax.profile_delete,
+          color: Colors.red.shade900,
+        ),
+        false,
+      ),
     );
   }
 
   Widget _requestsWidget() {
-    return ListView.builder(
-      itemCount: 5,
-      shrinkWrap: true,
-      padding: const EdgeInsets.all(AppSizes.xs),
-      itemBuilder: (context, index) {
-        return FriendsTile(
-            trailing: Row(
+    final requests = ref.watch(requestsProvider);
+
+    return requests.when(
+      loading: _loadingSkeleton,
+      error: (e, _) => _errorState(e),
+      data: (data) => _dataState(
+        data,
+        Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            GestureDetector(
-              child: const Icon(
-                Iconsax.tick_circle,
-                color: Colors.green,
-                size: 24,
-              ),
-              onTap: () {},
-            ),
-            const SizedBox(width: AppSizes.sm),
-            GestureDetector(
-              child: Icon(
-                Iconsax.close_circle,
-                color: Colors.red.shade900,
-                size: 24,
-              ),
-              onTap: () {},
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: Colors.red.shade900,
+              size: AppSizes.md,
             ),
           ],
-        ));
-      },
+        ),
+        true,
+      ),
     );
   }
 
   Widget _contactsWidget() {
+    final friends = ref.watch(friendNotifier);
+
+    return friends.when(
+      loading: _loadingSkeleton,
+      error: (e, _) => _errorState(e),
+      data: (data) => _dataState(
+        data,
+        Icon(
+          Iconsax.message_favorite4,
+          color: Colors.red.shade900,
+        ),
+        false,
+      ),
+    );
+  }
+
+  Widget _dataState(List<UserModel> users, Widget trailing, bool? isRequest) {
+    if (users.isEmpty) {
+      return Center(
+        child: Text(
+          context.tr('No Users Found'),
+          style: context.textTheme.titleMedium?.copyWith(
+            color: Colors.white,
+          ),
+        ),
+      );
+    }
+
     return ListView.builder(
-      shrinkWrap: true,
+      itemCount: users.length,
       padding: const EdgeInsets.all(AppSizes.xs),
-      itemCount: 12,
       itemBuilder: (context, index) {
-        return const FriendsTile(
-          trailing: Icon(Iconsax.message_favorite4),
+        return FriendsTile(
+          isRequest: isRequest,
+          user: users[index],
+          trailing: trailing,
         );
       },
+    );
+  }
+
+  Widget _errorState(Object e) {
+    return Center(
+      child: Text(
+        e.toString(),
+        style: context.textTheme.titleMedium?.copyWith(
+          color: Colors.red.shade900,
+        ),
+      ),
+    );
+  }
+
+  Widget _loadingSkeleton() {
+    return Skeletonizer(
+      enabled: true,
+      child: ListView.builder(
+        itemCount: 10, // fake count
+        padding: const EdgeInsets.all(AppSizes.xs),
+        itemBuilder: (_, __) => const FriendsTile(
+          trailing: SizedBox.shrink(),
+          user: UserModel(
+            id: '',
+            name: 'Loading',
+            description: '',
+            profileUrl: '',
+            skills: [],
+            email: '',
+            isPremiumUser: false,
+          ),
+        ),
+      ),
     );
   }
 }
 
 class FriendsTile extends StatelessWidget {
   final Widget trailing;
+  final UserModel user;
+  final bool? isRequest;
   const FriendsTile({
+    required this.user,
     super.key,
     required this.trailing,
+    this.isRequest,
   });
 
   @override
@@ -172,10 +244,9 @@ class FriendsTile extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: AppSizes.sm),
       child: Row(
         children: [
-          const MessengerProfile(
+          MessengerProfile(
             radius: 28,
-            photoUrl:
-                "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=687&q=80",
+            photoUrl: user.profileUrl,
           ),
           const SizedBox(width: AppSizes.md),
           Expanded(
@@ -184,7 +255,10 @@ class FriendsTile extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const Profile(isView: true),
+                    builder: (context) => ViewProfile(
+                      user: user,
+                      isRequest: isRequest ?? false,
+                    ),
                   ),
                 );
               },
@@ -192,7 +266,7 @@ class FriendsTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AutoSizeText(
-                    "Arbin Shrestha",
+                    user.name,
                     style: context.textTheme.titleMedium
                         ?.copyWith(fontWeight: FontWeight.w600, fontSize: 14),
                     overflow: TextOverflow.ellipsis,
@@ -200,7 +274,7 @@ class FriendsTile extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSizes.xs),
                   AutoSizeText(
-                    "Flutter developer and keen to meet you.",
+                    user.description,
                     style: context.textTheme.bodySmall
                         ?.copyWith(color: context.colorScheme.onSurface),
                     overflow: TextOverflow.ellipsis,

@@ -7,10 +7,14 @@ import 'package:skill_swap/screens/Auth/login_screen.dart';
 import 'package:skill_swap/screens/Welcome/OnBoarding/onboarding_component.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
+import 'package:skill_swap/utils/helpers/app_globals.dart';
+import 'package:skill_swap/utils/local_storage/shared_prefs.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
+
+  static const String routeName = '/onboarding';
 
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
@@ -58,16 +62,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     }
   }
 
-  void _navigateToNextPage() {
+  Future<void> _navigateToNextPage() async {
     int nextPage = currentPageIndex + 1;
     if (nextPage < pages.length) {
       controller.jumpToPage(page: nextPage);
     } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ),
+      await setIsFirstTimeOpen(value: false);
+      await navigatorKey.currentState?.pushNamedAndRemoveUntil(
+        LoginScreen.routeName,
+        (_) => false,
       );
     }
   }

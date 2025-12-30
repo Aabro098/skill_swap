@@ -1,29 +1,28 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
+import 'package:skill_swap/model/user_model.dart';
+import 'package:skill_swap/notifiers/recommend_user_notifier.dart';
+import 'package:skill_swap/services/dio_client.dart';
+import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
+import 'package:skill_swap/utils/helpers/helper_functions.dart';
 
-class FindMatch extends StatefulWidget {
+class FindMatch extends ConsumerStatefulWidget {
   const FindMatch({super.key});
 
   @override
-  State<FindMatch> createState() => _FindMatchState();
+  ConsumerState<FindMatch> createState() => _FindMatchState();
 }
 
-class _FindMatchState extends State<FindMatch> {
-  final List<String> skills = [
-    "Flutter",
-    "Dart",
-    "Python",
-    "Data Analysis",
-    "Machine Learning",
-    "Public Speaking",
-    "Creative Writing",
-  ];
-
+class _FindMatchState extends ConsumerState<FindMatch> {
   final List<Color> colors = [
     Colors.red,
     Colors.indigo,
@@ -36,50 +35,100 @@ class _FindMatchState extends State<FindMatch> {
   final Random random = Random();
 
   @override
+  void initState() {
+    super.initState();
+    _loadRecommendedUsers();
+  }
+
+  Future<void> _loadRecommendedUsers() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(recommendedUsersProvider.notifier).fetchRecommendedUsers();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final recommendedState = ref.watch(recommendedUsersProvider);
     return Container(
+      height: context.screenHeight,
+      width: context.screenWidth,
       decoration: BoxDecoration(
         gradient: context.gradient,
       ),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSizes.padding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const MenuWidget(),
-                  const SizedBox(width: AppSizes.md),
-                  AutoSizeText(
-                    context.tr('discover'),
-                    textAlign: TextAlign.center,
-                    style: context.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      fontSize: 28,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    const MenuWidget(),
+                    const SizedBox(width: AppSizes.md),
+                    AutoSizeText(
+                      context.tr('discover'),
+                      textAlign: TextAlign.center,
+                      style: context.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                        fontSize: 28,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSizes.sm),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return MatchCard(
-                        name: "Arbin Shreshta",
-                        about:
-                            "I am someone who is constantly inspired by creativity, innovation, and the endless opportunities to learn and grow. Curiosity drives me forward, whether it is exploring new technologies, reading about ideas that challenge perspectives, or working on projects that allow me to express both logic and imagination.",
-                        imageUrl:
-                            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=687&q=80",
-                        skills: skills,
-                        colors: colors,
-                        random: random,
+                  ],
+                ),
+                const SizedBox(height: AppSizes.sm),
+                recommendedState.when(
+                    loading: () => SizedBox(
+                          height: context.screenHeight,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        ),
+                    error: (error, stackTrace) => SizedBox(
+                          height: context.screenHeight,
+                          child: Center(
+                            child: Text(
+                              context.tr('No Recommended Users Found'),
+                              style: context.textTheme.titleMedium?.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                    data: (friends) {
+                      if (friends.isEmpty) {
+                        return SizedBox(
+                          height: context.screenHeight,
+                          child: Center(
+                            child: AutoSizeText(
+                              context.tr('No Recommended Users Found'),
+                              style: context.textTheme.titleMedium?.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: friends.length,
+                        itemBuilder: (context, index) {
+                          final user = friends[index];
+                          return MatchCard(
+                            user: user,
+                            colors: colors,
+                            random: random,
+                          );
+                        },
                       );
-                    }),
-              )
-            ],
+                    })
+              ],
+            ),
           ),
         ),
       ),
@@ -87,26 +136,20 @@ class _FindMatchState extends State<FindMatch> {
   }
 }
 
-class MatchCard extends StatelessWidget {
-  final String name;
-  final String about;
-  final String imageUrl;
-  final List<String> skills;
+class MatchCard extends ConsumerWidget {
+  final UserModel user;
   final List<Color> colors;
   final Random random;
 
   const MatchCard({
     super.key,
-    required this.name,
-    required this.about,
-    required this.imageUrl,
-    required this.skills,
+    required this.user,
     required this.colors,
     required this.random,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       width: context.screenWidth * 0.9,
       margin: const EdgeInsets.symmetric(vertical: AppSizes.sm),
@@ -118,17 +161,31 @@ class MatchCard extends StatelessWidget {
         child: Column(
           children: [
             ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(AppSizes.md),
-                topRight: Radius.circular(AppSizes.md),
-              ),
-              child: Image.network(
-                imageUrl,
-                fit: BoxFit.cover,
-                height: 312,
-                width: double.infinity,
-              ),
-            ),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(AppSizes.md),
+                  topRight: Radius.circular(AppSizes.md),
+                ),
+                child: Image.network(
+                  user.profileUrl,
+                  fit: BoxFit.cover,
+                  height: 312,
+                  width: double.infinity,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      AppImages.fallback,
+                      fit: BoxFit.cover,
+                      height: 312,
+                      width: double.infinity,
+                    );
+                  },
+                  loadingBuilder: (context, child, loadingProgress) =>
+                      loadingProgress == null
+                          ? child
+                          : Container(
+                              height: 312,
+                              color: Colors.grey.shade400,
+                            ),
+                )),
 
             // User Info
             Container(
@@ -144,7 +201,7 @@ class MatchCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AutoSizeText(
-                    name,
+                    user.name,
                     style: context.textTheme.titleLarge?.copyWith(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -154,7 +211,7 @@ class MatchCard extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSizes.xs),
                   AutoSizeText(
-                    about,
+                    user.description,
                     style: context.textTheme.labelMedium?.copyWith(
                       color: Colors.black87,
                     ),
@@ -168,7 +225,7 @@ class MatchCard extends StatelessWidget {
                     spacing: AppSizes.xs,
                     runSpacing: 0,
                     children: [
-                      ...skills.take(5).map(
+                      ...user.skills.take(5).map(
                             (skill) => Chip(
                               padding: const EdgeInsets.all(AppSizes.xs),
                               visualDensity: VisualDensity.compact,
@@ -185,7 +242,7 @@ class MatchCard extends StatelessWidget {
                               ),
                             ),
                           ),
-                      if (skills.length > 5)
+                      if (user.skills.length > 5)
                         Chip(
                           padding: const EdgeInsets.all(AppSizes.xs),
                           visualDensity: VisualDensity.compact,
@@ -197,22 +254,40 @@ class MatchCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: AppSizes.sm),
-
-                  // Action Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _actionButton(
                         icon: Iconsax.close_circle,
                         color: Colors.red.shade700,
-                        onTap: () => debugPrint("Disliked"),
+                        onTap: () => ref
+                            .read(recommendedUsersProvider.notifier)
+                            .removeById(user.id),
                       ),
                       const SizedBox(width: AppSizes.md),
                       _actionButton(
-                        icon: Iconsax.tick_circle,
-                        color: Colors.green,
-                        onTap: () => debugPrint("Liked"),
-                      ),
+                          icon: Iconsax.tick_circle,
+                          color: Colors.green,
+                          onTap: () async {
+                            try {
+                              await ref
+                                  .read(recommendedUsersProvider.notifier)
+                                  .sendRequest(id: user.id);
+                              showSuccessSnackbar("Request Sent Successfully",
+                                  context: context);
+                            } on DioException catch (e) {
+                              final errorMessage = DioClient.parseDioError(e);
+                              showErrorSnackbar(
+                                context: context,
+                                errorMessage,
+                              );
+                            } catch (e) {
+                              showErrorSnackbar(
+                                context: context,
+                                'Something went wrong. Try again.',
+                              );
+                            }
+                          }),
                     ],
                   ),
                 ],
