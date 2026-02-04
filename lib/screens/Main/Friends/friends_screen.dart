@@ -2,28 +2,25 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+import 'package:provider/provider.dart';
+// import 'package:skeletonizer/skeletonizer.dart';
 import 'package:skill_swap/common/reusables/search_text.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/user_model.dart';
-import 'package:skill_swap/notifiers/friend_req_notifiers.dart';
-import 'package:skill_swap/notifiers/friends_notifier.dart';
-import 'package:skill_swap/notifiers/sent_req_notifier.dart';
+import 'package:skill_swap/providers/friends_provider.dart';
 import 'package:skill_swap/screens/Main/Messenger/messenger.dart';
-import 'package:skill_swap/screens/Profile/view_profile.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
-class FriendsScreen extends ConsumerStatefulWidget {
+class FriendsScreen extends StatefulWidget {
   const FriendsScreen({super.key});
 
   @override
-  ConsumerState<FriendsScreen> createState() => _FriendsScreenState();
+  State<FriendsScreen> createState() => _FriendsScreenState();
 }
 
-class _FriendsScreenState extends ConsumerState<FriendsScreen>
+class _FriendsScreenState extends State<FriendsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -31,13 +28,12 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    _loadRequestsSent();
+    Future.microtask(_loadAll);
   }
 
-  Future<void> _loadRequestsSent() async {
-    unawaited(ref.read(sentRequestsProvider.notifier).fetch());
-    unawaited(ref.read(requestsProvider.notifier).fetch());
-    unawaited(ref.read(friendNotifier.notifier).fetch());
+  Future<void> _loadAll() async {
+    final provider = context.read<FriendProvider>();
+    await provider.fetchAll();
   }
 
   @override
@@ -112,59 +108,41 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen>
   }
 
   Widget _requestedWidget() {
-    final sentRequests = ref.watch(sentRequestsProvider);
-
-    return sentRequests.when(
-      loading: _loadingSkeleton,
-      error: (e, _) => _errorState(e),
-      data: (data) => _dataState(
-        data,
-        Icon(
-          Iconsax.profile_delete,
-          color: Colors.red.shade900,
-        ),
-        false,
+    return _dataState(
+      context.read<FriendProvider>().sentRequests,
+      Icon(
+        Iconsax.profile_delete,
+        color: Colors.red.shade900,
       ),
+      false,
     );
   }
 
   Widget _requestsWidget() {
-    final requests = ref.watch(requestsProvider);
-
-    return requests.when(
-      loading: _loadingSkeleton,
-      error: (e, _) => _errorState(e),
-      data: (data) => _dataState(
-        data,
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.arrow_forward_ios_rounded,
-              color: Colors.red.shade900,
-              size: AppSizes.md,
-            ),
-          ],
-        ),
-        true,
+    return _dataState(
+      context.read<FriendProvider>().requests,
+      Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.arrow_forward_ios_rounded,
+            color: Colors.red.shade900,
+            size: AppSizes.md,
+          ),
+        ],
       ),
+      true,
     );
   }
 
   Widget _contactsWidget() {
-    final friends = ref.watch(friendNotifier);
-
-    return friends.when(
-      loading: _loadingSkeleton,
-      error: (e, _) => _errorState(e),
-      data: (data) => _dataState(
-        data,
-        Icon(
-          Iconsax.message_favorite4,
-          color: Colors.red.shade900,
-        ),
-        false,
+    return _dataState(
+      context.read<FriendProvider>().friends,
+      Icon(
+        Iconsax.message_favorite4,
+        color: Colors.red.shade900,
       ),
+      false,
     );
   }
 
@@ -193,38 +171,38 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen>
     );
   }
 
-  Widget _errorState(Object e) {
-    return Center(
-      child: Text(
-        e.toString(),
-        style: context.textTheme.titleMedium?.copyWith(
-          color: Colors.red.shade900,
-        ),
-      ),
-    );
-  }
+  // Widget _errorState(Object e) {
+  //   return Center(
+  //     child: Text(
+  //       e.toString(),
+  //       style: context.textTheme.titleMedium?.copyWith(
+  //         color: Colors.red.shade900,
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Widget _loadingSkeleton() {
-    return Skeletonizer(
-      enabled: true,
-      child: ListView.builder(
-        itemCount: 10, // fake count
-        padding: const EdgeInsets.all(AppSizes.xs),
-        itemBuilder: (_, __) => const FriendsTile(
-          trailing: SizedBox.shrink(),
-          user: UserModel(
-            id: '',
-            name: 'Loading',
-            description: '',
-            profileUrl: '',
-            skills: [],
-            email: '',
-            isPremiumUser: false,
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _loadingSkeleton() {
+  //   return Skeletonizer(
+  //     enabled: true,
+  //     child: ListView.builder(
+  //       itemCount: 10, // fake count
+  //       padding: const EdgeInsets.all(AppSizes.xs),
+  //       itemBuilder: (_, __) => const FriendsTile(
+  //         trailing: SizedBox.shrink(),
+  //         user: UserModel(
+  //           id: '1234642453',
+  //           name: 'Loading',
+  //           description: 'This is a loading description',
+  //           profileUrl: 'This is a loading description',
+  //           skills: ["Flutter", "Dart"],
+  //           email: 'test@gmail.com',
+  //           isPremiumUser: false,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 class FriendsTile extends StatelessWidget {
@@ -252,15 +230,15 @@ class FriendsTile extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewProfile(
-                      user: user,
-                      isRequest: isRequest ?? false,
-                    ),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => ViewProfile(
+                //       user: user,
+                //       isRequest: isRequest ?? false,
+                //     ),
+                //   ),
+                // );
               },
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

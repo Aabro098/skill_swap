@@ -102,14 +102,12 @@ class FriendController {
     }
   }
 
-  Future<Map<String, dynamic>> respondRequest(
-      {required String userId, required String action}) async {
+  Future<Map<String, dynamic>> respondRequest({required String userId}) async {
     final dio = await DioClient.initClient();
 
     try {
       final reqData = {
         "userId": userId,
-        "action": action,
       };
       final response = await dio.put<Map<String, dynamic>>(
         UrlStrings.respond,

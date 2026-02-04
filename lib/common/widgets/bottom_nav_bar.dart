@@ -18,15 +18,8 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.black87,
-              Colors.black,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+        decoration: BoxDecoration(
+          color: context.colorScheme.surface,
         ),
         padding: const EdgeInsets.symmetric(
           horizontal: AppSizes.md,
@@ -35,11 +28,10 @@ class BottomNavBar extends StatelessWidget {
         child: GNav(
           gap: 8,
           backgroundColor: Colors.transparent,
-          color: Colors.grey.shade300, // icon color when unselected
-          activeColor:
-              context.colorScheme.primary, // selected icon & text color
+          color: context.colorScheme.primary, // icon color when unselected
+          activeColor: Colors.white, // selected icon & text color
           tabBackgroundColor:
-              Colors.purple.shade50, // highlight for selected tab
+              context.colorScheme.primary, // highlight for selected tab
           padding: const EdgeInsets.symmetric(
               horizontal: AppSizes.md, vertical: AppSizes.sm),
           duration: const Duration(milliseconds: 300),

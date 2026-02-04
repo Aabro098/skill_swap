@@ -1,18 +1,10 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:skill_swap/notifiers/auth_notifier.dart';
 import 'package:skill_swap/screens/Auth/login_screen.dart';
 import 'package:skill_swap/utils/constants/api_constants.dart';
 import 'package:skill_swap/utils/helpers/app_globals.dart';
 import 'package:skill_swap/utils/local_storage/secure_storage.dart';
-
-ProviderContainer? _providerContainer;
-
-void setProviderContainer(ProviderContainer container) {
-  _providerContainer = container;
-}
 
 /// Class for Using the DioClient for managing HTTP networking.
 class DioClient {
@@ -114,9 +106,6 @@ class AuthInterceptor extends Interceptor {
     if (err.response?.statusCode == 403) {
       // Clear auth token
       await clearToken();
-
-      // Reset auth state
-      _providerContainer?.read(authNotifierProvider.notifier).resetState();
 
       // Navigate to login safely
       await navigatorKey.currentState?.pushNamedAndRemoveUntil(

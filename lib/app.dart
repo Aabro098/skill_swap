@@ -1,40 +1,40 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:skill_swap/localization/app_localization.dart';
+import 'package:skill_swap/providers/localization_provider.dart';
 import 'package:skill_swap/routes/app_routes.dart';
 import 'package:skill_swap/screens/Welcome/welcome_screen.dart';
 import 'package:skill_swap/utils/helpers/app_globals.dart';
 import 'package:skill_swap/utils/helpers/localization_manager.dart';
-import 'package:skill_swap/notifiers/localization_notifier.dart';
-import 'package:skill_swap/notifiers/theme_notifier.dart';
+import 'package:skill_swap/providers/theme_provider.dart';
 import 'package:skill_swap/utils/theme/theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-class App extends ConsumerStatefulWidget {
+class App extends StatefulWidget {
   const App({super.key});
 
   @override
-  ConsumerState<App> createState() => _AppState();
+  State<App> createState() => _AppState();
 }
 
-class _AppState extends ConsumerState<App> {
+class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // Load saved theme
-      await ref.read(themeProvider.notifier).loadTheme();
+      await context.read<ThemeProvider>().loadTheme();
       // Load saved locale
-      await ref.read(localizationProvider.notifier).loadSavedLocale();
+      await context.read<LocalizationProvider>().loadSavedLocale();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final themeMode = ref.watch(themeProvider);
-    final locale = ref.watch(localizationProvider);
+    final themeMode = context.watch<ThemeProvider>().themeMode;
+    final locale = context.watch<LocalizationProvider>().locale;
 
     return MaterialApp(
       navigatorKey: navigatorKey,

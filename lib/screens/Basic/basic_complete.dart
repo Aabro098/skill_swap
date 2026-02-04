@@ -1,27 +1,27 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
+import 'package:provider/provider.dart';
 import 'package:skill_swap/common/widgets/drawer_page.dart';
-import 'package:skill_swap/model/auth_state.dart';
-import 'package:skill_swap/notifiers/auth_notifier.dart';
+import 'package:skill_swap/providers/auth_provider.dart';
 import 'package:skill_swap/screens/Basic/enter_description.dart';
 import 'package:skill_swap/screens/Basic/skill_select.dart';
+import 'package:skill_swap/services/dio_client.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 import 'package:skill_swap/utils/helpers/app_globals.dart';
 import 'package:skill_swap/utils/helpers/helper_functions.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class BasicComplete extends ConsumerStatefulWidget {
-  final String id;
-  const BasicComplete({required this.id, super.key});
+class BasicComplete extends StatefulWidget {
+  const BasicComplete({super.key});
 
   static const String routeName = '/basic_complete';
 
   @override
-  ConsumerState<BasicComplete> createState() => _BasicCompleteState();
+  State<BasicComplete> createState() => _BasicCompleteState();
 }
 
-class _BasicCompleteState extends ConsumerState<BasicComplete> {
+class _BasicCompleteState extends State<BasicComplete> {
   final controller = LiquidController();
   final TextEditingController descriptionController = TextEditingController();
   int currentPageIndex = 0;
@@ -62,6 +62,31 @@ class _BasicCompleteState extends ConsumerState<BasicComplete> {
     controller.jumpToPage(page: nextPage);
   }
 
+  Future<void> _completeProfile({
+    required String description,
+    required List<String> skills,
+  }) async {
+    try {
+      await context.read<AuthProvider>().completeProfile(
+            description: description,
+            skills: skills,
+          );
+      await navigatorKey.currentState!.pushNamedAndRemoveUntil(
+        DrawerPage.routeName,
+        (_) => false,
+      );
+      return;
+    } on DioException catch (e) {
+      final errorMessage = DioClient.parseDioError(e);
+      showErrorSnackbar(errorMessage);
+      return;
+    } catch (e) {
+      showErrorSnackbar(
+          "An unexpected error occurred while completing profile.");
+      return;
+    }
+  }
+
   @override
   void dispose() {
     descriptionController.dispose();
@@ -70,22 +95,6 @@ class _BasicCompleteState extends ConsumerState<BasicComplete> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authNotifierProvider);
-
-    ref.listen<AuthState>(authNotifierProvider, (previous, next) async {
-      final error = next.error;
-
-      if (error != null && error.isNotEmpty) {
-        showErrorSnackbar(context: context, error);
-      }
-
-      if (next.success == true) {
-        await navigatorKey.currentState!.pushNamedAndRemoveUntil(
-          DrawerPage.routeName,
-          (_) => false,
-        );
-      }
-    });
     return Scaffold(
       body: Stack(
         children: [
@@ -119,42 +128,42 @@ class _BasicCompleteState extends ConsumerState<BasicComplete> {
                   width: 40,
                   height: 40,
                   child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      padding: EdgeInsets.zero,
-                      backgroundColor: Colors.black87,
-                      side: const BorderSide(color: Colors.black87, width: 2),
-                    ),
-                    onPressed: currentPageIndex == pages.length - 1
-                        ? () {
-                            ref
-                                .read(authNotifierProvider.notifier)
-                                .completeProfile(
-                                  id: widget.id,
-                                  description:
-                                      descriptionController.text.trim(),
-                                  skills: skills,
+                      style: OutlinedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: EdgeInsets.zero,
+                        backgroundColor: Colors.black87,
+                        side: const BorderSide(color: Colors.black87, width: 2),
+                      ),
+                      onPressed: currentPageIndex == pages.length - 1
+                          ? () async {
+                              await _completeProfile(
+                                description: descriptionController.text.trim(),
+                                skills: skills,
+                              );
+                            }
+                          : _navigateToNextPage,
+                      child: Consumer<AuthProvider>(
+                        builder: (context, provider, _) {
+                          return provider.isLoading
+                              ? const Center(
+                                  child: SizedBox(
+                                    height: AppSizes.lg,
+                                    width: AppSizes.lg,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.green,
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                                )
+                              : Icon(
+                                  currentPageIndex == pages.length - 1
+                                      ? Icons.check
+                                      : Icons.arrow_forward_ios,
+                                  color: Colors.white,
+                                  size: 20,
                                 );
-                          }
-                        : _navigateToNextPage,
-                    child: authState.isLoading
-                        ? const Center(
-                            child: SizedBox(
-                            height: AppSizes.lg,
-                            width: AppSizes.lg,
-                            child: CircularProgressIndicator(
-                              color: Colors.green,
-                              strokeWidth: 2,
-                            ),
-                          ))
-                        : Icon(
-                            currentPageIndex == pages.length - 1
-                                ? Icons.check
-                                : Icons.arrow_forward_ios,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                  ),
+                        },
+                      )),
                 ),
                 const SizedBox(height: AppSizes.lg),
                 // Page indicator

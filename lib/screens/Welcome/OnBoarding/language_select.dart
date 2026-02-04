@@ -1,14 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:skill_swap/common/reusables/flag_button.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
+import 'package:skill_swap/providers/localization_provider.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 import 'package:skill_swap/utils/helpers/helper_functions.dart';
-import 'package:skill_swap/notifiers/localization_notifier.dart';
 
-class LanguageSelector extends ConsumerStatefulWidget {
+class LanguageSelector extends StatefulWidget {
   const LanguageSelector({
     super.key,
     required this.onDone,
@@ -16,10 +16,10 @@ class LanguageSelector extends ConsumerStatefulWidget {
   final void Function(BuildContext context) onDone;
 
   @override
-  ConsumerState<LanguageSelector> createState() => _LanguageSelectorState();
+  State<LanguageSelector> createState() => _LanguageSelectorState();
 }
 
-class _LanguageSelectorState extends ConsumerState<LanguageSelector> {
+class _LanguageSelectorState extends State<LanguageSelector> {
   // Map your selectedLang to a Locale
   final localeMap = {
     "ne": const Locale("ne", "NP"),
@@ -35,15 +35,13 @@ class _LanguageSelectorState extends ConsumerState<LanguageSelector> {
       setState(() {
         selectedLang = locale.languageCode;
         // Update the notifier's state
-        ref.read(localizationProvider.notifier).switchLocale(locale);
+        context.read<LocalizationProvider>().switchLocale(locale);
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Initialize selectedLang only once
-    selectedLang ??= ref.read(localizationProvider).languageCode;
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -110,8 +108,9 @@ class _LanguageSelectorState extends ConsumerState<LanguageSelector> {
               ElevatedButton(
                 onPressed: () {
                   if (selectedLang == null) {
-                    showErrorSnackbar(context.tr("select_language"),
-                        context: context);
+                    showErrorSnackbar(
+                      context.tr("select_language"),
+                    );
                     return;
                   }
                   final locale = localeMap[selectedLang]!;

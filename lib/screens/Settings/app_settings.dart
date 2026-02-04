@@ -1,26 +1,27 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/settings_model.dart';
-import 'package:skill_swap/notifiers/auth_notifier.dart';
+import 'package:skill_swap/providers/auth_provider.dart';
+import 'package:skill_swap/screens/Auth/login_screen.dart';
 import 'package:skill_swap/screens/Welcome/OnBoarding/language_select.dart';
-import 'package:skill_swap/screens/Welcome/welcome_screen.dart';
 import 'package:skill_swap/utils/constants/enums.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
-import 'package:skill_swap/notifiers/theme_notifier.dart';
+import 'package:skill_swap/providers/theme_provider.dart';
+import 'package:skill_swap/utils/helpers/app_globals.dart';
 
-class AppSettings extends ConsumerStatefulWidget {
+class AppSettings extends StatefulWidget {
   const AppSettings({super.key});
 
   @override
-  ConsumerState<AppSettings> createState() => _AppSettingsState();
+  State<AppSettings> createState() => _AppSettingsState();
 }
 
-class _AppSettingsState extends ConsumerState<AppSettings> {
+class _AppSettingsState extends State<AppSettings> {
   late bool _isOn;
 
   List<SettingsItemModel> get settingsItems => [
@@ -29,10 +30,12 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
           icon: Iconsax.sun_14,
           type: SettingsTileType.switchTile,
           value: _isOn,
-          onChanged: (val) {
+          onChanged: (val) async {
             if (mounted) {
               setState(() => _isOn = val);
-              ref.read(themeProvider.notifier).toggleTheme();
+              await context
+                  .read<ThemeProvider>()
+                  .setTheme(val ? ThemeMode.dark : ThemeMode.light);
             }
           },
         ),
@@ -76,13 +79,10 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
           title: 'logout',
           icon: Iconsax.logout,
           type: SettingsTileType.customTile,
-          onTap: () {
-            ref.read(authNotifierProvider.notifier).logout();
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const WelcomeScreen(),
-              ),
+          onTap: () async {
+            await context.read<AuthProvider>().logout();
+            navigatorKey.currentState?.pushNamedAndRemoveUntil(
+              LoginScreen.routeName,
               (Route<dynamic> route) => false,
             );
           },
@@ -92,7 +92,7 @@ class _AppSettingsState extends ConsumerState<AppSettings> {
 
   @override
   Widget build(BuildContext context) {
-    _isOn = ref.watch(themeProvider) == ThemeMode.dark;
+    _isOn = context.read<ThemeProvider>().themeMode == ThemeMode.dark;
     return Scaffold(
       appBar: AppBar(
         leading: const MenuWidget(),
@@ -234,35 +234,36 @@ class SettingsTile extends StatelessWidget {
   }
 }
 
-class SettingsHeader extends ConsumerWidget {
+class SettingsHeader extends StatelessWidget {
   const SettingsHeader({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authNotifierProvider);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CircleAvatar(
-          radius: 64,
-          backgroundImage: const AssetImage(AppImages.fallback),
-          foregroundImage: NetworkImage(authState.user.profileUrl),
-          onForegroundImageError: (_, __) {},
-        ),
-        const SizedBox(height: AppSizes.lg),
-        AutoSizeText(
-          authState.user.name,
-          style: context.textTheme.titleLarge
-              ?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: AppSizes.xs),
-        AutoSizeText(
-          authState.user.email,
-          style: context.textTheme.titleSmall,
-        ),
-      ],
-    );
+  Widget build(BuildContext context) {
+    return Consumer<AuthProvider>(builder: (context, provider, child) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: 64,
+            backgroundImage: const AssetImage(AppImages.fallback),
+            foregroundImage: NetworkImage(provider.user?.profileUrl ?? ''),
+            onForegroundImageError: (_, __) {},
+          ),
+          const SizedBox(height: AppSizes.lg),
+          AutoSizeText(
+            provider.user?.name ?? '',
+            style: context.textTheme.titleLarge
+                ?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: AppSizes.xs),
+          AutoSizeText(
+            provider.user?.email ?? '',
+            style: context.textTheme.titleSmall,
+          ),
+        ],
+      );
+    });
   }
 }

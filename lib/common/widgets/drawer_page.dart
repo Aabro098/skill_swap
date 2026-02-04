@@ -1,33 +1,31 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
+import 'package:provider/provider.dart';
 import 'package:skill_swap/common/widgets/side_menu.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/side_bar_model.dart';
-import 'package:skill_swap/notifiers/auth_notifier.dart';
+import 'package:skill_swap/providers/auth_provider.dart';
 import 'package:skill_swap/screens/ChatBot/chatbot.dart';
 import 'package:skill_swap/screens/Main/main_screen.dart';
 import 'package:skill_swap/screens/Profile/profile.dart';
 import 'package:skill_swap/screens/Settings/app_settings.dart';
 
-class DrawerPage extends ConsumerStatefulWidget {
+class DrawerPage extends StatefulWidget {
   const DrawerPage({super.key});
 
   static const String routeName = '/drawer_page';
 
   @override
-  ConsumerState<DrawerPage> createState() => _DrawerPageState();
+  State<DrawerPage> createState() => _DrawerPageState();
 }
 
-class _DrawerPageState extends ConsumerState<DrawerPage> {
+class _DrawerPageState extends State<DrawerPage> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      unawaited(ref.read(authNotifierProvider.notifier).getProfile());
+      final authProvider = context.read<AuthProvider>();
+      authProvider.getProfile();
     });
   }
 

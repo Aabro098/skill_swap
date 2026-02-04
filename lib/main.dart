@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:provider/provider.dart';
 import 'package:skill_swap/app.dart';
-import 'package:skill_swap/services/dio_client.dart';
+import 'package:skill_swap/providers/auth_provider.dart';
+import 'package:skill_swap/providers/friends_provider.dart';
+import 'package:skill_swap/providers/localization_provider.dart';
+import 'package:skill_swap/providers/recommended_provider.dart';
+import 'package:skill_swap/providers/theme_provider.dart';
 import 'package:skill_swap/utils/helpers/notification_service.dart';
 
 void main() async {
@@ -22,18 +26,23 @@ void main() async {
         systemNavigationBarColor: Colors.black),
   );
 
-  final container = ProviderContainer();
-  setProviderContainer(container);
-
   // Allow only portrait mode
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
-  ]).then((_) {
-    runApp(
-      UncontrolledProviderScope(
-        container: container,
-        child: const App(),
-      ),
-    );
-  });
+  ]).then(
+    (_) {
+      runApp(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => ThemeProvider()),
+            ChangeNotifierProvider(create: (_) => LocalizationProvider()),
+            ChangeNotifierProvider(create: (_) => AuthProvider()),
+            ChangeNotifierProvider(create: (_) => FriendProvider()),
+            ChangeNotifierProvider(create: (_) => RecommendedProvider()),
+          ],
+          child: const App(),
+        ),
+      );
+    },
+  );
 }

@@ -4,25 +4,25 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/user_model.dart';
-import 'package:skill_swap/notifiers/recommend_user_notifier.dart';
+import 'package:skill_swap/providers/recommended_provider.dart';
 import 'package:skill_swap/services/dio_client.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 import 'package:skill_swap/utils/helpers/helper_functions.dart';
 
-class FindMatch extends ConsumerStatefulWidget {
+class FindMatch extends StatefulWidget {
   const FindMatch({super.key});
 
   @override
-  ConsumerState<FindMatch> createState() => _FindMatchState();
+  State<FindMatch> createState() => _FindMatchState();
 }
 
-class _FindMatchState extends ConsumerState<FindMatch> {
+class _FindMatchState extends State<FindMatch> {
   final List<Color> colors = [
     Colors.red,
     Colors.indigo,
@@ -41,14 +41,13 @@ class _FindMatchState extends ConsumerState<FindMatch> {
   }
 
   Future<void> _loadRecommendedUsers() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(recommendedUsersProvider.notifier).fetchRecommendedUsers();
+    Future.microtask(() async {
+      await context.read<RecommendedProvider>().fetchRecommendedUsers();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final recommendedState = ref.watch(recommendedUsersProvider);
     return Container(
       height: context.screenHeight,
       width: context.screenWidth,
@@ -56,56 +55,43 @@ class _FindMatchState extends ConsumerState<FindMatch> {
         gradient: context.gradient,
       ),
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSizes.padding),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const MenuWidget(),
-                    const SizedBox(width: AppSizes.md),
-                    AutoSizeText(
-                      context.tr('discover'),
-                      textAlign: TextAlign.center,
-                      style: context.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        fontSize: 28,
+        child:
+            Consumer<RecommendedProvider>(builder: (context, provider, child) {
+          return Padding(
+            padding: const EdgeInsets.all(AppSizes.padding),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const MenuWidget(),
+                      const SizedBox(width: AppSizes.md),
+                      AutoSizeText(
+                        context.tr('discover'),
+                        textAlign: TextAlign.center,
+                        style: context.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          fontSize: 28,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSizes.sm),
-                recommendedState.when(
-                    loading: () => SizedBox(
-                          height: context.screenHeight,
-                          child: const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          ),
-                        ),
-                    error: (error, stackTrace) => SizedBox(
-                          height: context.screenHeight,
-                          child: Center(
-                            child: Text(
-                              context.tr('No Recommended Users Found'),
-                              style: context.textTheme.titleMedium?.copyWith(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                    data: (friends) {
-                      if (friends.isEmpty) {
+                    ],
+                  ),
+                  const SizedBox(height: AppSizes.sm),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: provider.recommendedUsers.length,
+                    itemBuilder: (context, index) {
+                      final user = provider.recommendedUsers[index];
+
+                      if (provider.recommendedUsers.isEmpty) {
                         return SizedBox(
                           height: context.screenHeight,
                           child: Center(
                             child: AutoSizeText(
-                              context.tr('No Recommended Users Found'),
+                              context.tr('No Recommended Users'),
                               style: context.textTheme.titleMedium?.copyWith(
                                 color: Colors.white,
                               ),
@@ -113,30 +99,27 @@ class _FindMatchState extends ConsumerState<FindMatch> {
                           ),
                         );
                       }
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: friends.length,
-                        itemBuilder: (context, index) {
-                          final user = friends[index];
-                          return MatchCard(
-                            user: user,
-                            colors: colors,
-                            random: random,
-                          );
-                        },
+                      return GestureDetector(
+                        onTap: () {},
+                        child: MatchCard(
+                          user: user,
+                          colors: colors,
+                          random: random,
+                        ),
                       );
-                    })
-              ],
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }
 }
 
-class MatchCard extends ConsumerWidget {
+class MatchCard extends StatefulWidget {
   final UserModel user;
   final List<Color> colors;
   final Random random;
@@ -149,7 +132,24 @@ class MatchCard extends ConsumerWidget {
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<MatchCard> createState() => _MatchCardState();
+}
+
+class _MatchCardState extends State<MatchCard> {
+  Future<void> _sendrequest() async {
+    try {
+      await context.read<RecommendedProvider>().sendRequest(id: widget.user.id);
+      showSuccessSnackbar("Request Sent Successfully");
+    } on DioException catch (e) {
+      final errorMessage = DioClient.parseDioError(e);
+      showErrorSnackbar(errorMessage);
+    } catch (e) {
+      showErrorSnackbar('Something went wrong. Try again.');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       width: context.screenWidth * 0.9,
       margin: const EdgeInsets.symmetric(vertical: AppSizes.sm),
@@ -166,7 +166,7 @@ class MatchCard extends ConsumerWidget {
                   topRight: Radius.circular(AppSizes.md),
                 ),
                 child: Image.network(
-                  user.profileUrl,
+                  widget.user.profileUrl,
                   fit: BoxFit.cover,
                   height: 312,
                   width: double.infinity,
@@ -201,7 +201,7 @@ class MatchCard extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AutoSizeText(
-                    user.name,
+                    widget.user.name,
                     style: context.textTheme.titleLarge?.copyWith(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -211,7 +211,7 @@ class MatchCard extends ConsumerWidget {
                   ),
                   const SizedBox(height: AppSizes.xs),
                   AutoSizeText(
-                    user.description,
+                    widget.user.description,
                     style: context.textTheme.labelMedium?.copyWith(
                       color: Colors.black87,
                     ),
@@ -219,13 +219,12 @@ class MatchCard extends ConsumerWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: AppSizes.xs),
-
                   // Skill Chips
                   Wrap(
                     spacing: AppSizes.xs,
                     runSpacing: 0,
                     children: [
-                      ...user.skills.take(5).map(
+                      ...widget.user.skills.take(5).map(
                             (skill) => Chip(
                               padding: const EdgeInsets.all(AppSizes.xs),
                               visualDensity: VisualDensity.compact,
@@ -237,12 +236,13 @@ class MatchCard extends ConsumerWidget {
                                 ),
                               ),
                               side: BorderSide(
-                                color: colors[random.nextInt(colors.length)],
+                                color: widget.colors[widget.random
+                                    .nextInt(widget.colors.length)],
                                 width: 2,
                               ),
                             ),
                           ),
-                      if (user.skills.length > 5)
+                      if (widget.user.skills.length > 5)
                         Chip(
                           padding: const EdgeInsets.all(AppSizes.xs),
                           visualDensity: VisualDensity.compact,
@@ -258,36 +258,12 @@ class MatchCard extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       _actionButton(
-                        icon: Iconsax.close_circle,
-                        color: Colors.red.shade700,
-                        onTap: () => ref
-                            .read(recommendedUsersProvider.notifier)
-                            .removeById(user.id),
+                        icon: Iconsax.tick_circle,
+                        color: Colors.green,
+                        onTap: () async {
+                          await _sendrequest();
+                        },
                       ),
-                      const SizedBox(width: AppSizes.md),
-                      _actionButton(
-                          icon: Iconsax.tick_circle,
-                          color: Colors.green,
-                          onTap: () async {
-                            try {
-                              await ref
-                                  .read(recommendedUsersProvider.notifier)
-                                  .sendRequest(id: user.id);
-                              showSuccessSnackbar("Request Sent Successfully",
-                                  context: context);
-                            } on DioException catch (e) {
-                              final errorMessage = DioClient.parseDioError(e);
-                              showErrorSnackbar(
-                                context: context,
-                                errorMessage,
-                              );
-                            } catch (e) {
-                              showErrorSnackbar(
-                                context: context,
-                                'Something went wrong. Try again.',
-                              );
-                            }
-                          }),
                     ],
                   ),
                 ],
@@ -317,3 +293,25 @@ class MatchCard extends ConsumerWidget {
     );
   }
 }
+
+
+// loading: () => SizedBox(
+//                           height: context.screenHeight,
+//                           child: const Center(
+//                             child: CircularProgressIndicator(
+//                               color: Colors.white,
+//                               strokeWidth: 2,
+//                             ),
+//                           ),
+//                         ),
+//                     error: (error, stackTrace) => SizedBox(
+//                           height: context.screenHeight,
+//                           child: Center(
+//                             child: Text(
+//                               context.tr('No Recommended Users Found'),
+//                               style: context.textTheme.titleMedium?.copyWith(
+//                                 color: Colors.white,
+//                               ),
+//                             ),
+//                           ),
+//                         ),

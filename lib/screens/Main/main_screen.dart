@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skill_swap/common/widgets/bottom_nav_bar.dart';
 import 'package:skill_swap/screens/Main/Friends/friends_screen.dart';
 import 'package:skill_swap/screens/Main/Matching/matching.dart';
 import 'package:skill_swap/screens/Main/Messenger/messenger.dart';
 
-class MainScreen extends ConsumerStatefulWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
-  ConsumerState<MainScreen> createState() => _MainScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _MainScreenState extends ConsumerState<MainScreen> {
+class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   List<Widget> get _screens => [

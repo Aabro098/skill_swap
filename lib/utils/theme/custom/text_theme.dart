@@ -1,54 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:skill_swap/utils/constants/colors.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTypography {
   AppTypography._();
 
   /// ------------------------------
-  /// Light Theme TextTheme
+  /// Light Theme GoogleFonts.inter
   /// ------------------------------
-  static TextTheme lightTextTheme = const TextTheme(
-    headlineLarge: TextStyle(
+  static TextTheme lightTextTheme = TextTheme(
+    headlineLarge: GoogleFonts.inter(
       fontSize: 32,
       fontWeight: FontWeight.w600,
       color: AppColors.lightTextPrimary,
     ),
-    headlineMedium: TextStyle(
+    headlineMedium: GoogleFonts.inter(
       fontSize: 28,
       fontWeight: FontWeight.w600,
       color: AppColors.lightTextPrimary,
     ),
-    headlineSmall: TextStyle(
+    headlineSmall: GoogleFonts.inter(
       fontSize: 24,
       fontWeight: FontWeight.w600,
       color: AppColors.lightTextPrimary,
     ),
-    titleLarge: TextStyle(
+    titleLarge: GoogleFonts.inter(
       fontSize: 18,
       fontWeight: FontWeight.w500,
       color: AppColors.lightTextPrimary,
     ),
-    titleMedium: TextStyle(
+    titleMedium: GoogleFonts.inter(
       fontSize: 16,
       fontWeight: FontWeight.w500,
       color: AppColors.lightTextPrimary,
     ),
-    titleSmall: TextStyle(
+    titleSmall: GoogleFonts.inter(
       fontSize: 14,
       fontWeight: FontWeight.w500,
       color: AppColors.lightTextSecondary,
     ),
-    bodyLarge: TextStyle(
+    bodyLarge: GoogleFonts.inter(
       fontSize: 16,
       fontWeight: FontWeight.normal,
       color: AppColors.lightTextPrimary,
     ),
-    bodyMedium: TextStyle(
+    bodyMedium: GoogleFonts.inter(
       fontSize: 14,
       fontWeight: FontWeight.normal,
       color: AppColors.lightTextSecondary,
     ),
-    bodySmall: TextStyle(
+    bodySmall: GoogleFonts.inter(
       fontSize: 12,
       fontWeight: FontWeight.normal,
       color: AppColors.lightTextSecondary,
@@ -56,50 +57,50 @@ class AppTypography {
   );
 
   /// ------------------------------
-  /// Dark Theme TextTheme
+  /// Dark Theme GoogleFonts.inter
   /// ------------------------------
-  static TextTheme darkTextTheme = const TextTheme(
-    headlineLarge: TextStyle(
+  static TextTheme darkTextTheme = TextTheme(
+    headlineLarge: GoogleFonts.inter(
       fontSize: 32,
       fontWeight: FontWeight.w600,
       color: AppColors.darkTextPrimary,
     ),
-    headlineMedium: TextStyle(
+    headlineMedium: GoogleFonts.inter(
       fontSize: 28,
       fontWeight: FontWeight.w600,
       color: AppColors.darkTextPrimary,
     ),
-    headlineSmall: TextStyle(
+    headlineSmall: GoogleFonts.inter(
       fontSize: 24,
       fontWeight: FontWeight.w600,
       color: AppColors.darkTextPrimary,
     ),
-    titleLarge: TextStyle(
+    titleLarge: GoogleFonts.inter(
       fontSize: 18,
       fontWeight: FontWeight.w500,
       color: AppColors.darkTextPrimary,
     ),
-    titleMedium: TextStyle(
+    titleMedium: GoogleFonts.inter(
       fontSize: 16,
       fontWeight: FontWeight.w500,
       color: AppColors.darkTextPrimary,
     ),
-    titleSmall: TextStyle(
+    titleSmall: GoogleFonts.inter(
       fontSize: 14,
       fontWeight: FontWeight.w500,
       color: AppColors.darkTextSecondary,
     ),
-    bodyLarge: TextStyle(
+    bodyLarge: GoogleFonts.inter(
       fontSize: 16,
       fontWeight: FontWeight.normal,
       color: AppColors.darkTextPrimary,
     ),
-    bodyMedium: TextStyle(
+    bodyMedium: GoogleFonts.inter(
       fontSize: 14,
       fontWeight: FontWeight.normal,
       color: AppColors.darkTextSecondary,
     ),
-    bodySmall: TextStyle(
+    bodySmall: GoogleFonts.inter(
       fontSize: 12,
       fontWeight: FontWeight.normal,
       color: AppColors.darkTextSecondary,

@@ -1,5 +1,5 @@
 class UrlStrings {
-  static const String baseUrl = 'http://192.168.1.6:5001/';
+  static const String baseUrl = 'http://10.0.2.2:5001/';
 
   static const String googleAuth = '/auth/google';
 

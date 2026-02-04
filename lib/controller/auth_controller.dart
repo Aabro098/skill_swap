@@ -51,7 +51,6 @@ class AuthController {
   Future<void> completeProfile({
     required String description,
     required List<String> skills,
-    required String id,
   }) async {
     final dio = await DioClient.initClient();
 
