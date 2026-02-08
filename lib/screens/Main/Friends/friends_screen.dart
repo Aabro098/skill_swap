@@ -4,7 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-// import 'package:skeletonizer/skeletonizer.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:skill_swap/common/reusables/search_text.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
@@ -147,6 +147,9 @@ class _FriendsScreenState extends State<FriendsScreen>
   }
 
   Widget _dataState(List<UserModel> users, Widget trailing, bool? isRequest) {
+    if (context.watch<FriendProvider>().isLoading) {
+      return _loadingSkeleton();
+    }
     if (users.isEmpty) {
       return Center(
         child: Text(
@@ -182,27 +185,27 @@ class _FriendsScreenState extends State<FriendsScreen>
   //   );
   // }
 
-  // Widget _loadingSkeleton() {
-  //   return Skeletonizer(
-  //     enabled: true,
-  //     child: ListView.builder(
-  //       itemCount: 10, // fake count
-  //       padding: const EdgeInsets.all(AppSizes.xs),
-  //       itemBuilder: (_, __) => const FriendsTile(
-  //         trailing: SizedBox.shrink(),
-  //         user: UserModel(
-  //           id: '1234642453',
-  //           name: 'Loading',
-  //           description: 'This is a loading description',
-  //           profileUrl: 'This is a loading description',
-  //           skills: ["Flutter", "Dart"],
-  //           email: 'test@gmail.com',
-  //           isPremiumUser: false,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _loadingSkeleton() {
+    return Skeletonizer(
+      enabled: true,
+      child: ListView.builder(
+        itemCount: 10, // fake count
+        padding: const EdgeInsets.all(AppSizes.xs),
+        itemBuilder: (_, __) => const FriendsTile(
+          trailing: SizedBox.shrink(),
+          user: UserModel(
+            id: '1234642453',
+            name: 'Loading',
+            description: 'This is a loading description',
+            profileUrl: 'This is a loading description',
+            skills: ["Flutter", "Dart"],
+            email: 'test@gmail.com',
+            isPremiumUser: false,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class FriendsTile extends StatelessWidget {
