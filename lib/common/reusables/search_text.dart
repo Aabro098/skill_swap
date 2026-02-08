@@ -7,6 +7,8 @@ class RoundedTextField extends StatelessWidget {
   final Color? fillColor;
   final Color? textColor;
   final IconData? prefixIcon;
+  final bool enabled;
+  final TextEditingController? controller;
 
   const RoundedTextField({
     super.key,
@@ -14,6 +16,8 @@ class RoundedTextField extends StatelessWidget {
     this.fillColor,
     this.textColor,
     this.prefixIcon,
+    this.controller,
+    this.enabled = true,
   });
 
   @override
@@ -23,9 +27,11 @@ class RoundedTextField extends StatelessWidget {
       borderSide: BorderSide.none,
     );
 
-    return TextField(
+    return TextFormField(
       style: context.textTheme.titleSmall
           ?.copyWith(color: textColor ?? Colors.white, fontSize: 14),
+      controller: controller,
+      enabled: enabled,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: context.textTheme.titleSmall

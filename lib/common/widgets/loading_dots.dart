@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:skill_swap/extensions/context_extensions.dart';
 
 class LoadingDots extends StatefulWidget {
   const LoadingDots({super.key});
@@ -35,9 +37,11 @@ class _LoadingDotsState extends State<LoadingDots> {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return AutoSizeText(
       '.' * _dotCount,
-      style: const TextStyle(fontSize: 16),
+      style: context.textTheme.titleLarge?.copyWith(
+        color: Colors.black,
+      ),
     );
   }
 }

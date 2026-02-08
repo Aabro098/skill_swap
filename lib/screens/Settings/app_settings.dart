@@ -97,36 +97,36 @@ class _AppSettingsState extends State<AppSettings> {
       appBar: AppBar(
         leading: const MenuWidget(),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSizes.padding),
+      body: const Padding(
+        padding: EdgeInsets.all(AppSizes.padding),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Center(
+            Center(
               child: SettingsHeader(),
             ),
-            const SizedBox(height: AppSizes.md),
-            SizedBox(
-              width: 196,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppSizes.xl),
-                  ),
-                ),
-                onPressed: () {},
-                child: Text(context.tr('upgrade_account')),
-              ),
-            ),
+            // const SizedBox(height: AppSizes.md),
+            // SizedBox(
+            //   width: 196,
+            //   child: ElevatedButton(
+            //     style: ElevatedButton.styleFrom(
+            //       foregroundColor: Colors.white,
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(AppSizes.xl),
+            //       ),
+            //     ),
+            //     onPressed: () {},
+            //     child: Text(context.tr('upgrade_account')),
+            //   ),
+            // ),
           ],
         ),
       ),
       bottomSheet: SafeArea(
         child: Container(
           width: double.infinity,
-          height: context.screenHeight * 0.4,
+          // height: context.screenHeight * 0.5,
           padding: const EdgeInsets.all(AppSizes.padding),
           decoration: BoxDecoration(
             color: context.isDarkMode ? Colors.black87 : Colors.grey.shade100,

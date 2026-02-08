@@ -156,118 +156,115 @@ class _MatchCardState extends State<MatchCard> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppSizes.md),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppSizes.md),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppSizes.md),
+        ),
+        padding: const EdgeInsets.all(AppSizes.md),
         child: Column(
           children: [
-            ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(AppSizes.md),
-                  topRight: Radius.circular(AppSizes.md),
+            Row(
+              children: [
+                Container(
+                  height: 92,
+                  width: 92,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Image.network(
+                    widget.user.profileUrl,
+                    fit: BoxFit.cover,
+                    height: 92,
+                    width: 92,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        AppImages.fallback,
+                        fit: BoxFit.cover,
+                        height: 92,
+                        width: 92,
+                      );
+                    },
+                    loadingBuilder: (context, child, loadingProgress) =>
+                        loadingProgress == null
+                            ? child
+                            : Container(
+                                height: 92,
+                                width: 92,
+                                color: Colors.grey.shade400,
+                              ),
+                  ),
                 ),
-                child: Image.network(
-                  widget.user.profileUrl,
-                  fit: BoxFit.cover,
-                  height: 312,
-                  width: double.infinity,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      AppImages.fallback,
-                      fit: BoxFit.cover,
-                      height: 312,
-                      width: double.infinity,
-                    );
-                  },
-                  loadingBuilder: (context, child, loadingProgress) =>
-                      loadingProgress == null
-                          ? child
-                          : Container(
-                              height: 312,
-                              color: Colors.grey.shade400,
-                            ),
-                )),
+                const SizedBox(width: AppSizes.md),
+                AutoSizeText(
+                  widget.user.name,
+                  style: context.textTheme.titleLarge?.copyWith(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                  maxLines: 1,
+                ),
+              ],
+            ),
 
             // User Info
-            Container(
-              padding: const EdgeInsets.all(AppSizes.md),
-              decoration: BoxDecoration(
-                color: Colors.white.withAlpha(232),
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(AppSizes.md),
-                  bottomRight: Radius.circular(AppSizes.md),
-                ),
+            const SizedBox(height: AppSizes.xs),
+            AutoSizeText(
+              widget.user.description,
+              style: context.textTheme.labelMedium?.copyWith(
+                color: Colors.black87,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AutoSizeText(
-                    widget.user.name,
-                    style: context.textTheme.titleLarge?.copyWith(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                    maxLines: 1,
-                  ),
-                  const SizedBox(height: AppSizes.xs),
-                  AutoSizeText(
-                    widget.user.description,
-                    style: context.textTheme.labelMedium?.copyWith(
-                      color: Colors.black87,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: AppSizes.xs),
-                  // Skill Chips
-                  Wrap(
-                    spacing: AppSizes.xs,
-                    runSpacing: 0,
-                    children: [
-                      ...widget.user.skills.take(5).map(
-                            (skill) => Chip(
-                              padding: const EdgeInsets.all(AppSizes.xs),
-                              visualDensity: VisualDensity.compact,
-                              backgroundColor: Colors.white,
-                              label: Text(
-                                skill,
-                                style: context.textTheme.bodySmall?.copyWith(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              side: BorderSide(
-                                color: widget.colors[widget.random
-                                    .nextInt(widget.colors.length)],
-                                width: 2,
-                              ),
-                            ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: AppSizes.xs),
+            // Skill Chips
+            Wrap(
+              spacing: AppSizes.xs,
+              runSpacing: 0,
+              children: [
+                ...widget.user.skills.take(5).map(
+                      (skill) => Chip(
+                        padding: const EdgeInsets.all(AppSizes.xs),
+                        visualDensity: VisualDensity.compact,
+                        backgroundColor: Colors.white,
+                        label: Text(
+                          skill,
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: Colors.black,
                           ),
-                      if (widget.user.skills.length > 5)
-                        Chip(
-                          padding: const EdgeInsets.all(AppSizes.xs),
-                          visualDensity: VisualDensity.compact,
-                          backgroundColor: Colors.white,
-                          label: Text("...",
-                              style: context.textTheme.titleLarge
-                                  ?.copyWith(color: Colors.black)),
                         ),
-                    ],
-                  ),
-                  const SizedBox(height: AppSizes.sm),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _actionButton(
-                        icon: Iconsax.tick_circle,
-                        color: Colors.green,
-                        onTap: () async {
-                          await _sendrequest();
-                        },
+                        side: BorderSide(
+                          color: widget.colors[
+                              widget.random.nextInt(widget.colors.length)],
+                          width: 2,
+                        ),
                       ),
-                    ],
+                    ),
+                if (widget.user.skills.length > 8)
+                  Chip(
+                    padding: const EdgeInsets.all(AppSizes.xs),
+                    visualDensity: VisualDensity.compact,
+                    backgroundColor: Colors.white,
+                    label: Text("...",
+                        style: context.textTheme.titleLarge
+                            ?.copyWith(color: Colors.black)),
                   ),
-                ],
-              ),
+              ],
+            ),
+            const SizedBox(height: AppSizes.sm),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _actionButton(
+                  icon: Iconsax.tick_circle,
+                  color: Colors.green,
+                  onTap: () async {
+                    await _sendrequest();
+                  },
+                ),
+              ],
             ),
           ],
         ),

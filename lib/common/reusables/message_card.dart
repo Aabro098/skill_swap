@@ -1,16 +1,19 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:skill_swap/common/widgets/loading_dots.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 
 class MessageCard extends StatelessWidget {
   final String message;
   final bool isSentByMe;
+  final bool isLoading;
 
   const MessageCard({
     super.key,
     required this.message,
     required this.isSentByMe,
+    this.isLoading = false,
   });
 
   @override
@@ -31,13 +34,16 @@ class MessageCard extends StatelessWidget {
             bottomRight: Radius.circular(isSentByMe ? 0 : AppSizes.md),
           ),
         ),
-        child: AutoSizeText(
-          message,
-          style: TextStyle(
-            color: isSentByMe ? Colors.white : Colors.black,
-            fontSize: 14,
-          ),
-        ),
+        child: isLoading
+            ? const LoadingDots()
+            : AutoSizeText(
+                message,
+                style: context.textTheme.bodyMedium?.copyWith(
+                  color: isSentByMe ? Colors.white : Colors.black,
+                  fontSize: 14,
+                ),
+              ),
+        // : TypewriterText(text: message, isSentByMe: isSentByMe),
       ),
     );
   }

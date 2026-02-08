@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:skill_swap/common/reusables/message_card.dart';
-import 'package:skill_swap/common/widgets/message_box.dart';
+import 'package:skill_swap/common/reusables/search_text.dart';
 import 'package:skill_swap/common/widgets/messenger_appbar.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/screens/Main/Messenger/message_sample.dart';
@@ -44,8 +45,28 @@ class _MessageScreenState extends State<MessageScreen> {
               const SizedBox(
                 height: AppSizes.sm,
               ),
-              MessageBox(
-                hint: context.tr('message...'),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: RoundedTextField(
+                        hintText: context.tr('message...'),
+                        fillColor: Colors.deepPurple.shade50,
+                        textColor: Colors.black,
+                      ),
+                    ),
+                    FittedBox(
+                      child: IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        onPressed: () {},
+                        icon: Icon(Iconsax.send_1,
+                            color: context.colorScheme.primary),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
