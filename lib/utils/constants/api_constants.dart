@@ -16,6 +16,6 @@ class UrlStrings {
   static const String friends = '/api/friends/friend-list';
   static const String respond = '/api/friends/respond';
 
-  static const String chatbotBaseUrl = "http://10.0.2.2:8000/";
-  static const String chatbot = '/chatbot';
+  static const String chatbotBaseUrl = "http://10.0.2.2:8000";
+  static const String chatbot = '/query';
 }
