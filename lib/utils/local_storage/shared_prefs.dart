@@ -12,3 +12,15 @@ Future<bool> isFirstTimeOpen() async {
   final isFirstTime = prefs.getBool('isFirstTime') ?? true;
   return isFirstTime;
 }
+
+Future<void> setIsProfileComplete({required bool value}) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('isProfileComplete', value);
+}
+
+/// Function to know if user has completed profile
+Future<bool> isProfileComplete() async {
+  final prefs = await SharedPreferences.getInstance();
+  final isProfileComplete = prefs.getBool('isProfileComplete') ?? false;
+  return isProfileComplete;
+}

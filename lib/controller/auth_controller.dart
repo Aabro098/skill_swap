@@ -51,6 +51,7 @@ class AuthController {
   Future<void> completeProfile({
     required String description,
     required List<String> skills,
+    required List<String> wantToLearnSkills,
   }) async {
     final dio = await DioClient.initClient();
 
@@ -58,10 +59,36 @@ class AuthController {
       final formData = {
         "description": description,
         "skills": skills,
+        "requestedSkills": wantToLearnSkills,
       };
 
       await dio.put<Map<String, dynamic>>(
         UrlStrings.completeProfile,
+        data: formData,
+      );
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> editProfile({
+    String? description,
+    List<String>? skills,
+    List<String>? wantToLearnSkills,
+  }) async {
+    final dio = await DioClient.initClient();
+
+    try {
+      final formData = {
+        if (description != null) "description": description,
+        if (skills != null) "skills": skills,
+        if (wantToLearnSkills != null) "requestedSkills": wantToLearnSkills,
+      };
+
+      await dio.patch<Map<String, dynamic>>(
+        UrlStrings.editProfile,
         data: formData,
       );
     } on DioException {

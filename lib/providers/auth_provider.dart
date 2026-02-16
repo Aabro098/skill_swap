@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:skill_swap/controller/auth_controller.dart';
 import 'package:skill_swap/model/user_model.dart';
 import 'package:skill_swap/utils/local_storage/secure_storage.dart';
+import 'package:skill_swap/utils/local_storage/shared_prefs.dart';
 
 class AuthProvider with ChangeNotifier {
   bool _isLoading = false;
@@ -23,6 +24,7 @@ class AuthProvider with ChangeNotifier {
       final response = await AuthController.signInGoogle();
       final token = response['token'] as String;
       await saveTokenSecure(token);
+      await setIsProfileComplete(value: true);
       return;
     } on DioException {
       rethrow;
@@ -36,13 +38,16 @@ class AuthProvider with ChangeNotifier {
   Future<void> completeProfile({
     required String description,
     required List<String> skills,
+    required List<String> wantToLearnSkills,
   }) async {
     loading = true;
     try {
       await AuthController.instance.completeProfile(
         description: description,
         skills: skills,
+        wantToLearnSkills: wantToLearnSkills,
       );
+      await setIsProfileComplete(value: true);
       return;
     } on DioException {
       rethrow;
@@ -67,35 +72,32 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  // Future<void> editProfile({File? imageFile, String? name}) async {
-  //   state = state.copyWith(isLoading: true);
-
-  //   try {
-  //     final response = await AuthController.instance.editProfile(
-  //       imageFile: imageFile,
-  //       name: name,
-  //     );
-  //     final user = response['user'] as Map<String, dynamic>;
-  //     final avatar = user['avatar'] as Map<String, dynamic>;
-  //     state = AuthState(
-  //       success: true,
-  //       user: UserModel(
-  //         name: user['name'] as String,
-  //         email: user['email'] as String,
-  //         avatarUrl: avatar['url'] as String,
-  //       ),
-  //       isAuthenticated: true,
-  //     );
-  //   } on DioException catch (e) {
-  //     final errorMessage = DioClient.parseDioError(e);
-  //     state = state.copyWith(isLoading: false, error: errorMessage);
-  //   } catch (e) {
-  //     state = state.copyWith(
-  //       isLoading: false,
-  //       error: 'Something went wrong. Try again.',
-  //     );
-  //   }
-  // }
+  Future<void> editProfile({
+    String? description,
+    List<String>? skills,
+    List<String>? wantToLearnSkills,
+  }) async {
+    loading = true;
+    try {
+      await AuthController.instance.editProfile(
+        description: description,
+        skills: skills,
+        wantToLearnSkills: wantToLearnSkills,
+      );
+      _user = _user?.copyWith(
+        description: description ?? _user?.description,
+        skills: skills ?? _user?.skills,
+        requestedSkills: wantToLearnSkills ?? _user?.requestedSkills,
+      );
+      notifyListeners();
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    } finally {
+      loading = false;
+    }
+  }
 
   Future<void> logout() async {
     try {

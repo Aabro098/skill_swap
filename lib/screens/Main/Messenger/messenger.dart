@@ -1,10 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:skill_swap/common/reusables/search_text.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
-import 'package:skill_swap/model/message_screen_model.dart';
+import 'package:skill_swap/model/chat_list_model.dart';
+import 'package:skill_swap/providers/chat_provider.dart';
 import 'package:skill_swap/screens/Main/Messenger/message.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
@@ -17,78 +20,13 @@ class MessengerScreen extends StatefulWidget {
 }
 
 class _MessengerScreenState extends State<MessengerScreen> {
-  final List<MessageScreenModel> demoMessages = [
-    MessageScreenModel(
-      name: "Alice Johnson",
-      photoUrl:
-          "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&w=687&q=80",
-      lastMessage: "Hey! Are we still on for tomorrow?",
-      lastMessageTime: DateTime.now().subtract(const Duration(minutes: 5)),
-    ),
-    MessageScreenModel(
-      name: "Michael Chen",
-      photoUrl:
-          "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=687&q=80",
-      lastMessage: "Sure, I’ll send the documents tonight.",
-      lastMessageTime: DateTime.now().subtract(const Duration(hours: 1)),
-    ),
-    MessageScreenModel(
-      name: "Sofia Martinez",
-      photoUrl:
-          "https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&w=687&q=80",
-      lastMessage: "That was hilarious 😂",
-      lastMessageTime: DateTime.now().subtract(const Duration(hours: 3)),
-    ),
-    MessageScreenModel(
-      name: "David Kim",
-      photoUrl:
-          "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=687&q=80",
-      lastMessage: "I’ll call you later tonight.",
-      lastMessageTime: DateTime.now().subtract(const Duration(days: 1)),
-    ),
-    MessageScreenModel(
-      name: "Emma Williams",
-      photoUrl:
-          "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=687&q=80",
-      lastMessage: "Loved the photos you sent!",
-      lastMessageTime: DateTime.now().subtract(const Duration(days: 2)),
-    ),
-    MessageScreenModel(
-      name: "Chris Evans",
-      photoUrl:
-          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=687&q=80",
-      lastMessage: "Let's meet at the café around 4?",
-      lastMessageTime: DateTime.now().subtract(const Duration(days: 3)),
-    ),
-    MessageScreenModel(
-      name: "Jonty Rhodes",
-      photoUrl:
-          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=687&q=80",
-      lastMessage: "Let's meet at the café around 4?",
-      lastMessageTime: DateTime.now().subtract(const Duration(days: 3)),
-    ),
-    MessageScreenModel(
-      name: "Brock Lesner",
-      photoUrl:
-          "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=687&q=80",
-      lastMessage: "Let's meet at the café around 4?",
-      lastMessageTime: DateTime.now().subtract(const Duration(days: 3)),
-    ),
-    MessageScreenModel(
-      name: "David Kim",
-      photoUrl:
-          "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=687&q=80",
-      lastMessage: "I’ll call you later tonight.",
-      lastMessageTime: DateTime.now().subtract(const Duration(days: 1)),
-    ),
-    MessageScreenModel(
-      name: "Emma Williams",
-      photoUrl:
-          "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=687&q=80",
-      lastMessage: "Loved the photos you sent!",
-      lastMessageTime: DateTime.now().subtract(const Duration(days: 2)),
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ChatProvider>().fetchChatList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,61 +37,85 @@ class _MessengerScreenState extends State<MessengerScreen> {
       child: Padding(
         padding: const EdgeInsets.all(AppSizes.padding),
         child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
+          child: Consumer<ChatProvider>(builder: (
+            context,
+            provider,
+            child,
+          ) {
+            return Skeletonizer(
+              enabled: provider.isLoading,
+              enableSwitchAnimation: true,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  MenuWidget(),
+                  const Row(
+                    children: [
+                      MenuWidget(),
+                      Expanded(
+                          child: RoundedTextField(
+                        prefixIcon: Iconsax.search_favorite,
+                      )),
+                    ],
+                  ),
+                  // const SizedBox(height: AppSizes.md),
+                  // AutoSizeText(
+                  //   context.tr('recent_interactions'),
+                  //   style: context.textTheme.titleLarge?.copyWith(
+                  //       fontWeight: FontWeight.w700, color: Colors.white),
+                  // ),
+                  // const SizedBox(height: AppSizes.md),
+                  // SizedBox(
+                  //   height: 68,
+                  //   child: ListView.builder(
+                  //     scrollDirection: Axis.horizontal,
+                  //     itemCount: 10,
+                  //     itemBuilder: (BuildContext context, int index) {
+                  //       return const Padding(
+                  //         padding: EdgeInsets.only(right: 2.0),
+                  //         child: MessengerProfile(
+                  //           radius: 32,
+                  //           photoUrl:
+                  //               "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=687&q=80",
+                  //         ),
+                  //       );
+                  //     },
+                  //   ),
+                  // ),
+                  const SizedBox(height: AppSizes.md),
+                  AutoSizeText(
+                    context.tr('messages'),
+                    style: context.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700, color: Colors.white),
+                  ),
+                  const SizedBox(height: AppSizes.md),
+                  if (provider.chatList.isEmpty && !provider.isLoading)
+                    Center(
+                      child: Text(
+                        "No Messages Found",
+                        style: context.textTheme.bodyMedium?.copyWith(
+                          color: context.colorScheme.onPrimary,
+                        ),
+                      ),
+                    ),
                   Expanded(
-                      child: RoundedTextField(
-                    prefixIcon: Iconsax.search_favorite,
-                  )),
+                    child: ListView.builder(
+                      itemCount: provider.isLoading
+                          ? dummyChats.length
+                          : provider.chatList.length,
+                      padding: const EdgeInsets.all(0),
+                      shrinkWrap: true,
+                      itemBuilder: (BuildContext context, int index) {
+                        final message = provider.isLoading
+                            ? dummyChats[index]
+                            : provider.chatList[index];
+                        return MessengerTile(message: message);
+                      },
+                    ),
+                  ),
                 ],
               ),
-              const SizedBox(height: AppSizes.md),
-              AutoSizeText(
-                context.tr('recent_interactions'),
-                style: context.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700, color: Colors.white),
-              ),
-              const SizedBox(height: AppSizes.md),
-              SizedBox(
-                height: 68,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (BuildContext context, int index) {
-                    return const Padding(
-                      padding: EdgeInsets.only(right: 2.0),
-                      child: MessengerProfile(
-                        radius: 32,
-                        photoUrl:
-                            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=687&q=80",
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: AppSizes.md),
-              AutoSizeText(
-                context.tr('messages'),
-                style: context.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700, color: Colors.white),
-              ),
-              const SizedBox(height: AppSizes.md),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: demoMessages.length,
-                  padding: const EdgeInsets.all(0),
-                  itemBuilder: (BuildContext context, int index) {
-                    final message = demoMessages[index];
-                    return MessengerTile(message: message);
-                  },
-                ),
-              ),
-            ],
-          ),
+            );
+          }),
         ),
       ),
     );
@@ -166,7 +128,7 @@ class MessengerTile extends StatelessWidget {
     required this.message,
   });
 
-  final MessageScreenModel message;
+  final ChatModel message;
 
   @override
   Widget build(BuildContext context) {
@@ -178,8 +140,9 @@ class MessengerTile extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => MessageScreen(
-                name: message.name,
-                photoUrl: message.photoUrl,
+                id: message.user.id,
+                name: message.user.name,
+                photoUrl: message.user.profileUrl,
               ),
             ),
           );
@@ -188,7 +151,7 @@ class MessengerTile extends StatelessWidget {
           children: [
             MessengerProfile(
               radius: 28,
-              photoUrl: message.photoUrl,
+              photoUrl: message.user.profileUrl,
             ),
             const SizedBox(width: AppSizes.md),
             Expanded(
@@ -196,7 +159,7 @@ class MessengerTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AutoSizeText(
-                    message.name,
+                    message.user.name,
                     style: context.textTheme.titleMedium
                         ?.copyWith(fontWeight: FontWeight.w600, fontSize: 14),
                     overflow: TextOverflow.ellipsis,
@@ -204,7 +167,7 @@ class MessengerTile extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSizes.xs),
                   AutoSizeText(
-                    message.lastMessage,
+                    message.lastMessage.content ?? "",
                     style: context.textTheme.bodySmall
                         ?.copyWith(color: context.colorScheme.onSurface),
                     overflow: TextOverflow.ellipsis,
@@ -215,8 +178,14 @@ class MessengerTile extends StatelessWidget {
             ),
             const SizedBox(width: AppSizes.md),
             Text(
-              "2:30 AM",
-              style: context.textTheme.bodySmall?.copyWith(fontSize: 10),
+              message.lastMessage.timestamp != null
+                  ? TimeOfDay.fromDateTime(message.lastMessage.timestamp!)
+                      .format(context)
+                  : "",
+              style: context.textTheme.bodySmall?.copyWith(
+                fontSize: 10,
+                color: context.colorScheme.onPrimary,
+              ),
             ),
           ],
         ),

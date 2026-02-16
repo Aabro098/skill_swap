@@ -6,9 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/providers/auth_provider.dart';
+import 'package:skill_swap/screens/Profile/edit_profile.dart';
 import 'package:skill_swap/screens/Settings/app_settings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:skill_swap/utils/helpers/app_globals.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -56,8 +58,24 @@ class _ProfileState extends State<Profile> {
                               borderRadius: BorderRadius.circular(AppSizes.xl),
                             ),
                           ),
-                          onPressed: () {},
-                          child: Text(context.tr('edit_profile')),
+                          onPressed: () {
+                            navigatorKey.currentState!.push(
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return EditProfile(
+                                    description:
+                                        provider.user?.description ?? '',
+                                    skills: provider.user?.skills ?? [],
+                                    wantToLearnSkills:
+                                        provider.user?.requestedSkills ?? [],
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          child: Text(
+                            context.tr('edit_profile'),
+                          ),
                         ),
                       ),
                     ),
@@ -83,6 +101,37 @@ class _ProfileState extends State<Profile> {
                       runSpacing: AppSizes.xs,
                       children: (provider.user?.skills != null)
                           ? provider.user!.skills
+                              .map(
+                                (skill) => Chip(
+                                  color: WidgetStatePropertyAll(
+                                      Colors.grey.shade50),
+                                  padding: const EdgeInsets.all(AppSizes.xs),
+                                  visualDensity: VisualDensity.comfortable,
+                                  label: Text(
+                                    skill,
+                                    style: context.textTheme.titleSmall
+                                        ?.copyWith(color: Colors.black),
+                                  ),
+                                  side: BorderSide(
+                                      color:
+                                          colors[random.nextInt(colors.length)],
+                                      width: 2),
+                                ),
+                              )
+                              .toList()
+                          : [const SizedBox.shrink()],
+                    ),
+                    const SizedBox(height: AppSizes.sm),
+                    AutoSizeText(
+                      context.tr('requested_skills'),
+                      style: context.textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: AppSizes.sm),
+                    Wrap(
+                      spacing: AppSizes.xs,
+                      runSpacing: AppSizes.xs,
+                      children: (provider.user?.requestedSkills != null)
+                          ? provider.user!.requestedSkills
                               .map(
                                 (skill) => Chip(
                                   color: WidgetStatePropertyAll(

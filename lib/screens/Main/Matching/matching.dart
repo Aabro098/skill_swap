@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/user_model.dart';
@@ -55,8 +56,11 @@ class _FindMatchState extends State<FindMatch> {
         gradient: context.gradient,
       ),
       child: SafeArea(
-        child:
-            Consumer<RecommendedProvider>(builder: (context, provider, child) {
+        child: Consumer<RecommendedProvider>(builder: (
+          context,
+          provider,
+          child,
+        ) {
           return Padding(
             padding: const EdgeInsets.all(AppSizes.padding),
             child: SingleChildScrollView(
@@ -79,35 +83,44 @@ class _FindMatchState extends State<FindMatch> {
                     ],
                   ),
                   const SizedBox(height: AppSizes.sm),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: provider.recommendedUsers.length,
-                    itemBuilder: (context, index) {
-                      final user = provider.recommendedUsers[index];
+                  Skeletonizer(
+                    enabled: provider.isLoading,
+                    enableSwitchAnimation: true,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: provider.isLoading
+                          ? dummyUsers.length
+                          : provider.recommendedUsers.length,
+                      itemBuilder: (context, index) {
+                        final user = provider.isLoading
+                            ? dummyUsers[index]
+                            : provider.recommendedUsers[index];
 
-                      if (provider.recommendedUsers.isEmpty) {
-                        return SizedBox(
-                          height: context.screenHeight,
-                          child: Center(
-                            child: AutoSizeText(
-                              context.tr('No Recommended Users'),
-                              style: context.textTheme.titleMedium?.copyWith(
-                                color: Colors.white,
+                        if (provider.recommendedUsers.isEmpty &&
+                            !provider.isLoading) {
+                          return SizedBox(
+                            height: context.screenHeight,
+                            child: Center(
+                              child: AutoSizeText(
+                                context.tr('No Recommended Users'),
+                                style: context.textTheme.titleMedium?.copyWith(
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
+                          );
+                        }
+                        return GestureDetector(
+                          onTap: () {},
+                          child: MatchCard(
+                            user: user,
+                            colors: colors,
+                            random: random,
                           ),
                         );
-                      }
-                      return GestureDetector(
-                        onTap: () {},
-                        child: MatchCard(
-                          user: user,
-                          colors: colors,
-                          random: random,
-                        ),
-                      );
-                    },
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -159,40 +172,41 @@ class _MatchCardState extends State<MatchCard> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppSizes.md),
+          color: Colors.white.withAlpha(100),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(20),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
         ),
         padding: const EdgeInsets.all(AppSizes.md),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Container(
-                  height: 92,
-                  width: 92,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Image.network(
-                    widget.user.profileUrl,
-                    fit: BoxFit.cover,
-                    height: 92,
-                    width: 92,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        AppImages.fallback,
-                        fit: BoxFit.cover,
-                        height: 92,
-                        width: 92,
-                      );
-                    },
-                    loadingBuilder: (context, child, loadingProgress) =>
-                        loadingProgress == null
-                            ? child
-                            : Container(
-                                height: 92,
-                                width: 92,
-                                color: Colors.grey.shade400,
-                              ),
+                ClipOval(
+                  child: SizedBox(
+                    width: 58,
+                    height: 58,
+                    child: Image.network(
+                      widget.user.profileUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          AppImages.fallback,
+                          fit: BoxFit.cover,
+                        );
+                      },
+                      loadingBuilder: (context, child, loadingProgress) =>
+                          loadingProgress == null
+                              ? child
+                              : Container(
+                                  color: Colors.grey.shade400,
+                                ),
+                    ),
                   ),
                 ),
                 const SizedBox(width: AppSizes.md),
@@ -212,11 +226,19 @@ class _MatchCardState extends State<MatchCard> {
             const SizedBox(height: AppSizes.xs),
             AutoSizeText(
               widget.user.description,
-              style: context.textTheme.labelMedium?.copyWith(
+              style: context.textTheme.bodyLarge?.copyWith(
                 color: Colors.black87,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: AppSizes.sm),
+            AutoSizeText(
+              "Skills Offered",
+              style: context.textTheme.titleSmall?.copyWith(
+                color: Colors.black,
+              ),
+              maxLines: 1,
             ),
             const SizedBox(height: AppSizes.xs),
             // Skill Chips
@@ -253,18 +275,56 @@ class _MatchCardState extends State<MatchCard> {
                   ),
               ],
             ),
+
             const SizedBox(height: AppSizes.sm),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            AutoSizeText(
+              "Skills Requested",
+              style: context.textTheme.titleSmall?.copyWith(
+                color: Colors.black,
+              ),
+              maxLines: 1,
+            ),
+            const SizedBox(height: AppSizes.xs),
+            Wrap(
+              spacing: AppSizes.xs,
+              runSpacing: 0,
               children: [
-                _actionButton(
-                  icon: Iconsax.tick_circle,
-                  color: Colors.green,
-                  onTap: () async {
-                    await _sendrequest();
-                  },
-                ),
+                ...widget.user.requestedSkills.take(5).map(
+                      (skill) => Chip(
+                        padding: const EdgeInsets.all(AppSizes.xs),
+                        visualDensity: VisualDensity.compact,
+                        backgroundColor: Colors.white,
+                        label: Text(
+                          skill,
+                          style: context.textTheme.bodySmall?.copyWith(
+                            color: Colors.black,
+                          ),
+                        ),
+                        side: BorderSide(
+                          color: widget.colors[
+                              widget.random.nextInt(widget.colors.length)],
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                if (widget.user.skills.length > 8)
+                  Chip(
+                    padding: const EdgeInsets.all(AppSizes.xs),
+                    visualDensity: VisualDensity.compact,
+                    backgroundColor: Colors.white,
+                    label: Text(
+                      "...",
+                      style: context.textTheme.titleLarge
+                          ?.copyWith(color: Colors.black),
+                    ),
+                  ),
               ],
+            ),
+            const SizedBox(height: AppSizes.md),
+            _actionButton(
+              onTap: () async {
+                await _sendrequest();
+              },
             ),
           ],
         ),
@@ -273,19 +333,43 @@ class _MatchCardState extends State<MatchCard> {
   }
 
   Widget _actionButton({
-    required IconData icon,
-    required Color color,
     required VoidCallback onTap,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(AppSizes.sm),
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
+    return Center(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSizes.md,
+            vertical: AppSizes.sm,
+          ),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(AppSizes.md),
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Iconsax.user_add,
+                color: Colors.blue,
+                size: 20,
+              ),
+              const SizedBox(width: AppSizes.sm),
+              AutoSizeText(
+                "Connect",
+                style: context.textTheme.titleLarge?.copyWith(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+                maxLines: 1,
+              ),
+            ],
+          ),
         ),
-        child: Icon(icon, color: color, size: 36),
       ),
     );
   }

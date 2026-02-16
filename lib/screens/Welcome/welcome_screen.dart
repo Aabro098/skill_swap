@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:skill_swap/common/widgets/drawer_page.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/screens/Auth/login_screen.dart';
+import 'package:skill_swap/screens/Basic/basic_complete.dart';
 import 'package:skill_swap/screens/Welcome/OnBoarding/liquid_swipe.dart';
 import 'package:skill_swap/utils/constants/colors.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
@@ -28,15 +29,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Future<void> navigate() async {
     final isFirstTime = await isFirstTimeOpen();
     final token = await getTokenSecure();
+    final isProfileCompleted = await isProfileComplete();
 
     if (isFirstTime) {
       await navigatorKey.currentState?.pushReplacementNamed(
         OnBoardingScreen.routeName,
       );
     } else {
-      if (token != null) {
+      if (token != null && isProfileCompleted) {
         await navigatorKey.currentState?.pushReplacementNamed(
           DrawerPage.routeName,
+        );
+      } else if (token != null && !isProfileCompleted) {
+        await navigatorKey.currentState?.pushReplacementNamed(
+          BasicComplete.routeName,
         );
       } else {
         await navigatorKey.currentState?.pushReplacementNamed(

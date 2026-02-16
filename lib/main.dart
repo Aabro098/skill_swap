@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:skill_swap/app.dart';
 import 'package:skill_swap/providers/auth_provider.dart';
+import 'package:skill_swap/providers/chat_provider.dart';
 import 'package:skill_swap/providers/chatbot_provider.dart';
 import 'package:skill_swap/providers/friends_provider.dart';
 import 'package:skill_swap/providers/localization_provider.dart';
@@ -41,6 +42,7 @@ void main() async {
             ChangeNotifierProvider(create: (_) => FriendProvider()),
             ChangeNotifierProvider(create: (_) => RecommendedProvider()),
             ChangeNotifierProvider(create: (_) => ChatbotProvider()),
+            ChangeNotifierProvider(create: (_) => ChatProvider()),
           ],
           child: const App(),
         ),

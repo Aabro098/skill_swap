@@ -199,6 +199,7 @@ class _FriendsScreenState extends State<FriendsScreen>
             description: 'This is a loading description',
             profileUrl: 'This is a loading description',
             skills: ["Flutter", "Dart"],
+            requestedSkills: ["React", "JavaScript"],
             email: 'test@gmail.com',
             isPremiumUser: false,
           ),

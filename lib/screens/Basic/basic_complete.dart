@@ -27,6 +27,7 @@ class _BasicCompleteState extends State<BasicComplete> {
   int currentPageIndex = 0;
 
   List<String> skills = [];
+  List<String> wantToLearnSkills = [];
 
   List<Widget> get pages => [
         DescriptionScreen(
@@ -47,6 +48,21 @@ class _BasicCompleteState extends State<BasicComplete> {
               "Hi there! To help us get to know your expertise better, please take a moment to add the skills you have.",
           learn: false,
         ),
+        SkillsInput(
+          key: const ValueKey('wantSkills'),
+          skills: wantToLearnSkills,
+          onSkillsChanged: (updatedSkills) {
+            if (mounted) {
+              setState(() {
+                wantToLearnSkills = List.from(updatedSkills);
+              });
+            }
+          },
+          title: "Enter Skills You Want to Learn!",
+          description:
+              "Hi there! To help us get to know your expertise better, please take a moment to add the skills you want to learn.",
+          learn: true,
+        ),
       ];
 
   void _handlePageChange(int index) {
@@ -62,14 +78,12 @@ class _BasicCompleteState extends State<BasicComplete> {
     controller.jumpToPage(page: nextPage);
   }
 
-  Future<void> _completeProfile({
-    required String description,
-    required List<String> skills,
-  }) async {
+  Future<void> _completeProfile() async {
     try {
       await context.read<AuthProvider>().completeProfile(
-            description: description,
+            description: descriptionController.text.trim(),
             skills: skills,
+            wantToLearnSkills: wantToLearnSkills,
           );
       await navigatorKey.currentState!.pushNamedAndRemoveUntil(
         DrawerPage.routeName,
@@ -136,10 +150,7 @@ class _BasicCompleteState extends State<BasicComplete> {
                       ),
                       onPressed: currentPageIndex == pages.length - 1
                           ? () async {
-                              await _completeProfile(
-                                description: descriptionController.text.trim(),
-                                skills: skills,
-                              );
+                              await _completeProfile();
                             }
                           : _navigateToNextPage,
                       child: Consumer<AuthProvider>(
