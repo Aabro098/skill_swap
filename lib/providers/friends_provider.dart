@@ -51,7 +51,7 @@ class FriendProvider with ChangeNotifier {
   Future<void> fetchRequests() async {
     try {
       final response = await FriendController.instance.getRequests();
-      final usersRaw = response['users'];
+      final usersRaw = response['friendRequests'];
       final users = (usersRaw is List)
           ? usersRaw.map((e) => UserModel.fromJson(e)).toList()
           : <UserModel>[];
@@ -67,7 +67,7 @@ class FriendProvider with ChangeNotifier {
   Future<void> fetchSentRequests() async {
     try {
       final response = await FriendController.instance.sentRequests();
-      final usersRaw = response['users'];
+      final usersRaw = response['sentRequests'];
       final users = (usersRaw is List)
           ? usersRaw.map((e) => UserModel.fromJson(e)).toList()
           : <UserModel>[];
@@ -80,8 +80,7 @@ class FriendProvider with ChangeNotifier {
     }
   }
 
-  Future<void> respondRequest(
-      {required String userId, required String action}) async {
+  Future<void> respondRequest({required String userId}) async {
     try {
       await FriendController.instance.respondRequest(userId: userId);
     } on DioException {

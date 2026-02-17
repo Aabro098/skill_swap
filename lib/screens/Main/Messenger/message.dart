@@ -26,20 +26,49 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
-  late List<MessageModel> chatMessages;
+  List<MessageModel> chatMessages = [];
   late TextEditingController messageController;
+  late ScrollController scrollController;
   bool isSendingMessage = false;
 
   @override
   void initState() {
     super.initState();
     messageController = TextEditingController();
+    scrollController = ScrollController();
     setMessages();
+    _setupNewMessageListener();
+  }
+
+  void _setupNewMessageListener() {
+    // Register callback in ChatProvider to receive new messages
+    context.read<ChatProvider>().onNewMessage((MessageModel message) {
+      if (mounted) {
+        setState(() {
+          chatMessages.add(message);
+        });
+        // Scroll to bottom after new message
+        Future.delayed(const Duration(milliseconds: 100), () {
+          _scrollToBottom();
+        });
+      }
+    });
+  }
+
+  void _scrollToBottom() {
+    if (scrollController.hasClients) {
+      scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
   }
 
   @override
   void dispose() {
     messageController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -49,6 +78,10 @@ class _MessageScreenState extends State<MessageScreen> {
     if (mounted) {
       setState(() {
         chatMessages = messages;
+      });
+      // Scroll to bottom after loading messages
+      Future.delayed(const Duration(milliseconds: 100), () {
+        _scrollToBottom();
       });
     }
   }
@@ -75,7 +108,7 @@ class _MessageScreenState extends State<MessageScreen> {
       );
       if (mounted) {
         setState(() {
-          chatMessages.insert(0, tempMessage);
+          chatMessages.add(tempMessage);
         });
       }
 
@@ -126,7 +159,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 children: [
                   Expanded(
                     child: ListView.builder(
-                      reverse: true,
+                      controller: scrollController,
                       itemCount: provider.isFetching
                           ? dummyMessages.length
                           : chatMessages.length,

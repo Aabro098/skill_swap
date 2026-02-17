@@ -38,12 +38,12 @@ class _LoginScreenState extends State<LoginScreen> {
       if (e.response?.statusCode == 400) {
         final token = e.response?.data['token'] as String;
         await saveTokenSecure(token);
+        showErrorSnackbar(errorMessage);
         await navigatorKey.currentState!.pushNamedAndRemoveUntil(
           BasicComplete.routeName,
           (_) => false,
         );
       }
-      showErrorSnackbar(errorMessage);
       return;
     } catch (e) {
       showErrorSnackbar('An unexpected error occurred.');

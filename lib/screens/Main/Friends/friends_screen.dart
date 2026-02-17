@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
@@ -10,8 +11,11 @@ import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/user_model.dart';
 import 'package:skill_swap/providers/friends_provider.dart';
+import 'package:skill_swap/screens/Main/Messenger/message.dart';
 import 'package:skill_swap/screens/Main/Messenger/messenger.dart';
+import 'package:skill_swap/services/dio_client.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
+import 'package:skill_swap/utils/helpers/helper_functions.dart';
 
 class FriendsScreen extends StatefulWidget {
   const FriendsScreen({super.key});
@@ -121,15 +125,9 @@ class _FriendsScreenState extends State<FriendsScreen>
   Widget _requestsWidget() {
     return _dataState(
       context.read<FriendProvider>().requests,
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: Colors.red.shade900,
-            size: AppSizes.md,
-          ),
-        ],
+      AutoSizeText(
+        "Accept",
+        style: context.textTheme.titleSmall?.copyWith(color: Colors.green),
       ),
       true,
     );
@@ -209,7 +207,7 @@ class _FriendsScreenState extends State<FriendsScreen>
   }
 }
 
-class FriendsTile extends StatelessWidget {
+class FriendsTile extends StatefulWidget {
   final Widget trailing;
   final UserModel user;
   final bool? isRequest;
@@ -221,6 +219,38 @@ class FriendsTile extends StatelessWidget {
   });
 
   @override
+  State<FriendsTile> createState() => _FriendsTileState();
+}
+
+class _FriendsTileState extends State<FriendsTile> {
+  bool isAcceptingRequest = false;
+
+  Future<void> acceptRequest(BuildContext context) async {
+    if (mounted) {
+      setState(() {
+        isAcceptingRequest = true;
+      });
+    }
+    try {
+      final provider = context.read<FriendProvider>();
+      await provider.respondRequest(userId: widget.user.id);
+      await provider.fetchAll();
+      showSuccessSnackbar("Friend request accepted!");
+    } on DioException catch (e) {
+      final errorMessage = DioClient.parseDioError(e);
+      showErrorSnackbar(errorMessage);
+    } catch (e) {
+      showErrorSnackbar('An unexpected error occurred.');
+    } finally {
+      if (mounted) {
+        setState(() {
+          isAcceptingRequest = false;
+        });
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSizes.sm),
@@ -228,46 +258,60 @@ class FriendsTile extends StatelessWidget {
         children: [
           MessengerProfile(
             radius: 28,
-            photoUrl: user.profileUrl,
+            photoUrl: widget.user.profileUrl,
           ),
           const SizedBox(width: AppSizes.md),
           Expanded(
-            child: GestureDetector(
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => ViewProfile(
-                //       user: user,
-                //       isRequest: isRequest ?? false,
-                //     ),
-                //   ),
-                // );
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AutoSizeText(
-                    user.name,
-                    style: context.textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w600, fontSize: 14),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                  const SizedBox(height: AppSizes.xs),
-                  AutoSizeText(
-                    user.description,
-                    style: context.textTheme.bodySmall
-                        ?.copyWith(color: context.colorScheme.onSurface),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                  ),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AutoSizeText(
+                  widget.user.name,
+                  style: context.textTheme.titleMedium
+                      ?.copyWith(fontWeight: FontWeight.w600, fontSize: 14),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+                const SizedBox(height: AppSizes.xs),
+                AutoSizeText(
+                  widget.user.description,
+                  style: context.textTheme.bodySmall
+                      ?.copyWith(color: context.colorScheme.onSurface),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+              ],
             ),
           ),
           const SizedBox(width: AppSizes.md),
-          trailing,
+          isAcceptingRequest && widget.isRequest == true
+              ? const SizedBox(
+                  height: AppSizes.md,
+                  width: AppSizes.md,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.green,
+                  ),
+                )
+              : GestureDetector(
+                  onTap: isAcceptingRequest && widget.isRequest == true
+                      ? null
+                      : () {
+                          widget.isRequest == true
+                              ? acceptRequest(context)
+                              : Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => MessageScreen(
+                                      id: widget.user.id,
+                                      name: widget.user.name,
+                                      photoUrl: widget.user.profileUrl,
+                                    ),
+                                  ),
+                                );
+                        },
+                  child: widget.trailing,
+                ),
         ],
       ),
     );

@@ -25,6 +25,14 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // Callback for new messages in a conversation
+  Function(MessageModel)? _onNewMessage;
+
+  /// Register a callback to listen for new messages
+  void onNewMessage(Function(MessageModel) callback) {
+    _onNewMessage = callback;
+  }
+
   Future<void> fetchChatList() async {
     loading = true;
     try {
@@ -86,6 +94,11 @@ class ChatProvider with ChangeNotifier {
       if (senderId == null) {
         debugPrint('❗️ Sender ID is null');
         return;
+      }
+
+      // Invoke the callback if registered (for active conversation)
+      if (_onNewMessage != null) {
+        _onNewMessage!(newMessage);
       }
 
       // Check if the sender is already in the chat list

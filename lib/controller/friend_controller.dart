@@ -57,7 +57,6 @@ class FriendController {
         UrlStrings.sentRequests,
       );
       final data = response.data as Map<String, dynamic>;
-
       return data;
     } on DioException {
       rethrow;
