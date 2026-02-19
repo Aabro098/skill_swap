@@ -21,7 +21,6 @@ class ChatController {
         UrlStrings.getChatList,
       );
       final data = response.data as Map<String, dynamic>;
-      print("Chat List Response: $data"); // Debug print
       final responseData = ChatListResponse(
         chats: data['chats'] != null
             ? BaseModel.parseList(

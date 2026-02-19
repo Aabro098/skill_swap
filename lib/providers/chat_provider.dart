@@ -25,12 +25,26 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Callback for new messages in a conversation
-  Function(MessageModel)? _onNewMessage;
+  bool _socketListenersInitialized = false;
 
-  /// Register a callback to listen for new messages
-  void onNewMessage(Function(MessageModel) callback) {
-    _onNewMessage = callback;
+  // Set to track received message IDs and prevent duplicates
+  final Set<String> _receivedMessageIds = {};
+
+  // Map to track callbacks for specific conversations
+  final Map<String, Function(MessageModel)> _conversationCallbacks = {};
+
+  /// Register a callback to listen for new messages in a specific conversation
+  void onNewMessage(String conversationId, Function(MessageModel) callback) {
+    debugPrint('📱 Registering callback for conversation: $conversationId');
+    _conversationCallbacks[conversationId] = callback;
+    debugPrint(
+        '📱 Total active conversation listeners: ${_conversationCallbacks.length}');
+  }
+
+  /// Unregister a callback for a specific conversation
+  void offNewMessage(String conversationId) {
+    debugPrint('📱 Unregistering callback for conversation: $conversationId');
+    _conversationCallbacks.remove(conversationId);
   }
 
   Future<void> fetchChatList() async {
@@ -64,15 +78,28 @@ class ChatProvider with ChangeNotifier {
 
   /// Initialize socket event listeners for real-time messaging
   void initializeSocketListeners() {
+    // Prevent duplicate listener registration
+    if (_socketListenersInitialized) {
+      debugPrint('⚠️ Socket listeners already initialized, skipping...');
+      return;
+    }
+
+    _socketListenersInitialized = true;
+    debugPrint('📤 Initializing socket listeners...');
+
     // Listen for incoming messages
     SocketService.instance.onReceiveMessage((message) {
+      debugPrint('🔔 Socket event triggered for receive_message');
       _handleIncomingMessage(message);
     });
 
     // Listen for message sent confirmation
     SocketService.instance.onMessageSent((confirmation) {
+      debugPrint('🔔 Socket event triggered for message_sent');
       _handleMessageSent(confirmation);
     });
+
+    debugPrint('✅ Socket listeners initialized successfully');
   }
 
   /// Handle incoming message from socket
@@ -80,9 +107,17 @@ class ChatProvider with ChangeNotifier {
     try {
       debugPrint('ChatProvider: Message received: $messageData');
 
+      final messageId = messageData['_id'] as String?;
+
+      // Check if we've already processed this message
+      if (messageId != null && _receivedMessageIds.contains(messageId)) {
+        debugPrint('⚠️ Duplicate message received, skipping: $messageId');
+        return;
+      }
+
       // Create a message model from the incoming data
       final newMessage = MessageModel(
-        id: messageData['_id'] as String?,
+        id: messageId,
         content: messageData['content'] as String?,
         timestamp: messageData['timestamp'] != null
             ? DateTime.tryParse(messageData['timestamp'] as String)
@@ -96,9 +131,21 @@ class ChatProvider with ChangeNotifier {
         return;
       }
 
-      // Invoke the callback if registered (for active conversation)
-      if (_onNewMessage != null) {
-        _onNewMessage!(newMessage);
+      // Mark this message as received
+      if (messageId != null) {
+        _receivedMessageIds.add(messageId);
+      }
+
+      // Invoke the callback for this specific conversation
+      final conversationCallback = _conversationCallbacks[senderId];
+      debugPrint('📱 Looking for callback for senderId: $senderId');
+      debugPrint(
+          '📱 Available callbacks: ${_conversationCallbacks.keys.toList()}');
+      if (conversationCallback != null) {
+        debugPrint('✅ Callback found, invoking for senderId: $senderId');
+        conversationCallback(newMessage);
+      } else {
+        debugPrint('❌ No callback registered for senderId: $senderId');
       }
 
       // Check if the sender is already in the chat list
@@ -208,6 +255,8 @@ class ChatProvider with ChangeNotifier {
   void sendMessage({
     required String toUserId,
     required String content,
+    required String name,
+    required String profileUrl,
   }) {
     if (SocketService.instance.isConnected) {
       // Create a temporary ID for tracking
@@ -224,6 +273,8 @@ class ChatProvider with ChangeNotifier {
       SocketService.instance.sendMessage(
         toUserId: toUserId,
         content: content,
+        name: name,
+        profileUrl: profileUrl,
       );
 
       debugPrint('📤 Message sent with tempId: $tempId');

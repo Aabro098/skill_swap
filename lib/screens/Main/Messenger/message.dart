@@ -29,44 +29,70 @@ class _MessageScreenState extends State<MessageScreen> {
   List<MessageModel> chatMessages = [];
   late TextEditingController messageController;
   late ScrollController scrollController;
+  late ChatProvider chatProvider;
   bool isSendingMessage = false;
 
   @override
   void initState() {
     super.initState();
+    debugPrint('🟢 MessageScreen initState called for ID: ${widget.id}');
     messageController = TextEditingController();
     scrollController = ScrollController();
-    setMessages();
-    _setupNewMessageListener();
-  }
-
-  void _setupNewMessageListener() {
-    // Register callback in ChatProvider to receive new messages
-    context.read<ChatProvider>().onNewMessage((MessageModel message) {
-      if (mounted) {
-        setState(() {
-          chatMessages.add(message);
-        });
-        // Scroll to bottom after new message
-        Future.delayed(const Duration(milliseconds: 100), () {
-          _scrollToBottom();
-        });
-      }
+    // Save ChatProvider reference for use in dispose
+    chatProvider = context.read<ChatProvider>();
+    // Try-catch to ensure listener setup doesn't fail silently
+    try {
+      _setupNewMessageListener();
+    } catch (e) {
+      debugPrint('❌ Error setting up listener: $e');
+    }
+    // Delay message fetching until after the first frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setMessages();
     });
   }
 
+  void _setupNewMessageListener() {
+    // Register callback for this specific conversation (using the user id as conversation id)
+    debugPrint(
+        '📲 Setting up message listener for conversation ID: ${widget.id}');
+    try {
+      debugPrint('✅ ChatProvider found: ${chatProvider.hashCode}');
+      chatProvider.onNewMessage(widget.id, (MessageModel message) {
+        debugPrint('📨 New message received in UI for ID: ${widget.id}');
+        if (mounted) {
+          setState(() {
+            chatMessages.add(message);
+          });
+          // Scroll to bottom after new message
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _scrollToBottom();
+          });
+        }
+      });
+      debugPrint('✅ Callback registered successfully for ID: ${widget.id}');
+    } catch (e) {
+      debugPrint('❌ Error in _setupNewMessageListener: $e');
+    }
+  }
+
   void _scrollToBottom() {
-    if (scrollController.hasClients) {
-      scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
+    try {
+      if (scrollController.hasClients &&
+          scrollController.positions.length == 1) {
+        scrollController.jumpTo(
+          scrollController.position.maxScrollExtent,
+        );
+      }
+    } catch (e) {
+      debugPrint('Error scrolling to bottom: $e');
     }
   }
 
   @override
   void dispose() {
+    // Unregister the callback for this conversation using saved reference
+    chatProvider.offNewMessage(widget.id);
     messageController.dispose();
     scrollController.dispose();
     super.dispose();
@@ -80,7 +106,7 @@ class _MessageScreenState extends State<MessageScreen> {
         chatMessages = messages;
       });
       // Scroll to bottom after loading messages
-      Future.delayed(const Duration(milliseconds: 100), () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _scrollToBottom();
       });
     }
@@ -115,6 +141,8 @@ class _MessageScreenState extends State<MessageScreen> {
       context.read<ChatProvider>().sendMessage(
             toUserId: widget.id,
             content: message,
+            name: widget.name,
+            profileUrl: widget.photoUrl ?? '',
           );
 
       // Clear the input field

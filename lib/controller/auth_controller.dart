@@ -115,6 +115,23 @@ class AuthController {
     }
   }
 
+  Future<Map<String, dynamic>> getUserProfile({required String id}) async {
+    final dio = await DioClient.initClient();
+
+    try {
+      //* Sending the GET request
+      final response = await dio.get<Map<String, dynamic>>(
+        "${UrlStrings.user}/$id",
+      );
+      final data = response.data as Map<String, dynamic>;
+      return data;
+    } on DioException {
+      rethrow;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> logOut() async {
     clearToken();
     await GoogleAuthService.instance.disconnect();

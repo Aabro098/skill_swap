@@ -13,8 +13,10 @@ import 'package:skill_swap/model/user_model.dart';
 import 'package:skill_swap/providers/friends_provider.dart';
 import 'package:skill_swap/screens/Main/Messenger/message.dart';
 import 'package:skill_swap/screens/Main/Messenger/messenger.dart';
+import 'package:skill_swap/screens/Profile/view_profile.dart';
 import 'package:skill_swap/services/dio_client.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
+import 'package:skill_swap/utils/helpers/app_globals.dart';
 import 'package:skill_swap/utils/helpers/helper_functions.dart';
 
 class FriendsScreen extends StatefulWidget {
@@ -256,9 +258,20 @@ class _FriendsTileState extends State<FriendsTile> {
       padding: const EdgeInsets.only(bottom: AppSizes.sm),
       child: Row(
         children: [
-          MessengerProfile(
-            radius: 28,
-            photoUrl: widget.user.profileUrl,
+          GestureDetector(
+            onTap: () {
+              navigatorKey.currentState?.push(
+                MaterialPageRoute(
+                  builder: (context) => ViewProfile(
+                    id: widget.user.id,
+                  ),
+                ),
+              );
+            },
+            child: MessengerProfile(
+              radius: 28,
+              photoUrl: widget.user.profileUrl,
+            ),
           ),
           const SizedBox(width: AppSizes.md),
           Expanded(

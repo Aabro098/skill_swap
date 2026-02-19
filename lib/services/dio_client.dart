@@ -22,8 +22,8 @@ class DioClient {
     final dio = Dio(
       BaseOptions(
         baseUrl: UrlStrings.baseUrl,
-        connectTimeout: const Duration(seconds: 20),
-        receiveTimeout: const Duration(seconds: 20),
+        connectTimeout: const Duration(seconds: 60),
+        receiveTimeout: const Duration(seconds: 60),
         headers: {
           // 'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -39,8 +39,8 @@ class DioClient {
     return Dio(
       BaseOptions(
         baseUrl: UrlStrings.baseUrl,
-        connectTimeout: const Duration(seconds: 12),
-        receiveTimeout: const Duration(seconds: 12),
+        connectTimeout: const Duration(seconds: 60),
+        receiveTimeout: const Duration(seconds: 60),
         headers: {
           // 'Accept': 'application/json',
           'Content-Type': 'application/json',
