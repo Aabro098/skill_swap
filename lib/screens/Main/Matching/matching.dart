@@ -11,9 +11,11 @@ import 'package:skill_swap/common/widgets/menu_widget.dart';
 import 'package:skill_swap/extensions/context_extensions.dart';
 import 'package:skill_swap/model/user_model.dart';
 import 'package:skill_swap/providers/recommended_provider.dart';
+import 'package:skill_swap/screens/Profile/view_profile.dart';
 import 'package:skill_swap/services/dio_client.dart';
 import 'package:skill_swap/utils/constants/image_strings.dart';
 import 'package:skill_swap/utils/constants/sizes.dart';
+import 'package:skill_swap/utils/helpers/app_globals.dart';
 import 'package:skill_swap/utils/helpers/helper_functions.dart';
 
 class FindMatch extends StatefulWidget {
@@ -111,13 +113,10 @@ class _FindMatchState extends State<FindMatch> {
                             ),
                           );
                         }
-                        return GestureDetector(
-                          onTap: () {},
-                          child: MatchCard(
-                            user: user,
-                            colors: colors,
-                            random: random,
-                          ),
+                        return MatchCard(
+                          user: user,
+                          colors: colors,
+                          random: random,
                         );
                       },
                     ),
@@ -185,41 +184,52 @@ class _MatchCardState extends State<MatchCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                ClipOval(
-                  child: SizedBox(
-                    width: 58,
-                    height: 58,
-                    child: Image.network(
-                      widget.user.profileUrl,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(
-                          AppImages.fallback,
-                          fit: BoxFit.cover,
-                        );
-                      },
-                      loadingBuilder: (context, child, loadingProgress) =>
-                          loadingProgress == null
-                              ? child
-                              : Container(
-                                  color: Colors.grey.shade400,
-                                ),
+            GestureDetector(
+              onTap: () async {
+                await navigatorKey.currentState?.push(
+                  MaterialPageRoute(
+                    builder: (context) => ViewProfile(
+                      id: widget.user.id,
                     ),
                   ),
-                ),
-                const SizedBox(width: AppSizes.md),
-                AutoSizeText(
-                  widget.user.name,
-                  style: context.textTheme.titleLarge?.copyWith(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                );
+              },
+              child: Row(
+                children: [
+                  ClipOval(
+                    child: SizedBox(
+                      width: 58,
+                      height: 58,
+                      child: Image.network(
+                        widget.user.profileUrl,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            AppImages.fallback,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                        loadingBuilder: (context, child, loadingProgress) =>
+                            loadingProgress == null
+                                ? child
+                                : Container(
+                                    color: Colors.grey.shade400,
+                                  ),
+                      ),
+                    ),
                   ),
-                  maxLines: 1,
-                ),
-              ],
+                  const SizedBox(width: AppSizes.md),
+                  AutoSizeText(
+                    widget.user.name,
+                    style: context.textTheme.titleLarge?.copyWith(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                    maxLines: 1,
+                  ),
+                ],
+              ),
             ),
 
             // User Info
