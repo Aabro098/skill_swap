@@ -1,9 +1,9 @@
 class UrlStrings {
   // static const String baseUrl = 'https://skill-swap-server-1y5u.onrender.com';
 
-  // static const String baseUrl = "http://10.0.2.2:5001";
+  static const String baseUrl = "http://10.0.2.2:5001";
 
-  static const String baseUrl = 'http://192.168.81.45:5001';
+  // static const String baseUrl = 'http://192.168.81.45:5001';
 
   static const String googleAuth = '/auth/google';
 

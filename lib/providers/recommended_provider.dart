@@ -16,7 +16,7 @@ class RecommendedProvider with ChangeNotifier {
   List<UserModel> get recommendedUsers => _recommendedUsers;
 
   Future<void> fetchRecommendedUsers() async {
-    if(recommendedUsers.isNotEmpty) return;
+    if (_recommendedUsers.isNotEmpty) return;
     loading = true;
     try {
       final response = await FriendController.instance.getRecommendedUsers();

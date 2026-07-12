@@ -33,6 +33,7 @@ class FriendProvider with ChangeNotifier {
   }
 
   Future<void> fetchFriends() async {
+    if (_friends.isNotEmpty) return;
     try {
       final response = await FriendController.instance.friends();
       final usersRaw = response['users'];
@@ -49,6 +50,7 @@ class FriendProvider with ChangeNotifier {
   }
 
   Future<void> fetchRequests() async {
+    if (_requests.isNotEmpty) return;
     try {
       final response = await FriendController.instance.getRequests();
       final usersRaw = response['friendRequests'];
@@ -65,6 +67,7 @@ class FriendProvider with ChangeNotifier {
   }
 
   Future<void> fetchSentRequests() async {
+    if (_sentRequests.isNotEmpty) return;
     try {
       final response = await FriendController.instance.sentRequests();
       final usersRaw = response['sentRequests'];
